@@ -1,0 +1,8 @@
+packages:
+  - packages/*
+  - playground
+
+# pnpm v10+ 默认不跑依赖的安装脚本，按需放行
+onlyBuiltDependencies:
+  - esbuild
+  - vue-demi
