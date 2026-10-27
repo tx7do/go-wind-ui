@@ -1,6 +1,7 @@
 packages:
   - packages/*
   - playground
+  - playground-react
 
 # pnpm v10+ 默认不跑依赖的安装脚本，按需放行
 onlyBuiltDependencies:

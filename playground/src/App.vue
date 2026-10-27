@@ -1,6 +1,12 @@
 <template>
   <ProConfigProvider :config="providerConfig">
     <div class="pg-app" :class="{ 'pg-app--dark': dark }">
+      <div class="pg-view-switch">
+        <ElRadioGroup v-model="view">
+          <ElRadioButton value="table">ProTable 页面</ElRadioButton>
+          <ElRadioButton value="editor">编辑器套件</ElRadioButton>
+        </ElRadioGroup>
+      </div>
       <header class="pg-header">
         <h1>@go-wind-ui/element-pro playground</h1>
         <div class="pg-controls">
@@ -14,7 +20,8 @@
       </header>
 
       <main class="pg-main">
-        <ProPage :config="pageConfig">
+        <EditorDemo v-if="view === 'editor'" />
+        <ProPage v-else :config="pageConfig">
           <template #status="scope: any">
             <ElTag :type="scope.row.status === 1 ? 'success' : 'danger'" effect="plain">
               {{ scope.row.status === 1 ? (locale === 'zh-CN' ? '启用' : 'Enabled') : (locale === 'zh-CN' ? '禁用' : 'Disabled') }}
@@ -35,6 +42,8 @@ import {
   ProPage,
   type ProPageConfig,
 } from "@go-wind-ui/element-pro";
+import { setEditorLocale } from "@go-wind-ui/editor-vue";
+import EditorDemo from "./EditorDemo.vue";
 
 // ============ 演示数据（内存数据源，模拟后端） ============
 interface UserRow {
@@ -79,6 +88,7 @@ async function listAction(query: any) {
 const dark = ref(false);
 const locale = ref<"zh-CN" | "en-US">("zh-CN");
 const hasPerm = ref(true);
+const view = ref<"table" | "editor">("table");
 
 const providerConfig = computed(() => ({
   locale: locale.value,
@@ -86,6 +96,9 @@ const providerConfig = computed(() => ({
   resolveTableId: () => "playground-users",
   hasAccess: (codes: string[]) => (hasPerm.value ? true : !codes.includes("user:delete")),
 }));
+
+// 编辑器包语言联动
+watch(locale, (v) => setEditorLocale(v), { immediate: true });
 
 // EP 官方暗色方案：html.dark 作用域切换 css-vars；
 // vxe 引擎另需 VxeUI.setTheme 翻转 data-vxe-ui-theme（宿主主题层的标准集成步骤）
@@ -213,6 +226,10 @@ body,
   box-sizing: border-box;
   background: var(--el-bg-color-page);
   color: var(--el-text-color-primary);
+}
+
+.pg-view-switch {
+  padding-bottom: 8px;
 }
 
 .pg-header {

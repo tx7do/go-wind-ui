@@ -5,6 +5,9 @@ Framework-generic admin UI building blocks from the [GoWind](https://github.com/
 | Package | Description | Status |
 |---------|-------------|--------|
 | [`@go-wind-ui/element-pro`](./packages/element-pro) | Config-driven CRUD pages for Vue 3 + Element Plus + vxe-table: search bar, toolbar, dual-engine table, pagination, form modal, full-page orchestration | v0.1 |
+| [`@go-wind-ui/editor-vue`](./packages/editor-vue) | Vue 3 editor suite: Tiptap rich text, Monaco code, JSON, Markdown, plain text | v0.1 |
+| [`@go-wind-ui/editor-react`](./packages/editor-react) | React 19 editor suite: same five editors, antd-based modals | v0.1 |
+| [`@go-wind-ui/locale`](./packages/locale) | Tiny reactive i18n store factory shared by the packages above | v0.1 |
 
 ## Why
 
@@ -29,7 +32,7 @@ npx pnpm typecheck    # vue-tsc across packages
 ## Roadmap
 
 - [x] `element-pro` — extracted from go-wind-admin's vue-element Pro suite
-- [ ] `editor` — rich-text (Tiptap) / code (Monaco) editor wrappers
+- [x] `editor-vue` / `editor-react` — Tiptap rich text, Monaco code, JSON, Markdown, plain text (theme-aware, injectable upload)
 - [ ] `bi-designer` — dashboard/chart designer (MIT kernels only)
 
 ## License

@@ -8,7 +8,7 @@
     "node": ">=20.19"
   },
   "scripts": {
-    "build": "pnpm --filter @go-wind-ui/element-pro build",
+    "build": "pnpm -r build",
     "typecheck": "pnpm -r typecheck",
     "dev": "pnpm --filter playground dev",
     "build:playground": "pnpm --filter playground build"
