@@ -9,6 +9,10 @@ jobs:
   release:
     name: Version & Publish (changesets)
     runs-on: ubuntu-latest
+    # changesets 发布后推 git tag / 开 Version PR 需要 contents 写权限
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
         with:
