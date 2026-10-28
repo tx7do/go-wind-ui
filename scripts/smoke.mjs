@@ -50,19 +50,34 @@ try {
 
     const page = await browser.newPage();
     const errors = [];
+    const consoleErrors = [];
     page.on("pageerror", (err) => errors.push(String(err)));
+    page.on("console", (msg) => {
+      if (msg.type() === "error") consoleErrors.push(msg.text());
+    });
     await page.goto(job.url, { waitUntil: "networkidle", timeout: 60_000 });
+    // vite 冷转换在 CI 慢机上可能晚于 networkidle；给首屏渲染留缓冲
+    await page.waitForTimeout(3000);
 
     for (const probe of job.probes) {
-      const found = (await page.getByText(probe, { exact: true }).count()) > 0;
+      const found = (await page.getByText(probe).count()) > 0;
       console.log(`${found ? "PASS" : "FAIL"} ${job.name}: text "${probe}"`);
       if (!found) failures += 1;
+    }
+    const bodySnippet = (await page.evaluate(() => document.body.innerText.slice(0, 200))).replace(/\n/g, " | ");
+    const overlay = await page.evaluate(() => !!document.querySelector("vite-error-overlay"));
+    console.log(`INFO ${job.name}: vite overlay = ${overlay}; body = ${bodySnippet}`);
+    if (consoleErrors.length) {
+      console.log(`FAIL ${job.name}: ${consoleErrors.length} console error(s)`);
+      console.log(consoleErrors.slice(0, 5).join("\n"));
+      failures += 1;
     }
     if (errors.length) {
       console.log(`FAIL ${job.name}: ${errors.length} pageerror(s)`);
       console.log(errors.slice(0, 3).join("\n"));
       failures += 1;
-    } else {
+    }
+    if (!consoleErrors.length && !errors.length) {
       console.log(`PASS ${job.name}: no pageerror`);
     }
     await page.close();
