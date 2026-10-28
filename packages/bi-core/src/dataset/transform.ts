@@ -63,19 +63,28 @@ function shouldAggregate(chart: BiChartSchema): boolean {
   return !!(chart.encoding?.measure || chart.encoding?.measures?.length || agg === "count");
 }
 
-/** 分组聚合：输出每维度一行的宽表（保留维度列 + 各度量列） */
+/** 分组键字段：维度 + （pivot 图的列维度也要保留，供 S2 交叉表用） */
+function groupFieldsOf(chart: BiChartSchema): string[] {
+  const fields = [chart.encoding?.dimension ?? ""];
+  if (chart.type === "pivot" && chart.encoding?.series) fields.push(chart.encoding.series);
+  return fields.filter(Boolean);
+}
+
+/** 分组聚合：输出每（维度组）一行的宽表（保留维度列 + 各度量列） */
 export function aggregateRows(
   rows: BiRow[],
   chart: BiChartSchema
 ): BiRow[] {
+  const groupFields = groupFieldsOf(chart);
   const dim = chart.encoding!.dimension!;
   const agg: BiAggFn = chart.aggregation ?? "sum";
   const measure = chart.encoding?.measure;
   const measures = chart.encoding?.measures ?? (measure ? [measure] : []);
 
+  const keyOf = (row: BiRow) => groupFields.map((f) => String(row[f] ?? "")).join("\u0001");
   const groups = new Map<string, BiRow[]>();
   for (const row of rows) {
-    const key = String(row[dim] ?? "");
+    const key = keyOf(row);
     const bucket = groups.get(key);
     if (bucket) bucket.push(row);
     else groups.set(key, [row]);
@@ -99,8 +108,9 @@ export function aggregateRows(
   };
 
   const out: BiRow[] = [];
-  for (const [key, bucket] of groups) {
-    const row: BiRow = { [dim]: key };
+  for (const bucket of groups.values()) {
+    const row: BiRow = {};
+    for (const f of groupFields) row[f] = bucket[0]?.[f];
     if (agg === "count" && measures.length === 0) {
       // 纯计数：值列名用 measure 占位或固定 count
       row[measure ?? "count"] = bucket.length;
@@ -108,7 +118,7 @@ export function aggregateRows(
     for (const m of measures) {
       row[m] = apply(bucket.map((r) => (agg === "count" ? 1 : toNumber(r[m]))));
     }
-    // 长表 series 字段在聚合后无意义，丢弃
+    // 非分组字段的长表 series 值在聚合后无意义（pivot 的列维度已保留），丢弃
     out.push(row);
   }
   return out;

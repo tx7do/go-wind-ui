@@ -15,7 +15,9 @@
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "@go-wind-ui/bi-react": "workspace:*",
-    "@go-wind-ui/bi-vue": "workspace:*"
+    "@go-wind-ui/bi-vue": "workspace:*",
+    "@go-wind-ui/bi-engine-s2": "workspace:*",
+    "@go-wind-ui/bi-engine-g6": "workspace:*"
   },
   "devDependencies": {
     "@types/react": "^19.2.15",

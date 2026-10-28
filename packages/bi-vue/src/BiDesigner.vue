@@ -31,6 +31,31 @@
         <button class="bd-btn" :disabled="preview" @click="api.compact()">
           {{ t("designer.compact") }}
         </button>
+        <div class="bi-designer__tpl-wrap">
+          <button class="bd-btn" :disabled="preview" @click="templateOpen = !templateOpen">
+            {{ t("designer.templates") }}
+          </button>
+          <div v-if="templateOpen" class="bi-designer__tpl-menu">
+            <button
+              v-for="tpl in templates"
+              :key="tpl.key"
+              class="bi-designer__tpl-item"
+              :title="tpl.description"
+              @click="applyTemplate(tpl.key)"
+            >
+              {{ tpl.name }}
+            </button>
+          </div>
+        </div>
+        <button
+          class="bd-btn"
+          :class="{ 'bd-btn--active-on': state.linkage?.enabled }"
+          :disabled="preview"
+          :title="t('designer.linkageTip')"
+          @click="toggleLinkage"
+        >
+          {{ t("designer.linkage") }}
+        </button>
       </div>
       <div class="bi-designer__toolbar-group">
         <button class="bd-btn" :disabled="!stateCharts.length" @click="handleExport">
@@ -252,6 +277,29 @@
                 </option>
               </select>
             </label>
+
+            <!-- 下钻路径 -->
+            <div v-if="needsField(selected.type, 'dimension')" class="bi-designer__field">
+              <span>{{ t("designer.drillPath") }}</span>
+              <div v-if="selected.drill?.path?.length" class="bi-designer__drill-list">
+                <span v-for="(col, i) in selected.drill.path" :key="i" class="bi-designer__drill-chip">
+                  {{ i + 1 }}. {{ col }}
+                  <button class="bi-designer__drill-del" @click="removeDrillLevel(i)">×</button>
+                </span>
+              </div>
+              <select
+                v-if="drillCandidates(selected).length"
+                class="bd-input"
+                value=""
+                @change="
+                  addDrillLevel(($event.target as HTMLSelectElement).value);
+                  ($event.target as HTMLSelectElement).value = '';
+                "
+              >
+                <option value="" disabled>{{ t("designer.addDrillLevel") }}</option>
+                <option v-for="col in drillCandidates(selected)" :key="col" :value="col">{{ col }}</option>
+              </select>
+            </div>
 
             <!-- 多度量（宽表，仅柱/线/面） -->
             <div v-if="showMeasures(selected.type)" class="bi-designer__field">
@@ -606,9 +654,10 @@
 import { computed, onBeforeUnmount, onMounted, reactive, ref, shallowRef, watch } from "vue";
 import {
   BiDesignerApi,
-  BI_CHART_TYPES,
   BI_PALETTE_KEYS,
+  BI_TEMPLATES,
   defaultGrid,
+  getChartTypes,
   getColumns,
   inferFieldType,
   layoutCharts,
@@ -749,7 +798,38 @@ api.subscribe(() => {
 
 const preview = ref(false);
 const importInputRef = ref<HTMLInputElement | null>(null);
-const chartTypes = BI_CHART_TYPES;
+// 图型网格来自注册表（引擎适配器包可扩展，如 s2/g6）
+const chartTypes = getChartTypes();
+const templates = BI_TEMPLATES;
+const templateOpen = ref(false);
+
+function applyTemplate(key: string) {
+  const tpl = templates.find((tp) => tp.key === key);
+  if (!tpl) return;
+  api.replaceSchema(tpl.schema);
+  templateOpen.value = false;
+}
+
+/** 联动开关（dashboard.linkage.enabled） */
+function toggleLinkage() {
+  const enabled = !(state.value.linkage?.enabled === true);
+  // 直接经 commit 路径之外的全量替换：linkage 是页面级配置
+  const next = { ...state.value, linkage: { enabled } };
+  api.replaceSchema(next);
+}
+
+/** 下钻路径编辑 */
+function addDrillLevel(col: string) {
+  if (!selected.value || !col) return;
+  const path = [...(selected.value.drill?.path ?? []), col];
+  patchSelected({ drill: { path } });
+}
+
+function removeDrillLevel(i: number) {
+  if (!selected.value) return;
+  const path = (selected.value.drill?.path ?? []).filter((_, idx) => idx !== i);
+  patchSelected({ drill: path.length ? { path } : undefined });
+}
 const paletteKeys = BI_PALETTE_KEYS;
 const propTab = ref<"data" | "style" | "layout">("data");
 
@@ -988,6 +1068,14 @@ function needsField(type: BiChartType, field: "dimension" | "measure" | "series"
     case "series":
       return ["bar", "line", "area", "scatter", "radar"].includes(type);
   }
+}
+
+/** 下钻候选：未入路径的维度列（保持可扩展到层级表） */
+function drillCandidates(chart: BiChartSchema): string[] {
+  const used = new Set(chart.drill?.path ?? []);
+  const dim = chart.encoding?.dimension;
+  if (dim) used.add(dim);
+  return columnsOf(chart.datasetId).filter((c) => !used.has(c));
 }
 
 function isCartesian(type: BiChartType): boolean {
@@ -1672,6 +1760,73 @@ onMounted(() => {
 
 .bi-designer__card-resize:hover {
   border-color: var(--el-color-primary, #409eff);
+}
+
+.bi-designer__tpl-wrap {
+  position: relative;
+}
+
+.bi-designer__tpl-menu {
+  position: absolute;
+  top: 32px;
+  left: 0;
+  z-index: 10;
+  min-width: 160px;
+  padding: 4px;
+  background: var(--el-bg-color-overlay, #fff);
+  border: 1px solid var(--el-border-color-light, #e4e7ed);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 12%);
+}
+
+.bi-designer__tpl-item {
+  display: block;
+  width: 100%;
+  padding: 6px 10px;
+  font-size: 12px;
+  text-align: left;
+  color: var(--el-text-color-primary, #1f2937);
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.bi-designer__tpl-item:hover {
+  background: var(--el-fill-color-light, #f5f7fa);
+}
+
+.bd-btn--active-on {
+  color: var(--el-color-warning, #e6a23c) !important;
+  border-color: var(--el-color-warning, #e6a23c) !important;
+  background: var(--el-color-warning-light-9, #fdf6ec) !important;
+}
+
+.bi-designer__drill-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.bi-designer__drill-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 6px;
+  font-size: 11px;
+  color: var(--el-color-primary, #409eff);
+  background: var(--el-color-primary-light-9, #ecf5ff);
+  border-radius: 3px;
+}
+
+.bi-designer__drill-del {
+  padding: 0;
+  font-size: 12px;
+  line-height: 14px;
+  color: inherit;
+  background: transparent;
+  border: none;
+  cursor: pointer;
 }
 
 .bi-designer__hidden-input {

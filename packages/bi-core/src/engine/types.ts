@@ -23,6 +23,8 @@ export interface ChartHandle {
   update(option: unknown): void;
   resize(): void;
   dispose(): void;
+  /** 导出当前画布为 PNG data URL（引擎不支持时返回 undefined） */
+  getDataURL?(): string | undefined;
 }
 
 export interface ChartEngine {

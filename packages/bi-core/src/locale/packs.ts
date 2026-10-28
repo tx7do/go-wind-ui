@@ -8,6 +8,10 @@ export const BI_MESSAGES_ZH = {
   common: {
     noData: "暂无数据",
     loading: "加载中…",
+    back: "返回上一层",
+    resetDrill: "重置下钻",
+    exportImage: "导出图片",
+    fullscreen: "全屏",
   },
   designer: {
     addChart: "新增图表",
@@ -94,6 +98,11 @@ export const BI_MESSAGES_ZH = {
     typeNumber: "数值",
     typeString: "文本",
     typeDate: "日期",
+    drillPath: "下钻路径",
+    addDrillLevel: "+ 添加下钻层级",
+    linkage: "跨图联动",
+    linkageTip: "开启后，点击图表以维度值过滤同数据集的其它图表",
+    templates: "模板",
   },
   types: {
     bar: "柱状图",
@@ -104,6 +113,8 @@ export const BI_MESSAGES_ZH = {
     scatter: "散点图",
     radar: "雷达图",
     gauge: "仪表盘",
+    pivot: "透视表",
+    graph: "关系图",
   },
 };
 
@@ -111,6 +122,10 @@ export const BI_MESSAGES_EN = {
   common: {
     noData: "No data",
     loading: "Loading…",
+    back: "Back",
+    resetDrill: "Reset drill",
+    exportImage: "Export PNG",
+    fullscreen: "Fullscreen",
   },
   designer: {
     addChart: "Add Chart",
@@ -197,6 +212,11 @@ export const BI_MESSAGES_EN = {
     typeNumber: "Number",
     typeString: "Text",
     typeDate: "Date",
+    drillPath: "Drill path",
+    addDrillLevel: "+ Add drill level",
+    linkage: "Cross-filter",
+    linkageTip: "Clicking a chart filters sibling charts on the same dataset",
+    templates: "Templates",
   },
   types: {
     bar: "Bar",
@@ -207,5 +227,7 @@ export const BI_MESSAGES_EN = {
     scatter: "Scatter",
     radar: "Radar",
     gauge: "Gauge",
+    pivot: "Pivot table",
+    graph: "Graph",
   },
 };

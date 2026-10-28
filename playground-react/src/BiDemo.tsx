@@ -5,6 +5,7 @@ import type { BiDashboardSchema } from "@go-wind-ui/bi-core";
 
 const SCHEMA: Partial<BiDashboardSchema> = {
   name: "render-demo",
+  linkage: { enabled: true },
   datasets: [
     {
       id: "ds_month",
@@ -33,18 +34,35 @@ const SCHEMA: Partial<BiDashboardSchema> = {
       type: "api",
       api: {},
     },
+    {
+      id: "ds_relations",
+      name: "调用关系",
+      type: "static",
+      rows: [
+        { source: "网关", target: "认证", weight: 300 },
+        { source: "网关", target: "订单", weight: 420 },
+        { source: "订单", target: "支付", weight: 260 },
+        { source: "订单", target: "库存", weight: 180 },
+        { source: "支付", target: "通知", weight: 90 },
+        { source: "认证", target: "用户", weight: 150 },
+        { source: "库存", target: "通知", weight: 60 },
+      ],
+    },
   ],
   charts: [
     {
       id: "r_bar",
-      title: "月度销售",
-      datasetId: "ds_month",
+      title: "城市订单（点击下钻）",
+      datasetId: "ds_orders",
       type: "bar",
       x: 0,
       y: 0,
       w: 6,
       h: 4,
-      encoding: { dimension: "month", measure: "sales" },
+      encoding: { dimension: "city", measure: "amount" },
+      aggregation: "sum",
+      sort: { by: "measure", order: "desc", topN: 6 },
+      drill: { path: ["city", "category"] },
     },
     {
       id: "r_area",
@@ -89,6 +107,31 @@ const SCHEMA: Partial<BiDashboardSchema> = {
       w: 4,
       h: 4,
       encoding: { dimension: "month", measure: "target" },
+    },
+    {
+      id: "r_pivot",
+      title: "订单透视（S2）",
+      datasetId: "ds_orders",
+      engine: "s2",
+      type: "pivot",
+      x: 0,
+      y: 8,
+      w: 6,
+      h: 4,
+      encoding: { dimension: "city", series: "category", measure: "amount" },
+      aggregation: "sum",
+    },
+    {
+      id: "r_graph",
+      title: "调用关系（G6）",
+      datasetId: "ds_relations",
+      engine: "g6",
+      type: "graph",
+      x: 6,
+      y: 8,
+      w: 6,
+      h: 4,
+      encoding: { dimension: "source", series: "target", measure: "weight" },
     },
   ],
 };

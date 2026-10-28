@@ -55,6 +55,25 @@ export type { BiEChartsOption } from "./engine/echarts";
 export { getEngine, hasEngine, registerEngine } from "./engine/types";
 export type { BiChartEvent, ChartEngine, ChartHandle } from "./engine/types";
 
+// 图型注册表（引擎适配器包扩展设计器图型）
+export {
+  registerChartType,
+  getChartTypes,
+  getEngineForType,
+} from "./engine/chart-types";
+
+// AI 钩子（NL→schema 桥 + 问数结果转图表）
+export {
+  rowsToChartSuggestion,
+  nlToSchema,
+  suggestionToDashboard,
+} from "./ai";
+export type { NlSchemaBridgeOptions } from "./ai";
+
+// 模板库
+export { BI_TEMPLATES, getTemplate } from "./templates";
+export type { BiTemplate } from "./templates";
+
 // 设计器状态机
 export { BiDesignerApi, CHART_MIN_SIZE } from "./designer/designer-api";
 

@@ -365,6 +365,9 @@ export function createEchartsEngine(): ChartEngine {
         dispose() {
           instance.dispose();
         },
+        getDataURL() {
+          return instance.getDataURL({ type: "png", pixelRatio: 2, backgroundColor: "transparent" });
+        },
       };
       return handle;
     },

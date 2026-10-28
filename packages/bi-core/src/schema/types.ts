@@ -14,7 +14,9 @@ export type BiChartType =
   | "donut"
   | "scatter"
   | "radar"
-  | "gauge";
+  | "gauge"
+  /** 引擎适配器注册的扩展图型（如 s2 的 "pivot"、g6 的 "graph"） */
+  | (string & {});
 
 export interface BiGridConfig {
   /** 网格列数，当前固定 12 */
@@ -119,6 +121,11 @@ export interface BiChartSchema {
   filters?: BiChartFilter[];
   /** 样式选项（堆叠/图例/标签/数据缩放/色盘/数字格式） */
   style?: BiChartStyle;
+  /**
+   * 下钻路径（维度层级，如 ["category","city"]）：点击图表逐层下钻，
+   * 父层级值作为隐式过滤器携带；渲染器提供返回上一层的面包屑。
+   */
+  drill?: { path: string[] };
   /** 引擎原生透传覆盖（深合并到编译产物） */
   options?: Record<string, any>;
 }
@@ -130,6 +137,11 @@ export interface BiDashboardSchema {
   grid?: Partial<BiGridConfig>;
   datasets: BiDatasetSchema[];
   charts: BiChartSchema[];
+  /**
+   * 跨图联动：开启后，渲染器中点击带维度的图表会以该维度值过滤
+   * 其它消费同一数据集的图表；再点同值或 clearLinkage 取消。
+   */
+  linkage?: { enabled?: boolean };
 }
 
 // ============ 常量与缺省 ============

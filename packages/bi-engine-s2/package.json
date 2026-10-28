@@ -1,0 +1,41 @@
+{
+  "name": "@go-wind-ui/bi-engine-s2",
+  "version": "0.1.0",
+  "description": "AntV S2 pivot-table engine adapter for @go-wind-ui/bi-core: registerChartType(\"pivot\", \"s2\"). Optional install — tree-shakeable by design.",
+  "type": "module",
+  "license": "MIT",
+  "keywords": [
+    "bi",
+    "pivot",
+    "table",
+    "antv",
+    "s2",
+    "echarts-alternative"
+  ],
+  "files": [
+    "dist"
+  ],
+  "module": "./dist/bi-engine-s2.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/bi-engine-s2.js"
+    }
+  },
+  "scripts": {
+    "build": "vite build && tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "@go-wind-ui/bi-core": ">=0.1.0"
+  },
+  "dependencies": {
+    "@antv/s2": "^2.0.0"
+  },
+  "devDependencies": {
+    "@go-wind-ui/bi-core": "workspace:*",
+    "typescript": "^5.9.3",
+    "vite": "^8.0.0"
+  }
+}

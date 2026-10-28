@@ -10,7 +10,9 @@ Framework-generic admin UI building blocks from the [GoWind](https://github.com/
 | [`@go-wind-ui/locale`](./packages/locale) | Tiny reactive i18n store factory shared by the packages above | v0.1 |
 | [`@go-wind-ui/bi-core`](./packages/bi-core) | Framework-agnostic BI kernel: serializable dashboard schema, ECharts engine registry, designer state machine | v0.1 |
 | [`@go-wind-ui/bi-vue`](./packages/bi-vue) | Vue 3 BI dashboard renderer + designer canvas (drag/resize grid, undo/redo, schema import/export) | v0.1 |
-| [`@go-wind-ui/bi-react`](./packages/bi-react) | React 19 BI dashboard renderer (same schema, same layout math) | v0.1 |
+| [`@go-wind-ui/bi-react`](./packages/bi-react) | React 19 BI dashboard renderer + designer bridge (same schema, same layout math) | v0.1 |
+| [`@go-wind-ui/bi-engine-s2`](./packages/bi-engine-s2) | AntV S2 pivot-table engine adapter (optional, tree-shakeable) | v0.1 |
+| [`@go-wind-ui/bi-engine-g6`](./packages/bi-engine-g6) | AntV G6 relation-graph engine adapter (optional, tree-shakeable) | v0.1 |
 
 ## Why
 
@@ -37,7 +39,8 @@ npx pnpm typecheck    # vue-tsc across packages
 
 - [x] `element-pro` — extracted from go-wind-admin's vue-element Pro suite
 - [x] `editor-vue` / `editor-react` — Tiptap rich text, Monaco code, JSON, Markdown, plain text (theme-aware, injectable upload)
-- [x] `bi-core` / `bi-vue` / `bi-react` — config-driven BI dashboards: 8 chart types via ECharts adapter, 12-col grid designer with drag/resize/undo, schema import/export (design doc: docs/bi-designer.md; M3: react designer bridge, M4: AntV/AI hooks)
+- [x] `bi-core` / `bi-vue` / `bi-react` — config-driven BI dashboards: designer with aggregation/multi-measure/sort/filters, drill-down, cross-chart linkage, collision layout, undo/redo, schema import/export, templates; optional AntV adapters (S2 pivot, G6 graph); AI hooks (NL-to-schema bridge)
+- [ ] `bi-engine-l7` — geo maps (blocked: requires map-service credentials to verify)
 
 ## License
 

@@ -33,6 +33,18 @@ export default defineConfig({
         ),
       },
       {
+        find: "@go-wind-ui/bi-engine-s2",
+        replacement: fileURLToPath(
+          new URL("../packages/bi-engine-s2/src/index.ts", import.meta.url)
+        ),
+      },
+      {
+        find: "@go-wind-ui/bi-engine-g6",
+        replacement: fileURLToPath(
+          new URL("../packages/bi-engine-g6/src/index.ts", import.meta.url)
+        ),
+      },
+      {
         find: "@go-wind-ui/bi-core",
         replacement: fileURLToPath(
           new URL("../packages/bi-core/src/index.ts", import.meta.url)
@@ -52,6 +64,8 @@ export default defineConfig({
       "@go-wind-ui/bi-react",
       "@go-wind-ui/bi-vue",
       "@go-wind-ui/bi-core",
+      "@go-wind-ui/bi-engine-s2",
+      "@go-wind-ui/bi-engine-g6",
     ],
   },
   server: {

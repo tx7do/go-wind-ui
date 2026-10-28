@@ -1,0 +1,40 @@
+{
+  "name": "@go-wind-ui/bi-engine-g6",
+  "version": "0.1.0",
+  "description": "AntV G6 relation-graph engine adapter for @go-wind-ui/bi-core: registerChartType(\"graph\", \"g6\"). Optional install — tree-shakeable by design.",
+  "type": "module",
+  "license": "MIT",
+  "keywords": [
+    "bi",
+    "graph",
+    "relation",
+    "antv",
+    "g6"
+  ],
+  "files": [
+    "dist"
+  ],
+  "module": "./dist/bi-engine-g6.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/bi-engine-g6.js"
+    }
+  },
+  "scripts": {
+    "build": "vite build && tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "@go-wind-ui/bi-core": ">=0.1.0"
+  },
+  "dependencies": {
+    "@antv/g6": "^5.0.0"
+  },
+  "devDependencies": {
+    "@go-wind-ui/bi-core": "workspace:*",
+    "typescript": "^5.9.3",
+    "vite": "^8.0.0"
+  }
+}
