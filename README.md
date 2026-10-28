@@ -27,6 +27,18 @@ Framework-generic admin UI building blocks from the [GoWind](https://github.com/
 - **Built-in zh-CN / en-US** locale packs (no vue-i18n dependency), injectable `hasAccess` permission checking, skeleton screen, column settings with drag order, client-side CSV/XLSX export-all, Excel batch import, form drawer close guard
 - Full TypeScript types, ESM + UMD builds, tree-shakable
 
+## Publish
+
+版本与发布走 changesets（CI 自动化，见 .github/workflows/release.yml）：
+
+```bash
+npx changeset                 # 描述变更（patch/minor/major + 包清单）
+# push 后 Release 工作流开 Version PR；合入 PR 即自动发布到 npmjs.org
+```
+
+前置（一次性）：npmjs.org 创建 org **go-wind-ui**（免费，公开包无费用），
+仓库 Settings → Secrets 添加 `NPM_TOKEN`（npmjs → Access Tokens → Automation）。
+
 ## Develop
 
 ```bash

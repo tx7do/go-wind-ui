@@ -1,6 +1,6 @@
 {
   "name": "@go-wind-ui/chat-react",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "AI streaming chat UI for React 19: message list with markdown rendering, typing indicator, auto-scroll, chat input with stop — transport injected by the host.",
   "type": "module",
   "license": "MIT",
@@ -44,5 +44,9 @@
     "react-dom": "^19.2.6",
     "typescript": "^5.9.3",
     "vite": "^8.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }

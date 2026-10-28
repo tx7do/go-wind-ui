@@ -1,6 +1,6 @@
 {
   "name": "@go-wind-ui/editor-vue",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Vue 3 editor suite: Tiptap 3 rich text, Monaco code, JSON, Markdown (md-editor-v3), plain text — theme-aware and zero-config with injectable upload.",
   "type": "module",
   "license": "MIT",
@@ -76,5 +76,9 @@
     "element-plus": "^2.13.5",
     "@codemirror/autocomplete": "^6.20.0",
     "@vue/shared": "^3.5.30"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }

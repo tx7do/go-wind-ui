@@ -1,6 +1,6 @@
 {
   "name": "@go-wind-ui/editor-react",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "React 19 editor suite: Tiptap 3 rich text, Monaco code, JSON, Markdown (md-editor-rt), plain text — theme-aware and zero-config with injectable upload.",
   "type": "module",
   "license": "MIT",
@@ -75,5 +75,9 @@
     "react-dom": "^19.2.6",
     "typescript": "^5.9.3",
     "vite": "^8.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }

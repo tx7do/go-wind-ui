@@ -1,6 +1,6 @@
 {
   "name": "@go-wind-ui/chat-vue",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "AI streaming chat UI for Vue 3: message list with markdown rendering, typing indicator, auto-scroll, chat input with stop — transport injected by the host.",
   "type": "module",
   "license": "MIT",
@@ -43,5 +43,9 @@
     "vite": "^8.0.0",
     "vue": "^3.5.30",
     "vue-tsc": "^3.2.5"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@go-wind-ui/widgets-vue",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Admin shell widgets for Vue 3 + Element Plus: notification bell, command palette (Ctrl+K), theme switch, language select — presentational, data injected by the host.",
   "type": "module",
   "license": "MIT",
@@ -42,5 +42,9 @@
     "vite": "^8.0.0",
     "vue": "^3.5.30",
     "vue-tsc": "^3.2.5"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }

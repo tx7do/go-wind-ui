@@ -1,11 +1,18 @@
 {
   "name": "@go-wind-ui/locale",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Tiny reactive i18n store factory shared by go-wind-ui packages: built-in locale packs, dot-path lookup, {param} interpolation, no vue-i18n dependency.",
   "type": "module",
   "license": "MIT",
-  "keywords": ["i18n", "vue", "locale", "reactive"],
-  "files": ["dist"],
+  "keywords": [
+    "i18n",
+    "vue",
+    "locale",
+    "reactive"
+  ],
+  "files": [
+    "dist"
+  ],
   "main": "./dist/locale.umd.cjs",
   "module": "./dist/locale.js",
   "types": "./dist/index.d.ts",
@@ -28,5 +35,9 @@
     "vite": "^8.0.0",
     "vue": "^3.5.30",
     "vue-tsc": "^3.2.5"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }

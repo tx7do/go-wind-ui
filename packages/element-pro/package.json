@@ -1,6 +1,6 @@
 {
   "name": "@go-wind-ui/element-pro",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Config-driven CRUD page components for Vue 3 + Element Plus + vxe-table: search bar, toolbar, dual-engine table, pagination, form modal, full-page orchestration.",
   "type": "module",
   "license": "MIT",
@@ -56,5 +56,9 @@
     "vue": "^3.5.30",
     "vue-tsc": "^3.2.5",
     "vxe-table": "4.18.13"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }
