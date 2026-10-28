@@ -28,11 +28,13 @@ jobs:
       - name: Install
         run: pnpm install --frozen-lockfile
 
+      # 先 build 后 typecheck：包间类型经 node_modules → dist/*.d.ts 解析，
+      # 干净检出下 dist 不存在，typecheck 必须在产物生成后运行
+      - name: Build (generates d.ts)
+        run: pnpm run build
+
       - name: Typecheck
         run: pnpm -r typecheck
-
-      - name: Build
-        run: pnpm run build
 
   smoke:
     name: Playwright smoke (playgrounds render)
