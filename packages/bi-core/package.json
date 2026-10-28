@@ -1,0 +1,37 @@
+{
+  "name": "@go-wind-ui/bi-core",
+  "version": "0.1.0",
+  "description": "Framework-agnostic BI dashboard kernel: serializable dashboard schema, dataset resolution, chart engine registry (built-in ECharts adapter), light/dark theme tokens, designer state machine.",
+  "type": "module",
+  "license": "MIT",
+  "keywords": [
+    "bi",
+    "dashboard",
+    "echarts",
+    "charts",
+    "designer",
+    "schema"
+  ],
+  "files": [
+    "dist"
+  ],
+  "module": "./dist/bi-core.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/bi-core.js"
+    }
+  },
+  "scripts": {
+    "build": "vite build && tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "echarts": "^6.1.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "vite": "^8.0.0"
+  }
+}

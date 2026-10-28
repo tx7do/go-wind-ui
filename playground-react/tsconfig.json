@@ -21,6 +21,12 @@
     "paths": {
       "@go-wind-ui/editor-react": [
         "../packages/editor-react/src/index.ts"
+      ],
+      "@go-wind-ui/bi-react": [
+        "../packages/bi-react/src/index.ts"
+      ],
+      "@go-wind-ui/bi-core": [
+        "../packages/bi-core/src/index.ts"
       ]
     }
   },

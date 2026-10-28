@@ -1,0 +1,59 @@
+/**
+ * @go-wind-ui/bi-core
+ *
+ * 框架无关的 BI 仪表盘内核：schema、数据集解析、图表引擎注册表（内置 ECharts
+ * 适配器）、主题 token、设计器状态机。渲染器（bi-vue / bi-react）与设计器
+ * （designer-vue，M3 桥接 react）都构建在本包之上。
+ *
+ * 设计文档：docs/bi-designer.md
+ */
+
+// Schema 与缺省
+export * from "./schema/types";
+export { flowPlace, layoutCharts } from "./schema/layout";
+export type { BiLayoutResult, BiPlacedChart } from "./schema/layout";
+
+// 数据集解析
+export {
+  getColumns,
+  resolveDatasetRows,
+  toNumber,
+  unique,
+} from "./dataset";
+export type { BiDatasetData, BiDatasetResolver } from "./dataset";
+export type { BiRow } from "./schema/types";
+
+// 主题
+export {
+  BI_THEME_DARK,
+  BI_THEME_LIGHT,
+  detectDark,
+  resolveTheme,
+  watchDark,
+} from "./theme";
+export type { BiResolvedTheme } from "./theme";
+
+// 引擎
+export {
+  createEchartsEngine,
+  compileEcharts,
+  installEchartsEngine,
+} from "./engine/echarts";
+export type { BiEChartsOption } from "./engine/echarts";
+export { getEngine, hasEngine, registerEngine } from "./engine/types";
+export type { BiChartEvent, ChartEngine, ChartHandle } from "./engine/types";
+
+// 设计器状态机
+export { BiDesignerApi, CHART_MIN_SIZE } from "./designer/designer-api";
+
+// 文案包（纯数据）
+export { BI_MESSAGES_ZH, BI_MESSAGES_EN } from "./locale/packs";
+
+// 微型 store（渲染器/设计器绑定用）
+export { createTinyStore, deepClone } from "./store/create-store";
+export type { TinyStore } from "./store/create-store";
+
+import { installEchartsEngine } from "./engine/echarts";
+
+// 包加载即注册内置引擎
+installEchartsEngine();

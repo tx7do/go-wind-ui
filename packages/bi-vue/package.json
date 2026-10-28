@@ -1,0 +1,45 @@
+{
+  "name": "@go-wind-ui/bi-vue",
+  "version": "0.1.0",
+  "description": "Vue 3 BI dashboard renderer + designer canvas on top of @go-wind-ui/bi-core: config-driven dashboard schema, drag/resize grid, undo/redo, schema import/export.",
+  "type": "module",
+  "license": "MIT",
+  "keywords": [
+    "vue",
+    "vue3",
+    "bi",
+    "dashboard",
+    "echarts",
+    "designer"
+  ],
+  "files": [
+    "dist"
+  ],
+  "module": "./dist/bi-vue.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/bi-vue.js"
+    },
+    "./style.css": "./dist/bi-vue.css"
+  },
+  "scripts": {
+    "build": "vite build && vue-tsc -p tsconfig.build.json",
+    "typecheck": "vue-tsc --noEmit"
+  },
+  "peerDependencies": {
+    "vue": ">=3.5.0"
+  },
+  "dependencies": {
+    "@go-wind-ui/bi-core": "workspace:*",
+    "@go-wind-ui/locale": "workspace:*"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.5",
+    "typescript": "^5.9.3",
+    "vite": "^8.0.0",
+    "vue": "^3.5.30",
+    "vue-tsc": "^3.2.5"
+  }
+}

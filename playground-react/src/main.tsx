@@ -1,6 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import "@go-wind-ui/editor-react/style.css";
+import "@go-wind-ui/bi-react/style.css";
 import "./index.css";
 import App from "./App";
 

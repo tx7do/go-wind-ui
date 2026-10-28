@@ -8,6 +8,9 @@ Framework-generic admin UI building blocks from the [GoWind](https://github.com/
 | [`@go-wind-ui/editor-vue`](./packages/editor-vue) | Vue 3 editor suite: Tiptap rich text, Monaco code, JSON, Markdown, plain text | v0.1 |
 | [`@go-wind-ui/editor-react`](./packages/editor-react) | React 19 editor suite: same five editors, antd-based modals | v0.1 |
 | [`@go-wind-ui/locale`](./packages/locale) | Tiny reactive i18n store factory shared by the packages above | v0.1 |
+| [`@go-wind-ui/bi-core`](./packages/bi-core) | Framework-agnostic BI kernel: serializable dashboard schema, ECharts engine registry, designer state machine | v0.1 |
+| [`@go-wind-ui/bi-vue`](./packages/bi-vue) | Vue 3 BI dashboard renderer + designer canvas (drag/resize grid, undo/redo, schema import/export) | v0.1 |
+| [`@go-wind-ui/bi-react`](./packages/bi-react) | React 19 BI dashboard renderer (same schema, same layout math) | v0.1 |
 
 ## Why
 
@@ -33,7 +36,7 @@ npx pnpm typecheck    # vue-tsc across packages
 
 - [x] `element-pro` — extracted from go-wind-admin's vue-element Pro suite
 - [x] `editor-vue` / `editor-react` — Tiptap rich text, Monaco code, JSON, Markdown, plain text (theme-aware, injectable upload)
-- [ ] `bi-designer` — dashboard/chart designer (MIT kernels only)
+- [x] `bi-core` / `bi-vue` / `bi-react` — config-driven BI dashboards: 8 chart types via ECharts adapter, 12-col grid designer with drag/resize/undo, schema import/export (design doc: docs/bi-designer.md; M3: react designer bridge, M4: AntV/AI hooks)
 
 ## License
 

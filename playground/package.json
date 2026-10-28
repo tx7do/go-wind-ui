@@ -14,7 +14,8 @@
     "element-plus": "^2.13.5",
     "vue": "^3.5.30",
     "vxe-table": "4.18.13",
-    "@go-wind-ui/editor-vue": "workspace:*"
+    "@go-wind-ui/editor-vue": "workspace:*",
+    "@go-wind-ui/bi-vue": "workspace:*"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.5",

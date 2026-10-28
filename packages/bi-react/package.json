@@ -1,0 +1,46 @@
+{
+  "name": "@go-wind-ui/bi-react",
+  "version": "0.1.0",
+  "description": "React 19 BI dashboard renderer on top of @go-wind-ui/bi-core: config-driven dashboard schema, responsive grid layout, light/dark theme following.",
+  "type": "module",
+  "license": "MIT",
+  "keywords": [
+    "react",
+    "bi",
+    "dashboard",
+    "echarts",
+    "charts"
+  ],
+  "files": [
+    "dist"
+  ],
+  "module": "./dist/bi-react.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/bi-react.js"
+    },
+    "./style.css": "./dist/bi-react.css"
+  },
+  "scripts": {
+    "build": "vite build && tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "react": ">=19.0.0",
+    "react-dom": ">=19.0.0"
+  },
+  "dependencies": {
+    "@go-wind-ui/bi-core": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.15",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.0.0",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "typescript": "^5.9.3",
+    "vite": "^8.0.0"
+  }
+}

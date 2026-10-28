@@ -1,0 +1,36 @@
+/**
+ * bi-react 卡片外观：与 bi-vue 的 scoped 样式同源。
+ * 颜色链 = 宿主自定义 --bi-card-* > EP 变量 > 裸应用回退；
+ * html.dark 下无宿主变量时落 EP 暗色等值，保证裸 antd 应用切暗色卡片跟随。
+ */
+.bi-dashboard__card {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  overflow: hidden;
+  background: var(--bi-card-bg, var(--el-bg-color, #ffffff));
+  border: 1px solid var(--bi-card-border, var(--el-border-color-lighter, #ebeef5));
+  border-radius: 8px;
+}
+
+html.dark .bi-dashboard__card {
+  background: var(--bi-card-bg, var(--el-bg-color, #1d1e1f));
+  border-color: var(--bi-card-border, var(--el-border-color-lighter, #414243));
+}
+
+.bi-dashboard__card-title {
+  flex-shrink: 0;
+  margin-bottom: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--bi-card-text, var(--el-text-color-primary, #1f2937));
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+html.dark .bi-dashboard__card-title {
+  color: var(--bi-card-text, var(--el-text-color-primary, #e5eaf3));
+}

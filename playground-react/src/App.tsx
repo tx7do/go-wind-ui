@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button, Radio, Select, Switch, Space, Typography } from "antd";
+import BiDemo from "./BiDemo";
 import {
   EditorProvider,
   TiptapEditor,
@@ -29,11 +30,13 @@ const SAMPLE_JSON = JSON.stringify(
 );
 
 type EditorKind = "tiptap" | "markdown" | "code" | "json" | "plain";
+type AppView = "editor" | "bi";
 
 export default function App() {
   const [dark, setDark] = useState(false);
   const [locale, setLocale] = useState<EditorLocale>("zh-CN");
   const [kind, setKind] = useState<EditorKind>("tiptap");
+  const [view, setView] = useState<AppView>("editor");
 
   const [html, setHtml] = useState(SAMPLE_HTML);
   const [md, setMd] = useState("# Markdown\n\n- md-editor-rt 内核\n- 主题跟随 html.dark\n");
@@ -57,6 +60,10 @@ export default function App() {
             @go-wind-ui/editor-react playground
           </Typography.Title>
           <Space size="middle" align="center">
+            <Radio.Group value={view} onChange={(e) => setView(e.target.value)}>
+              <Radio.Button value="editor">编辑器套件</Radio.Button>
+              <Radio.Button value="bi">BI 仪表盘</Radio.Button>
+            </Radio.Group>
             <span>暗色</span>
             <Switch checked={dark} onChange={setDark} />
             <Select
@@ -85,9 +92,10 @@ export default function App() {
         </div>
 
         <main className="pg-main">
-          {kind === "tiptap" && <TiptapEditor value={html} onChange={setHtml} height={360} />}
-          {kind === "markdown" && <MarkdownEditor value={md} onChange={setMd} height={360} />}
-          {kind === "code" && (
+          {view === "bi" && <BiDemo />}
+          {view === "editor" && kind === "tiptap" && <TiptapEditor value={html} onChange={setHtml} height={360} />}
+          {view === "editor" && kind === "markdown" && <MarkdownEditor value={md} onChange={setMd} height={360} />}
+          {view === "editor" && kind === "code" && (
             <CodeEditor
               value={code}
               onChange={setCode}
@@ -95,8 +103,8 @@ export default function App() {
               height={360}
             />
           )}
-          {kind === "json" && <JsonEditor value={json} onChange={setJson} height={360} />}
-          {kind === "plain" && <PlainTextEditor value={text} onChange={setText} height={360} />}
+          {view === "editor" && kind === "json" && <JsonEditor value={json} onChange={setJson} height={360} />}
+          {view === "editor" && kind === "plain" && <PlainTextEditor value={text} onChange={setText} height={360} />}
         </main>
       </div>
     </EditorProvider>

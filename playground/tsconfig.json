@@ -21,6 +21,12 @@
     "paths": {
       "@go-wind-ui/element-pro": [
         "../packages/element-pro/src/index.ts"
+      ],
+      "@go-wind-ui/bi-vue": [
+        "../packages/bi-vue/src/index.ts"
+      ],
+      "@go-wind-ui/bi-core": [
+        "../packages/bi-core/src/index.ts"
       ]
     }
   },

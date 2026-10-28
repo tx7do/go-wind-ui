@@ -38,3 +38,19 @@ html.dark body {
   flex: 1;
   min-height: 0;
 }
+
+.bi-demo {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.bi-demo__hint {
+  flex-shrink: 0;
+}
+
+.bi-demo__main {
+  flex: 1;
+  min-height: 0;
+}

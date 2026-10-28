@@ -5,6 +5,7 @@
         <ElRadioGroup v-model="view">
           <ElRadioButton value="table">ProTable 页面</ElRadioButton>
           <ElRadioButton value="editor">编辑器套件</ElRadioButton>
+          <ElRadioButton value="bi">BI 仪表盘</ElRadioButton>
         </ElRadioGroup>
       </div>
       <header class="pg-header">
@@ -20,7 +21,8 @@
       </header>
 
       <main class="pg-main">
-        <EditorDemo v-if="view === 'editor'" />
+        <BiDemo v-if="view === 'bi'" :locale="locale" />
+        <EditorDemo v-else-if="view === 'editor'" />
         <ProPage v-else :config="pageConfig">
           <template #status="scope: any">
             <ElTag :type="scope.row.status === 1 ? 'success' : 'danger'" effect="plain">
@@ -43,6 +45,8 @@ import {
   type ProPageConfig,
 } from "@go-wind-ui/element-pro";
 import { setEditorLocale } from "@go-wind-ui/editor-vue";
+import { setBiLocale } from "@go-wind-ui/bi-vue";
+import BiDemo from "./BiDemo.vue";
 import EditorDemo from "./EditorDemo.vue";
 
 // ============ 演示数据（内存数据源，模拟后端） ============
@@ -88,7 +92,7 @@ async function listAction(query: any) {
 const dark = ref(false);
 const locale = ref<"zh-CN" | "en-US">("zh-CN");
 const hasPerm = ref(true);
-const view = ref<"table" | "editor">("table");
+const view = ref<"table" | "editor" | "bi">("table");
 
 const providerConfig = computed(() => ({
   locale: locale.value,
@@ -98,7 +102,10 @@ const providerConfig = computed(() => ({
 }));
 
 // 编辑器包语言联动
-watch(locale, (v) => setEditorLocale(v), { immediate: true });
+watch(locale, (v) => {
+  setEditorLocale(v);
+  setBiLocale(v);
+}, { immediate: true });
 
 // EP 官方暗色方案：html.dark 作用域切换 css-vars；
 // vxe 引擎另需 VxeUI.setTheme 翻转 data-vxe-ui-theme（宿主主题层的标准集成步骤）
