@@ -32,6 +32,18 @@ export {
   watchDark,
 } from "./theme";
 export type { BiResolvedTheme } from "./theme";
+export { BI_PALETTES, BI_PALETTE_KEYS, resolvePalette } from "./theme/palettes";
+
+// 数据变换（过滤/聚合/排序/TopN + 字段类型推断 + 数值格式化）
+export {
+  applyFilters,
+  aggregateRows,
+  sortRows,
+  transformRows,
+  inferFieldType,
+  formatNumber,
+} from "./dataset/transform";
+export type { BiFieldType } from "./dataset/transform";
 
 // 引擎
 export {

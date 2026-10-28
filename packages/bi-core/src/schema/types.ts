@@ -38,10 +38,64 @@ export interface BiDatasetSchema {
 export interface BiChartEncoding {
   /** 类目轴 / 饼名 / 雷达指标名字段 */
   dimension?: string;
-  /** 值轴 / 饼值 / 雷达值 / 仪表值字段 */
+  /** 值轴 / 饼值 / 雷达值 / 仪表值字段（单度量） */
   measure?: string;
-  /** 系列拆分字段（可选） */
+  /** 宽表多度量：每个字段各成一个系列（与 measure/series 互斥，优先级最高） */
+  measures?: string[];
+  /** 系列拆分字段（长表格式，可选） */
   series?: string;
+}
+
+/** 聚合函数：dimension 分组后对 measure 施加；"none" 不聚合 */
+export type BiAggFn = "sum" | "avg" | "count" | "max" | "min" | "none";
+
+export type BiFilterOp =
+  | "eq"
+  | "ne"
+  | "gt"
+  | "gte"
+  | "lt"
+  | "lte"
+  | "contains"
+  | "in";
+
+export interface BiChartFilter {
+  field: string;
+  op: BiFilterOp;
+  /** eq/ne/比较/contains：标量；in：数组（UI 以逗号分隔输入） */
+  value: string | number | (string | number)[];
+}
+
+export interface BiChartSort {
+  /** 按维度（类目名）或度量（聚合值）排序 */
+  by: "dimension" | "measure";
+  order: "asc" | "desc";
+  /** 取前 N 项（排序后截断；不传 = 全量） */
+  topN?: number;
+}
+
+export interface BiNumberFormat {
+  /** 小数位数（缺省不处理） */
+  decimals?: number;
+  /** 千分位 */
+  thousand?: boolean;
+  prefix?: string;
+  suffix?: string;
+}
+
+export interface BiChartStyle {
+  /** 柱状图堆叠 */
+  stack?: boolean;
+  /** 显式开关图例（缺省：多系列自动显示） */
+  showLegend?: boolean;
+  /** 系列上的数值标签 */
+  showLabel?: boolean;
+  /** 数据缩放（区域缩放滑块，柱/线/面/散点） */
+  dataZoom?: boolean;
+  /** 色盘 key，见 BI_PALETTES */
+  palette?: string;
+  /** 数值格式化（轴标签/标签/提示） */
+  format?: BiNumberFormat;
 }
 
 export interface BiChartSchema {
@@ -57,12 +111,21 @@ export interface BiChartSchema {
   w?: number;
   h?: number;
   encoding: BiChartEncoding;
+  /** 聚合函数（dimension 分组 + measure 聚合），缺省 "sum"（设 "none" 关闭） */
+  aggregation?: BiAggFn;
+  /** 排序 + TopN */
+  sort?: BiChartSort;
+  /** 图表级过滤器（作用于数据集行） */
+  filters?: BiChartFilter[];
+  /** 样式选项（堆叠/图例/标签/数据缩放/色盘/数字格式） */
+  style?: BiChartStyle;
   /** 引擎原生透传覆盖（深合并到编译产物） */
   options?: Record<string, any>;
 }
 
 export interface BiDashboardSchema {
-  schemaVersion: 1;
+  /** 当前 2；v1 经 migrateSchema 升版 */
+  schemaVersion: 2;
   name: string;
   grid?: Partial<BiGridConfig>;
   datasets: BiDatasetSchema[];
@@ -71,7 +134,12 @@ export interface BiDashboardSchema {
 
 // ============ 常量与缺省 ============
 
-export const BI_SCHEMA_VERSION = 1;
+export const BI_SCHEMA_VERSION = 2;
+
+/** v1 → v2 迁移：v2 新增字段全部可选，旧 schema 补默认即兼容 */
+function migrateV1toV2(raw: Record<string, any>): Record<string, any> {
+  return { ...raw, schemaVersion: 2 };
+}
 
 export const DEFAULT_GRID: BiGridConfig = {
   columns: 12,
@@ -118,14 +186,17 @@ export function normalizeSchema(input: Partial<BiDashboardSchema>): BiDashboardS
 }
 
 /**
- * schema 迁移器链：未来 v2 落地时在这里逐级升版。
- * 当前只有 v1，原样返回；结构非法直接抛错（fail-fast，不吞）。
+ * schema 迁移器链：逐级升版到当前版本。
+ * 结构非法直接抛错（fail-fast，不吞）。
  */
 export function migrateSchema(input: unknown): BiDashboardSchema {
   if (!input || typeof input !== "object") {
     throw new Error("[bi] invalid dashboard schema: not an object");
   }
-  const raw = input as Record<string, any>;
+  let raw = input as Record<string, any>;
+  if (raw.schemaVersion === 1) {
+    raw = migrateV1toV2(raw);
+  }
   if (raw.schemaVersion !== BI_SCHEMA_VERSION) {
     throw new Error(
       `[bi] unsupported schemaVersion: ${String(raw.schemaVersion)} (expected ${BI_SCHEMA_VERSION})`

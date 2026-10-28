@@ -6,6 +6,12 @@
         <button class="bd-btn bd-btn--primary" :disabled="preview" @click="handleAddChart">
           + {{ t("designer.addChart") }}
         </button>
+        <button class="bd-btn" :disabled="preview || !selectedId" :title="t('designer.duplicate')" @click="handleDuplicate">
+          ⧉
+        </button>
+        <button class="bd-btn" :disabled="preview || !api.hasClipboard" :title="t('designer.paste')" @click="handlePaste">
+          ⎘
+        </button>
         <button
           class="bd-btn"
           :title="t('designer.undo')"
@@ -176,153 +182,407 @@
         </div>
       </main>
 
-      <!-- ===== 属性面板 ===== -->
+      <!-- ===== 属性面板（三 tab） ===== -->
       <aside v-if="!preview" class="bi-designer__panel bi-designer__panel--right">
-        <div class="bi-designer__panel-title">{{ t("designer.property") }}</div>
         <template v-if="selected">
-          <label class="bi-designer__field">
-            <span>{{ t("designer.title") }}</span>
-            <input
-              type="text"
-              class="bd-input"
-              :value="selected.title ?? ''"
-              @change="
-                patchSelected({ title: ($event.target as HTMLInputElement).value || undefined })
-              "
-            />
-          </label>
-          <label class="bi-designer__field">
-            <span>{{ t("designer.type") }}</span>
-            <select
-              class="bd-input"
-              :value="selected.type"
-              @change="patchSelected({ type: ($event.target as HTMLSelectElement).value as any })"
+          <div class="bi-designer__tabs">
+            <button
+              v-for="tab in ['data', 'style', 'layout'] as const"
+              :key="tab"
+              class="bi-designer__tab"
+              :class="{ 'bi-designer__tab--active': propTab === tab }"
+              @click="propTab = tab"
             >
-              <option v-for="tp in chartTypes" :key="tp" :value="tp">
-                {{ t(`types.${tp}`) }}
-              </option>
-            </select>
-          </label>
-          <label class="bi-designer__field">
-            <span>{{ t("designer.dataset") }}</span>
-            <select
-              class="bd-input"
-              :value="selected.datasetId"
-              @change="patchSelected({ datasetId: ($event.target as HTMLSelectElement).value })"
-            >
-              <option v-for="ds in state.datasets" :key="ds.id" :value="ds.id">{{ ds.name }}</option>
-            </select>
-          </label>
-
-          <div class="bi-designer__panel-section">{{ t("designer.encoding") }}</div>
-          <label v-if="needsField(selected.type, 'dimension')" class="bi-designer__field">
-            <span>{{ t("designer.dimension") }}</span>
-            <select
-              class="bd-input"
-              :value="selected.encoding?.dimension ?? ''"
-              @change="patchEncoding('dimension', ($event.target as HTMLSelectElement).value)"
-            >
-              <option value="">—</option>
-              <option v-for="col in columnsOf(selected.datasetId)" :key="col" :value="col">
-                {{ col }}
-              </option>
-            </select>
-          </label>
-          <label v-if="needsField(selected.type, 'measure')" class="bi-designer__field">
-            <span>{{ t("designer.measure") }}</span>
-            <select
-              class="bd-input"
-              :value="selected.encoding?.measure ?? ''"
-              @change="patchEncoding('measure', ($event.target as HTMLSelectElement).value)"
-            >
-              <option value="">—</option>
-              <option v-for="col in columnsOf(selected.datasetId)" :key="col" :value="col">
-                {{ col }}
-              </option>
-            </select>
-          </label>
-          <label
-            v-if="needsField(selected.type, 'series') && selected.type !== 'gauge'"
-            class="bi-designer__field"
-          >
-            <span>{{ t("designer.series") }}</span>
-            <select
-              class="bd-input"
-              :value="selected.encoding?.series ?? ''"
-              @change="patchEncoding('series', ($event.target as HTMLSelectElement).value)"
-            >
-              <option value="">—</option>
-              <option v-for="col in columnsOf(selected.datasetId)" :key="col" :value="col">
-                {{ col }}
-              </option>
-            </select>
-          </label>
-
-          <div class="bi-designer__panel-section">{{ t("designer.position") }}</div>
-          <div class="bi-designer__num-row">
-            <input
-              type="number"
-              class="bd-input"
-              :value="selected.x ?? 0"
-              min="0"
-              @change="
-                api.moveChart(
-                  selected.id,
-                  Number(($event.target as HTMLInputElement).value),
-                  selected.y ?? 0
-                )
-              "
-            />
-            <input
-              type="number"
-              class="bd-input"
-              :value="selected.y ?? 0"
-              min="0"
-              @change="
-                api.moveChart(
-                  selected.id,
-                  selected.x ?? 0,
-                  Number(($event.target as HTMLInputElement).value)
-                )
-              "
-            />
-          </div>
-          <div class="bi-designer__panel-section">{{ t("designer.size") }}</div>
-          <div class="bi-designer__num-row">
-            <input
-              type="number"
-              class="bd-input"
-              :value="selected.w ?? 6"
-              min="1"
-              @change="
-                api.resizeChart(
-                  selected.id,
-                  Number(($event.target as HTMLInputElement).value),
-                  selected.h ?? 4
-                )
-              "
-            />
-            <input
-              type="number"
-              class="bd-input"
-              :value="selected.h ?? 4"
-              min="1"
-              @change="
-                api.resizeChart(
-                  selected.id,
-                  selected.w ?? 6,
-                  Number(($event.target as HTMLInputElement).value)
-                )
-              "
-            />
+              {{ t(`designer.tab${tab[0]!.toUpperCase() + tab.slice(1)}`) }}
+            </button>
           </div>
 
-          <button
-            class="bd-btn bd-btn--danger bd-btn--block"
-            @click="api.removeChart(selected.id)"
-          >
-            {{ t("designer.delete") }}
-          </button>
+          <!-- ===== 数据 tab ===== -->
+          <template v-if="propTab === 'data'">
+            <label class="bi-designer__field">
+              <span>{{ t("designer.title") }}</span>
+              <input
+                type="text"
+                class="bd-input"
+                :value="selected.title ?? ''"
+                @change="
+                  patchSelected({ title: ($event.target as HTMLInputElement).value || undefined })
+                "
+              />
+            </label>
+
+            <div class="bi-designer__field">
+              <span>{{ t("designer.type") }}</span>
+              <div class="bi-designer__type-grid">
+                <button
+                  v-for="tp in chartTypes"
+                  :key="tp"
+                  class="bi-designer__type-btn"
+                  :class="{ 'bi-designer__type-btn--active': selected.type === tp }"
+                  @click="patchSelected({ type: tp })"
+                >
+                  {{ t(`types.${tp}`) }}
+                </button>
+              </div>
+            </div>
+
+            <label class="bi-designer__field">
+              <span>{{ t("designer.dataset") }}</span>
+              <select
+                class="bd-input"
+                :value="selected.datasetId"
+                @change="patchSelected({ datasetId: ($event.target as HTMLSelectElement).value })"
+              >
+                <option v-for="ds in state.datasets" :key="ds.id" :value="ds.id">
+                  {{ ds.name }}
+                </option>
+              </select>
+            </label>
+
+            <label v-if="needsField(selected.type, 'dimension')" class="bi-designer__field">
+              <span>{{ t("designer.dimension") }}</span>
+              <select
+                class="bd-input"
+                :value="selected.encoding?.dimension ?? ''"
+                @change="patchEncoding('dimension', ($event.target as HTMLSelectElement).value)"
+              >
+                <option value="">—</option>
+                <option v-for="col in columnsOf(selected.datasetId)" :key="col" :value="col">
+                  {{ `${col}（${fieldTypeName(selected.datasetId, col)}）` }}
+                </option>
+              </select>
+            </label>
+
+            <!-- 多度量（宽表，仅柱/线/面） -->
+            <div v-if="showMeasures(selected.type)" class="bi-designer__field">
+              <span>{{ t("designer.measures") }}</span>
+              <div class="bi-designer__check-group">
+                <label
+                  v-for="col in numericCols(selected.datasetId)"
+                  :key="col"
+                  class="bi-designer__check"
+                >
+                  <input
+                    type="checkbox"
+                    :checked="(selected.encoding?.measures ?? []).includes(col)"
+                    @change="toggleMeasure(col)"
+                  />
+                  <span>{{ col }}</span>
+                </label>
+                <span v-if="!numericCols(selected.datasetId).length" class="bi-designer__hint">—</span>
+              </div>
+            </div>
+
+            <label
+              v-if="needsField(selected.type, 'measure') && !usesWideMeasures"
+              class="bi-designer__field"
+            >
+              <span>{{ t("designer.measure") }}</span>
+              <select
+                class="bd-input"
+                :value="selected.encoding?.measure ?? ''"
+                @change="patchEncoding('measure', ($event.target as HTMLSelectElement).value)"
+              >
+                <option value="">—</option>
+                <option v-for="col in columnsOf(selected.datasetId)" :key="col" :value="col">
+                  {{ col }}
+                </option>
+              </select>
+            </label>
+
+            <label v-if="showAgg(selected.type)" class="bi-designer__field">
+              <span>{{ t("designer.aggregation") }}</span>
+              <select
+                class="bd-input"
+                :value="selected.aggregation ?? 'sum'"
+                @change="patchSelected({ aggregation: ($event.target as HTMLSelectElement).value as any })"
+              >
+                <option value="sum">{{ t("designer.aggSum") }}</option>
+                <option value="avg">{{ t("designer.aggAvg") }}</option>
+                <option value="count">{{ t("designer.aggCount") }}</option>
+                <option value="max">{{ t("designer.aggMax") }}</option>
+                <option value="min">{{ t("designer.aggMin") }}</option>
+                <option value="none">{{ t("designer.aggNone") }}</option>
+              </select>
+            </label>
+
+            <label
+              v-if="needsField(selected.type, 'series') && !usesWideMeasures"
+              class="bi-designer__field"
+            >
+              <span>{{ t("designer.series") }}</span>
+              <select
+                class="bd-input"
+                :value="selected.encoding?.series ?? ''"
+                @change="patchEncoding('series', ($event.target as HTMLSelectElement).value)"
+              >
+                <option value="">—</option>
+                <option v-for="col in columnsOf(selected.datasetId)" :key="col" :value="col">
+                  {{ col }}
+                </option>
+              </select>
+            </label>
+
+            <!-- 排序 -->
+            <div v-if="needsField(selected.type, 'dimension')" class="bi-designer__field">
+              <span>{{ t("designer.sortLabel") }}</span>
+              <div class="bi-designer__row3">
+                <select
+                  class="bd-input"
+                  :value="selected.sort?.by ?? 'dimension'"
+                  @change="patchSort({ by: ($event.target as HTMLSelectElement).value as any })"
+                >
+                  <option value="dimension">{{ t("designer.sortByDim") }}</option>
+                  <option value="measure">{{ t("designer.sortByMeasure") }}</option>
+                </select>
+                <select
+                  class="bd-input"
+                  :value="selected.sort?.order ?? 'asc'"
+                  @change="patchSort({ order: ($event.target as HTMLSelectElement).value as any })"
+                >
+                  <option value="asc">{{ t("designer.asc") }}</option>
+                  <option value="desc">{{ t("designer.desc") }}</option>
+                </select>
+                <input
+                  type="number"
+                  class="bd-input"
+                  :value="selected.sort?.topN ?? ''"
+                  min="1"
+                  :placeholder="t('designer.topN')"
+                  @change="
+                    patchSort({
+                      topN: ($event.target as HTMLInputElement).value
+                        ? Number(($event.target as HTMLInputElement).value)
+                        : undefined,
+                    })
+                  "
+                />
+              </div>
+            </div>
+
+            <!-- 过滤器 -->
+            <div class="bi-designer__field">
+              <span>{{ t("designer.filters") }}</span>
+              <div
+                v-for="(f, i) in selected.filters ?? []"
+                :key="i"
+                class="bi-designer__filter-row"
+              >
+                <select
+                  class="bd-input"
+                  :value="f.field"
+                  @change="updateFilter(i, { field: ($event.target as HTMLSelectElement).value })"
+                >
+                  <option v-for="col in columnsOf(selected.datasetId)" :key="col" :value="col">
+                    {{ col }}
+                  </option>
+                </select>
+                <select
+                  class="bd-input bi-designer__filter-op"
+                  :value="f.op"
+                  @change="updateFilter(i, { op: ($event.target as HTMLSelectElement).value as any })"
+                >
+                  <option value="eq">{{ t("designer.opEq") }}</option>
+                  <option value="ne">{{ t("designer.opNe") }}</option>
+                  <option value="gt">{{ t("designer.opGt") }}</option>
+                  <option value="gte">{{ t("designer.opGte") }}</option>
+                  <option value="lt">{{ t("designer.opLt") }}</option>
+                  <option value="lte">{{ t("designer.opLte") }}</option>
+                  <option value="contains">{{ t("designer.opContains") }}</option>
+                  <option value="in">{{ t("designer.opIn") }}</option>
+                </select>
+                <input
+                  type="text"
+                  class="bd-input"
+                  :value="Array.isArray(f.value) ? f.value.join(',') : String(f.value ?? '')"
+                  @change="
+                    updateFilter(
+                      i,
+                      { value: ($event.target as HTMLInputElement).value }
+                    )
+                  "
+                />
+                <button class="bi-designer__filter-del" @click="removeFilter(i)">×</button>
+              </div>
+              <button class="bd-btn bd-btn--block" @click="addFilter">
+                {{ t("designer.addFilter") }}
+              </button>
+            </div>
+          </template>
+
+          <!-- ===== 样式 tab ===== -->
+          <template v-else-if="propTab === 'style'">
+            <label class="bi-designer__check-row">
+              <input
+                type="checkbox"
+                :checked="selected.style?.showLegend"
+                @change="patchStyle({ showLegend: ($event.target as HTMLInputElement).checked })"
+              />
+              <span>{{ t("designer.showLegend") }}</span>
+            </label>
+            <label class="bi-designer__check-row">
+              <input
+                type="checkbox"
+                :checked="selected.style?.showLabel"
+                @change="patchStyle({ showLabel: ($event.target as HTMLInputElement).checked })"
+              />
+              <span>{{ t("designer.showLabel") }}</span>
+            </label>
+            <label v-if="selected.type === 'bar'" class="bi-designer__check-row">
+              <input
+                type="checkbox"
+                :checked="selected.style?.stack"
+                @change="patchStyle({ stack: ($event.target as HTMLInputElement).checked })"
+              />
+              <span>{{ t("designer.stack") }}</span>
+            </label>
+            <label v-if="isCartesian(selected.type)" class="bi-designer__check-row">
+              <input
+                type="checkbox"
+                :checked="selected.style?.dataZoom"
+                @change="patchStyle({ dataZoom: ($event.target as HTMLInputElement).checked })"
+              />
+              <span>{{ t("designer.dataZoom") }}</span>
+            </label>
+
+            <label class="bi-designer__field">
+              <span>{{ t("designer.palette") }}</span>
+              <select
+                class="bd-input"
+                :value="selected.style?.palette ?? ''"
+                @change="
+                  patchStyle({ palette: ($event.target as HTMLSelectElement).value || undefined })
+                "
+              >
+                <option value="">{{ t("designer.paletteDefault") }}</option>
+                <option v-for="key in paletteKeys" :key="key" :value="key">
+                  {{ t(`designer.palette${key[0]!.toUpperCase() + key.slice(1)}`) }}
+                </option>
+              </select>
+            </label>
+
+            <div class="bi-designer__panel-section">{{ t("designer.numberFormat") }}</div>
+            <label class="bi-designer__field">
+              <span>{{ t("designer.decimals") }}</span>
+              <input
+                type="number"
+                class="bd-input"
+                min="0"
+                max="6"
+                :value="selected.style?.format?.decimals ?? ''"
+                @change="
+                  patchFormat({
+                    decimals: ($event.target as HTMLInputElement).value
+                      ? Number(($event.target as HTMLInputElement).value)
+                      : undefined,
+                  })
+                "
+              />
+            </label>
+            <label class="bi-designer__check-row">
+              <input
+                type="checkbox"
+                :checked="selected.style?.format?.thousand"
+                @change="patchFormat({ thousand: ($event.target as HTMLInputElement).checked })"
+              />
+              <span>{{ t("designer.thousand") }}</span>
+            </label>
+            <div class="bi-designer__num-row">
+              <input
+                type="text"
+                class="bd-input"
+                :placeholder="t('designer.prefix')"
+                :value="selected.style?.format?.prefix ?? ''"
+                @change="
+                  patchFormat({
+                    prefix: ($event.target as HTMLInputElement).value || undefined,
+                  })
+                "
+              />
+              <input
+                type="text"
+                class="bd-input"
+                :placeholder="t('designer.suffix')"
+                :value="selected.style?.format?.suffix ?? ''"
+                @change="
+                  patchFormat({
+                    suffix: ($event.target as HTMLInputElement).value || undefined,
+                  })
+                "
+              />
+            </div>
+          </template>
+
+          <!-- ===== 布局 tab ===== -->
+          <template v-else>
+            <div class="bi-designer__panel-section">{{ t("designer.position") }}</div>
+            <div class="bi-designer__num-row">
+              <input
+                type="number"
+                class="bd-input"
+                :value="selected.x ?? 0"
+                min="0"
+                @change="
+                  api.moveChart(
+                    selected.id,
+                    Number(($event.target as HTMLInputElement).value),
+                    selected.y ?? 0
+                  )
+                "
+              />
+              <input
+                type="number"
+                class="bd-input"
+                :value="selected.y ?? 0"
+                min="0"
+                @change="
+                  api.moveChart(
+                    selected.id,
+                    selected.x ?? 0,
+                    Number(($event.target as HTMLInputElement).value)
+                  )
+                "
+              />
+            </div>
+            <div class="bi-designer__panel-section">{{ t("designer.size") }}</div>
+            <div class="bi-designer__num-row">
+              <input
+                type="number"
+                class="bd-input"
+                :value="selected.w ?? 6"
+                min="1"
+                @change="
+                  api.resizeChart(
+                    selected.id,
+                    Number(($event.target as HTMLInputElement).value),
+                    selected.h ?? 4
+                  )
+                "
+              />
+              <input
+                type="number"
+                class="bd-input"
+                :value="selected.h ?? 4"
+                min="1"
+                @change="
+                  api.resizeChart(
+                    selected.id,
+                    selected.w ?? 6,
+                    Number(($event.target as HTMLInputElement).value)
+                  )
+                "
+              />
+            </div>
+            <button class="bd-btn bd-btn--block" :disabled="!selectedId" @click="handleDuplicate">
+              {{ t("designer.duplicate") }}
+            </button>
+            <button
+              class="bd-btn bd-btn--danger bd-btn--block"
+              @click="api.removeChart(selected.id)"
+            >
+              {{ t("designer.delete") }}
+            </button>
+          </template>
         </template>
         <div v-else class="bi-designer__empty-tip">{{ t("designer.selectChart") }}</div>
       </aside>
@@ -332,23 +592,30 @@
 
 <script setup lang="ts">
 /**
- * BI 设计器（M2 MVP）：
- * - 左：数据集面板（static 内嵌 JSON / api 声明）
- * - 中：画布（指针拖拽移动 + 右下角缩放，栅格吸附，与渲染器同源布局数学）
- * - 右：属性面板（标题/图型/数据集/视觉映射/位置尺寸）
- * - 撤销重做、流式整理、schema 导入导出、预览态
- * 所有状态机逻辑在 bi-core 的 BiDesignerApi，本组件只做视图绑定。
+ * BI 设计器（M3 深化）：
+ * - 数据集面板（static 内嵌 JSON / api 声明）
+ * - 画布：指针拖拽移动 + 右下角缩放（栅格吸附 + 碰撞推挤），与渲染器同源布局数学
+ * - 属性面板三 tab：
+ *   数据（图型网格 / 数据集 / 维度 / 多度量 / 度量 / 聚合 / 系列 / 排序 TopN / 过滤器）
+ *   样式（图例 / 标签 / 堆叠 / 数据缩放 / 色盘 / 数字格式）
+ *   布局（位置尺寸 / 复制 / 删除）
+ * - 撤销重做、复制粘贴（Ctrl+C/V/D）、删除（Del）、全选清除（Esc）快捷键
+ * 状态机在 bi-core 的 BiDesignerApi；数据变换（过滤→聚合→排序）也在 core，
+ * 渲染器与画布共享同一条管线。
  */
 import { computed, onBeforeUnmount, onMounted, reactive, ref, shallowRef, watch } from "vue";
 import {
   BiDesignerApi,
   BI_CHART_TYPES,
+  BI_PALETTE_KEYS,
   defaultGrid,
   getColumns,
+  inferFieldType,
   layoutCharts,
   resolveDatasetRows,
 } from "@go-wind-ui/bi-core";
 import type {
+  BiChartFilter,
   BiChartSchema,
   BiChartType,
   BiDashboardSchema,
@@ -379,11 +646,22 @@ const DEMO_SCHEMA: Partial<BiDashboardSchema> = {
   datasets: [
     {
       id: "ds_month",
-      name: "月度销售",
+      name: "月度汇总",
       type: "static",
       rows: Array.from({ length: 12 }, (_, i) => ({
         month: `${i + 1}月`,
         sales: Math.round(80 + Math.sin(i / 2) * 60 + i * 8),
+        target: 160,
+      })),
+    },
+    {
+      id: "ds_orders",
+      name: "订单明细（可聚合）",
+      type: "static",
+      rows: Array.from({ length: 48 }, (_, i) => ({
+        city: ["北京", "上海", "广州", "深圳", "杭州", "成都"][i % 6],
+        category: ["硬件", "软件", "服务"][i % 3],
+        amount: Math.round(50 + Math.random() * 450),
       })),
     },
     {
@@ -407,36 +685,41 @@ const DEMO_SCHEMA: Partial<BiDashboardSchema> = {
   charts: [
     {
       id: "demo_bar",
-      title: "月度销售",
-      datasetId: "ds_month",
+      title: "城市订单（求和聚合）",
+      datasetId: "ds_orders",
       type: "bar",
       x: 0,
       y: 0,
       w: 6,
       h: 4,
-      encoding: { dimension: "month", measure: "sales" },
+      encoding: { dimension: "city", measure: "amount" },
+      aggregation: "sum",
+      sort: { by: "measure", order: "desc", topN: 6 },
     },
     {
-      id: "demo_line",
-      title: "销售趋势",
+      id: "demo_wide",
+      title: "销售 vs 目标（宽度量）",
       datasetId: "ds_month",
-      type: "line",
+      type: "bar",
       x: 6,
       y: 0,
       w: 6,
       h: 4,
-      encoding: { dimension: "month", measure: "sales" },
+      encoding: { dimension: "month", measures: ["sales", "target"] },
+      style: { showLegend: true },
     },
     {
       id: "demo_pie",
-      title: "渠道分布",
-      datasetId: "ds_channel",
+      title: "品类占比（含过滤器）",
+      datasetId: "ds_orders",
       type: "donut",
       x: 0,
       y: 4,
       w: 6,
       h: 4,
-      encoding: { dimension: "channel", measure: "amount" },
+      encoding: { dimension: "category", measure: "amount" },
+      aggregation: "sum",
+      filters: [{ field: "city", op: "ne", value: "成都" }],
     },
     {
       id: "demo_gauge",
@@ -467,6 +750,8 @@ api.subscribe(() => {
 const preview = ref(false);
 const importInputRef = ref<HTMLInputElement | null>(null);
 const chartTypes = BI_CHART_TYPES;
+const paletteKeys = BI_PALETTE_KEYS;
+const propTab = ref<"data" | "style" | "layout">("data");
 
 const stateCharts = computed(() => state.value.charts ?? []);
 const selectedId = computed(() => {
@@ -475,6 +760,8 @@ const selectedId = computed(() => {
   return preview.value ? null : api.selectedId;
 });
 const selected = computed(() => stateCharts.value.find((c) => c.id === api.selectedId) ?? null);
+/** 宽表多度量生效中（此时单度量/系列拆分被忽略） */
+const usesWideMeasures = computed(() => (selected.value?.encoding?.measures?.length ?? 0) > 0);
 
 // ============ 画布几何 ============
 const canvasRef = ref<HTMLElement | null>(null);
@@ -493,6 +780,7 @@ onMounted(() => {
 onBeforeUnmount(() => {
   canvasObserver?.disconnect();
   stopWindowDrag();
+  window.removeEventListener("keydown", onKeyDown);
 });
 
 const grid = computed(() => defaultGrid(state.value.grid));
@@ -613,7 +901,22 @@ function columnsOf(datasetId: string): string[] {
   return getColumns(rowsMap.value[datasetId]?.rows);
 }
 
-// ============ 属性面板 ============
+function numericCols(datasetId: string): string[] {
+  const rows = rowsMap.value[datasetId]?.rows;
+  return getColumns(rows).filter((c) => inferFieldType(rows, c) === "number");
+}
+
+function colType(datasetId: string, col: string): string {
+  return inferFieldType(rowsMap.value[datasetId]?.rows, col);
+}
+
+/** 字段类型的 locale 键（inferFieldType 返回小写，locale 键为驼峰） */
+function fieldTypeName(datasetId: string, col: string): string {
+  const ft = colType(datasetId, col);
+  return t(`designer.type${ft[0]!.toUpperCase() + ft.slice(1)}`);
+}
+
+// ============ 属性面板：数据 tab ============
 function patchSelected(patch: Partial<BiChartSchema>) {
   if (!selected.value) return;
   api.updateChart(selected.value.id, patch);
@@ -627,6 +930,54 @@ function patchEncoding(key: "dimension" | "measure" | "series", value: string) {
   patchSelected({ encoding });
 }
 
+function toggleMeasure(col: string) {
+  if (!selected.value) return;
+  const measures = [...(selected.value.encoding?.measures ?? [])];
+  const idx = measures.indexOf(col);
+  if (idx >= 0) measures.splice(idx, 1);
+  else measures.push(col);
+  const encoding = { ...(selected.value.encoding ?? {}) };
+  if (measures.length) {
+    encoding.measures = measures;
+    // 宽表与长表系列拆分互斥
+    delete encoding.series;
+  } else {
+    delete encoding.measures;
+  }
+  patchSelected({ encoding });
+}
+
+function patchSort(patch: Partial<NonNullable<BiChartSchema["sort"]>>) {
+  if (!selected.value) return;
+  const sort = { by: "dimension" as const, order: "asc" as const, ...selected.value.sort, ...patch };
+  // topN undefined 时移除键，避免序列化残留
+  if (sort.topN === undefined) delete (sort as any).topN;
+  patchSelected({ sort });
+}
+
+function addFilter() {
+  if (!selected.value) return;
+  const cols = columnsOf(selected.value.datasetId);
+  const filters: BiChartFilter[] = [
+    ...(selected.value.filters ?? []),
+    { field: cols[0] ?? "", op: "eq", value: "" },
+  ];
+  patchSelected({ filters });
+}
+
+function updateFilter(i: number, patch: Partial<BiChartFilter>) {
+  if (!selected.value) return;
+  const filters = (selected.value.filters ?? []).map((f, idx) =>
+    idx === i ? { ...f, ...patch } : f
+  );
+  patchSelected({ filters });
+}
+
+function removeFilter(i: number) {
+  if (!selected.value) return;
+  patchSelected({ filters: (selected.value.filters ?? []).filter((_, idx) => idx !== i) });
+}
+
 /** 各图型需要的编码字段 */
 function needsField(type: BiChartType, field: "dimension" | "measure" | "series"): boolean {
   switch (field) {
@@ -637,6 +988,33 @@ function needsField(type: BiChartType, field: "dimension" | "measure" | "series"
     case "series":
       return ["bar", "line", "area", "scatter", "radar"].includes(type);
   }
+}
+
+function isCartesian(type: BiChartType): boolean {
+  return ["bar", "line", "area", "scatter"].includes(type);
+}
+
+function showMeasures(type: BiChartType): boolean {
+  return ["bar", "line", "area"].includes(type);
+}
+
+function showAgg(type: BiChartType): boolean {
+  return ["bar", "line", "area", "pie", "donut", "radar"].includes(type);
+}
+
+// ============ 属性面板：样式 tab ============
+function patchStyle(patch: Partial<NonNullable<BiChartSchema["style"]>>) {
+  if (!selected.value) return;
+  patchSelected({ style: { ...selected.value.style, ...patch } });
+}
+
+function patchFormat(patch: Partial<NonNullable<BiChartSchema["style"]>["format"]>) {
+  if (!selected.value) return;
+  const format = { ...selected.value.style?.format, ...patch };
+  if (format.decimals === undefined) delete (format as any).decimals;
+  if (!format.prefix) delete (format as any).prefix;
+  if (!format.suffix) delete (format as any).suffix;
+  patchSelected({ style: { ...selected.value.style, format } });
 }
 
 // ============ 数据集表单 ============
@@ -696,6 +1074,14 @@ function handleAddChart() {
   api.addChart({ encoding: {} });
 }
 
+function handleDuplicate() {
+  if (selectedId.value) api.duplicateChart(selectedId.value);
+}
+
+function handlePaste() {
+  api.pasteChart();
+}
+
 function handleExport() {
   const blob = new Blob([api.exportSchema()], { type: "application/json" });
   const url = URL.createObjectURL(blob);
@@ -725,6 +1111,38 @@ function handleImport(event: Event) {
   };
   reader.readAsText(file);
 }
+
+// ============ 键盘快捷键（输入控件聚焦时不拦截） ============
+function onKeyDown(event: KeyboardEvent) {
+  if (preview.value) return;
+  const target = event.target as HTMLElement | null;
+  const tag = target?.tagName;
+  if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
+  const mod = event.ctrlKey || event.metaKey;
+  if (mod && event.key.toLowerCase() === "z") {
+    event.preventDefault();
+    if (event.shiftKey) api.redo();
+    else api.undo();
+  } else if (mod && event.key.toLowerCase() === "y") {
+    event.preventDefault();
+    api.redo();
+  } else if (mod && event.key.toLowerCase() === "c") {
+    if (selectedId.value) api.copyChart(selectedId.value);
+  } else if (mod && event.key.toLowerCase() === "v") {
+    api.pasteChart();
+  } else if (mod && event.key.toLowerCase() === "d") {
+    event.preventDefault();
+    handleDuplicate();
+  } else if (event.key === "Delete" || event.key === "Backspace") {
+    if (selectedId.value) api.removeChart(selectedId.value);
+  } else if (event.key === "Escape") {
+    api.select(null);
+  }
+}
+
+onMounted(() => {
+  window.addEventListener("keydown", onKeyDown);
+});
 </script>
 
 <style scoped>
@@ -781,7 +1199,7 @@ function handleImport(event: Event) {
 }
 
 .bi-designer__panel--right {
-  width: 260px;
+  width: 280px;
 }
 
 .bi-designer__panel-title {
@@ -801,6 +1219,152 @@ function handleImport(event: Event) {
   font-size: 12px;
   padding: 12px 0;
   text-align: center;
+}
+
+/* ===== 属性面板 tab ===== */
+.bi-designer__tabs {
+  display: flex;
+  gap: 4px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--el-border-color-lighter, #ebeef5);
+}
+
+.bi-designer__tab {
+  flex: 1;
+  height: 26px;
+  padding: 0 8px;
+  font-size: 12px;
+  color: var(--el-text-color-secondary, #6b7280);
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.bi-designer__tab:hover {
+  background: var(--el-fill-color-light, #f5f7fa);
+}
+
+.bi-designer__tab--active {
+  color: var(--el-color-primary, #409eff);
+  background: var(--el-color-primary-light-9, #ecf5ff);
+  font-weight: 600;
+}
+
+/* ===== 图型选择网格 ===== */
+.bi-designer__type-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+}
+
+.bi-designer__type-btn {
+  height: 26px;
+  padding: 0 4px;
+  font-size: 11px;
+  color: var(--el-text-color-regular, #4b5563);
+  background: var(--el-fill-color-light, #f5f7fa);
+  border: 1px solid var(--el-border-color-lighter, #ebeef5);
+  border-radius: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bi-designer__type-btn:hover {
+  border-color: var(--el-color-primary-light-5, #a0cfff);
+}
+
+.bi-designer__type-btn--active {
+  color: var(--el-color-primary, #409eff);
+  background: var(--el-color-primary-light-9, #ecf5ff);
+  border-color: var(--el-color-primary, #409eff);
+  font-weight: 600;
+}
+
+/* ===== 复选组（多度量） ===== */
+.bi-designer__check-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+}
+
+.bi-designer__check,
+.bi-designer__check-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--el-text-color-regular, #4b5563);
+  cursor: pointer;
+}
+
+.bi-designer__check-row {
+  padding: 2px 0;
+}
+
+.bi-designer__check input,
+.bi-designer__check-row input {
+  accent-color: var(--el-color-primary, #409eff);
+  margin: 0;
+}
+
+.bi-designer__hint {
+  color: var(--el-text-color-placeholder, #c0c4cc);
+  font-size: 12px;
+}
+
+.bi-designer__col-type {
+  float: right;
+  font-size: 10px;
+  color: var(--el-text-color-placeholder, #c0c4cc);
+}
+
+/* ===== 过滤器行 ===== */
+.bi-designer__filter-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.bi-designer__filter-row .bd-input {
+  min-width: 0;
+  flex: 1;
+}
+
+.bi-designer__filter-op {
+  flex: 0 0 auto !important;
+  width: 68px;
+}
+
+.bi-designer__filter-del {
+  flex-shrink: 0;
+  width: 20px;
+  height: 24px;
+  padding: 0;
+  font-size: 14px;
+  color: var(--el-text-color-secondary, #9ca3af);
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.bi-designer__filter-del:hover {
+  color: var(--el-color-danger, #f56c6c);
+  background: var(--el-color-danger-light-9, #fef0f0);
+}
+
+/* ===== 三列排（排序） ===== */
+.bi-designer__row3 {
+  display: flex;
+  gap: 4px;
+}
+
+.bi-designer__row3 .bd-input {
+  min-width: 0;
 }
 
 /* ===== 表单 ===== */

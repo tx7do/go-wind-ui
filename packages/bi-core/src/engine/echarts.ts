@@ -6,6 +6,9 @@
 import * as echarts from "echarts/core";
 import { BarChart, GaugeChart, LineChart, PieChart, RadarChart, ScatterChart } from "echarts/charts";
 import {
+  DataZoomComponent,
+  DataZoomInsideComponent,
+  DataZoomSliderComponent,
   DatasetComponent,
   GridComponent,
   LegendComponent,
@@ -33,6 +36,8 @@ import type {
 } from "echarts/components";
 
 import { getColumns, toNumber, unique } from "../dataset";
+import { formatNumber } from "../dataset/transform";
+import { resolvePalette } from "../theme/palettes";
 import { resolveTheme } from "../theme";
 import type { BiChartSchema, BiRow } from "../schema/types";
 import type { BiChartEvent, ChartEngine, ChartHandle } from "./types";
@@ -56,6 +61,9 @@ function ensureRegistered() {
     TitleComponent,
     TooltipComponent,
     TransformComponent,
+    DataZoomComponent,
+    DataZoomInsideComponent,
+    DataZoomSliderComponent,
     LabelLayout,
     UniversalTransition,
     CanvasRenderer,
@@ -109,21 +117,38 @@ export function compileEcharts(
 ): BiEChartsOption {
   const theme = resolveTheme(themeMode);
   const enc = chart.encoding ?? {};
+  const style = chart.style ?? {};
+  const fmt = style.format;
+  const palette = resolvePalette(style.palette, theme);
+  const fmtTooltip = fmt ? { valueFormatter: (v: unknown) => formatNumber(toNumber(v), fmt) } : {};
   const base: BiEChartsOption = {
     backgroundColor: "transparent",
-    color: theme.palette,
+    color: palette,
     textStyle: { color: theme.text },
-    tooltip: tooltipStyles(theme),
+    tooltip: { ...tooltipStyles(theme), ...fmtTooltip },
   };
+  // 图例显隐：显式 style.showLegend 优先，否则多系列自动显示
+  const multiSeries = !!(enc.series || (enc.measures?.length ?? 0) > 1);
+  const showLegend = style.showLegend ?? multiSeries;
   // 引擎原生透传：浅合并每个顶层键（嵌套覆盖用整键替换语义）
   const passthrough = (chart.options ?? {}) as object;
+  // y 轴数值格式化
+  const yAxisLabel = fmt ? { formatter: (v: number) => formatNumber(v, fmt) } : {};
 
-  const cartesian = (series: any[], categories: string[], area: boolean): BiEChartsOption => ({
+  const labelOption = style.showLabel ? { label: { show: true, color: theme.subText } } : {};
+  const cartesian = (seriesIn: any[], categories: string[], area: boolean): BiEChartsOption => {
+    const series = seriesIn.map((sr) => ({
+      ...labelOption,
+      ...(style.stack ? { stack: "total" } : {}),
+      ...sr,
+    }));
+    const hasLegend = showLegend && (multiSeries || seriesIn.length > 1 || enc.series);
+    return ({
     ...base,
-    legend: enc.series
+    legend: hasLegend
       ? { top: 0, textStyle: { color: theme.subText }, itemWidth: 14, itemHeight: 8 }
       : undefined,
-    grid: { left: 8, right: 16, top: enc.series ? 32 : 20, bottom: 8, containLabel: true },
+    grid: { left: 8, right: 16, top: hasLegend ? 32 : 20, bottom: 8, containLabel: true },
     xAxis: {
       type: "category",
       data: categories,
@@ -133,14 +158,20 @@ export function compileEcharts(
     yAxis: {
       type: "value",
       ...axisStyles(theme),
+      axisLabel: { ...axisStyles(theme).axisLabel, ...yAxisLabel },
       splitLine: { lineStyle: { color: theme.splitLine } },
     },
+    ...(style.dataZoom
+      ? { dataZoom: [{ type: "inside" }, { type: "slider", height: 16, bottom: 4 }] }
+      : {}),
     series: series.map((s) => ({
       smooth: true,
       ...(area ? { areaStyle: { opacity: 0.15 } } : {}),
       ...s,
     })),
-  });
+    ...passthrough,
+    } as BiEChartsOption);
+  };
 
   switch (chart.type) {
     case "bar":
@@ -167,6 +198,15 @@ export function compileEcharts(
               group(sn, rows.filter((r) => String(r[enc.series!]) === sn))
             )
           : [group(chart.title ?? measure, rows)];
+      } else if (enc.measures?.length) {
+        // 宽表多度量：每字段一个系列（聚合管线已按维度分组，每类目一行）
+        series = enc.measures.map((m) => ({
+          name: m,
+          type: seriesType,
+          data: categories.map((c) =>
+            toNumber(rows.find((r) => String(r[dim]) === c)?.[m])
+          ),
+        }));
       } else if (enc.series) {
         const seriesNames = unique(rows.map((r) => String(r[enc.series!])));
         series = seriesNames.map((sn) => {
@@ -201,14 +241,20 @@ export function compileEcharts(
       const measure = enc.measure ?? cols.find((c) => c !== dim) ?? "value";
       return {
         ...base,
-        legend: { bottom: 0, textStyle: { color: theme.subText }, itemWidth: 14, itemHeight: 8 },
+        legend: style.showLegend === false
+          ? undefined
+          : { bottom: 0, textStyle: { color: theme.subText }, itemWidth: 14, itemHeight: 8 },
         series: [
           {
             type: "pie",
             radius: chart.type === "donut" ? ["42%", "68%"] : "68%",
             center: ["50%", "46%"],
             itemStyle: { borderColor: "transparent", borderWidth: 2 },
-            label: { color: theme.subText },
+            label: {
+              show: style.showLabel ?? true,
+              color: theme.subText,
+              ...(fmt ? { formatter: (p: any) => `${p.name} ${formatNumber(toNumber(p.value), fmt)}` } : {}),
+            },
             data: rows.map((r) => ({
               name: String(r[dim] ?? ""),
               value: toNumber(r[measure]),
@@ -279,7 +325,9 @@ export function compileEcharts(
             pointer: { itemStyle: { color: "auto" } },
             detail: {
               valueAnimation: true,
-              formatter: "{value}",
+              formatter: fmt
+                ? (v: number) => formatNumber(v, fmt)
+                : "{value}",
               color: theme.text,
               fontSize: 22,
               offsetCenter: [0, "62%"],

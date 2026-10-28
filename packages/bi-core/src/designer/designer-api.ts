@@ -26,6 +26,43 @@ const UNDO_LIMIT = 50;
 /** 画布操作默认尺寸下限（栅格单位） */
 export const CHART_MIN_SIZE = { w: 3, h: 2 };
 
+/** a、b 两矩形（栅格坐标）是否重叠 */
+function overlaps(
+  a: { x: number; y: number; w: number; h: number },
+  b: { x: number; y: number; w: number; h: number }
+): boolean {
+  return a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;
+}
+
+function rectOf(c: { x?: number; y?: number; w?: number; h?: number }) {
+  return { x: c.x ?? 0, y: c.y ?? 0, w: c.w ?? CHART_DEFAULT_SIZE.w, h: c.h ?? CHART_DEFAULT_SIZE.h };
+}
+
+/**
+ * 碰撞推挤（draft 原地修改）：与 anchor 重叠的图表依次压到 anchor 下方，
+ * 被压者成为新 anchor 级联下推；上限 100 轮防循环。
+ */
+function resolveCollisions(draft: BiDashboardSchema, anchorId: string) {
+  const anchor = draft.charts.find((c) => c.id === anchorId);
+  if (!anchor) return;
+  let guard = 0;
+  let moved = true;
+  while (moved && guard < 100) {
+    moved = false;
+    const aRect = rectOf(anchor);
+    for (const other of draft.charts) {
+      if (other.id === anchor.id) continue;
+      if (overlaps(aRect, rectOf(other))) {
+        other.y = aRect.y + aRect.h;
+        moved = true;
+        // anchor 矩形不变；被推者下一轮作为新重叠源继续被检测（推到不重叠为止）
+        // 注意：被推到 other.y 后仍可能与 anchor 竖向相邻不重叠，循环自然收敛
+      }
+    }
+    guard += 1;
+  }
+}
+
 export class BiDesignerApi {
   private store: TinyStore<BiDashboardSchema>;
   private undoStack: string[] = [];
@@ -188,6 +225,7 @@ export class BiDesignerApi {
       if (!chart) return;
       chart.x = Math.max(0, Math.round(x));
       chart.y = Math.max(0, Math.round(y));
+      resolveCollisions(draft, id);
     });
   }
 
@@ -198,8 +236,28 @@ export class BiDesignerApi {
       if (!chart) return;
       chart.w = Math.min(cols, Math.max(CHART_MIN_SIZE.w, Math.round(w)));
       chart.h = Math.max(CHART_MIN_SIZE.h, Math.round(h));
+      resolveCollisions(draft, id);
     });
   }
+
+  /** 深拷贝图表（新 id + 自动找空位）；返回新图表 id */
+  duplicateChart(id: string): string | null {
+    const source = this.getChart(id);
+    if (!source) return null;
+    const state = this.store.getState();
+    const newId = genId("chart");
+    const spot = this.findFreeSpot(state, source.w ?? CHART_DEFAULT_SIZE.w, source.h ?? CHART_DEFAULT_SIZE.h);
+    this.commit((draft) => {
+      const clone = deepClone(source);
+      clone.id = newId;
+      clone.x = spot.x;
+      clone.y = spot.y;
+      draft.charts.push(clone);
+    });
+    this.select(newId);
+    return newId;
+  }
+
 
   removeChart(id: string) {
     this.commit((draft) => {
@@ -241,6 +299,43 @@ export class BiDesignerApi {
       }
       draft.charts = sorted;
     });
+  }
+
+  // ============ 剪贴板（组件内单卡槽） ============
+
+  private clipboard: BiChartSchema | null = null;
+
+  get hasClipboard(): boolean {
+    return this.clipboard !== null;
+  }
+
+  /** 复制到剪贴板（深拷贝快照） */
+  copyChart(id: string): boolean {
+    const source = this.getChart(id);
+    if (!source) return false;
+    this.clipboard = deepClone(source);
+    return true;
+  }
+
+  /** 粘贴：剪贴板快照 + 新 id + 自动找空位；返回新图表 id（空剪贴板返回 null） */
+  pasteChart(): string | null {
+    if (!this.clipboard) return null;
+    const state = this.store.getState();
+    const newId = genId("chart");
+    const spot = this.findFreeSpot(
+      state,
+      this.clipboard.w ?? CHART_DEFAULT_SIZE.w,
+      this.clipboard.h ?? CHART_DEFAULT_SIZE.h
+    );
+    this.commit((draft) => {
+      const clone = deepClone(this.clipboard!);
+      clone.id = newId;
+      clone.x = spot.x;
+      clone.y = spot.y;
+      draft.charts.push(clone);
+    });
+    this.select(newId);
+    return newId;
   }
 
   // ============ 数据集 ============

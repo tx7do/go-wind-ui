@@ -12,7 +12,7 @@
  * 空数据不挂引擎，只显示占位文案。
  */
 import { onBeforeUnmount, onMounted, ref, watch } from "vue";
-import { getEngine } from "@go-wind-ui/bi-core";
+import { getEngine, transformRows } from "@go-wind-ui/bi-core";
 import type { BiChartEvent, BiChartSchema, BiResolvedTheme, ChartHandle } from "@go-wind-ui/bi-core";
 
 const props = withDefaults(
@@ -47,7 +47,7 @@ function teardown() {
 function compileAndApply() {
   if (!handle) return;
   const engine = getEngine(props.chart.engine);
-  handle.update(engine.compile(props.chart, props.rows, props.theme));
+  handle.update(engine.compile(props.chart, transformRows(props.chart, props.rows), props.theme));
 }
 
 function setup() {

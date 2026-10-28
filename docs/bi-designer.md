@@ -21,7 +21,7 @@
 | 数据接入 | 动作注入（resolver），schema 只存可序列化声明 | 零后端耦合，沿用 element-pro 的 action 注入口径 |
 | License 铁律 | ECharts Apache-2.0 / AntV 全家 MIT ✅；Highcharts、AG Grid 商业 ❌ 一票否决 | 沿用打印设计器评估的 license 铁律 |
 
-## 2. Schema v1 规范
+## 2. Schema v2 规范（2026-10-28 深化）
 
 **可序列化是硬约束**：schema 里不允许出现函数；运行时行为（取数、事件）全部经注入的 resolver/回调连接。
 
@@ -52,14 +52,28 @@ interface BiChartSchema {
   type: "bar" | "line" | "area" | "pie" | "donut" | "scatter" | "radar" | "gauge";
   /** 12 列网格坐标（栅格单位），x/y 缺省自动流式放置 */
   x?: number; y?: number; w?: number; h?: number;   // w 默认 6，h 默认 4
-  /** 引擎无关的视觉映射：dimension=类目/名称轴，measure=值轴，series=系列拆分字段 */
-  encoding: { dimension?: string; measure?: string; series?: string };
+  /** 引擎无关的视觉映射：dimension=类目轴，measure=单度量，measures=宽表多度量（优先级最高），series=长表系列拆分 */
+  encoding: { dimension?: string; measure?: string; measures?: string[]; series?: string };
+  /** 聚合：dimension 分组后对度量施加 sum/avg/count/max/min（缺省 sum，"none" 关闭） */
+  aggregation?: "sum" | "avg" | "count" | "max" | "min" | "none";
+  /** 排序 + TopN（排序后截断） */
+  sort?: { by: "dimension" | "measure"; order: "asc" | "desc"; topN?: number };
+  /** 图表级过滤器（作用于数据集行，支持 eq/ne/gt/gte/lt/lte/contains/in） */
+  filters?: Array<{ field: string; op: string; value: any }>;
+  /** 样式：堆叠 / 图例 / 数值标签 / 数据缩放 / 色盘（BI_PALETTES 键）/ 数字格式 */
+  style?: {
+    stack?: boolean; showLegend?: boolean; showLabel?: boolean; dataZoom?: boolean;
+    palette?: string;
+    format?: { decimals?: number; thousand?: boolean; prefix?: string; suffix?: string };
+  };
   /** 引擎原生透传覆盖（如 echarts option 片段），深合并到编译产物 */
   options?: Record<string, any>;
 }
 ```
 
-类型映射速查：`bar/line/area/scatter` 用 `dimension+measure(+series)`；`pie/donut` 用 `dimension(名称)+measure(值)`；`radar` 用 `dimension(指标名)+measure(值)(+series)`；`gauge` 用 `measure`（取首行）。
+类型映射速查：`bar/line/area/scatter` 用 `dimension+measure/measures(+series)`；`pie/donut` 用 `dimension+measure`；`radar` 用 `dimension+measure(+series)`；`gauge` 用 `measure`（取首行）。
+
+数据管线（bi-core `transformRows`，渲染器与设计器画布共用）：**过滤 → 聚合 → 排序/TopN → compile**。多度量（宽表）与系列拆分（长表）互斥，measures 优先。schemaVersion=1 的存量 JSON 由迁移器自动升到 2（新字段全可选，无需手工改）。
 
 ## 3. 引擎接口（bi-core）
 
@@ -96,7 +110,7 @@ ECharts 适配器在 `bi-core/src/engine/echarts.ts`：按需注册（Bar/Line/P
 | M0 | schema v1 + 引擎接口 + echarts 适配器 + 主题 token + BiDesignerApi | ✅ 本次 |
 | M1 | bi-vue / bi-react 渲染器（网格布局 + 亮暗主题 + chart-click 事件）+ 双端 playground demo | ✅ 本次 |
 | M2 | designer-vue MVP：数据集面板 / 图型选择 / 属性面板 / 指针拖拽缩放（栅格吸附）/ 撤销重做 / schema 导入导出 | ✅ 本次 |
-| M3 | designer-react 桥接壳（✅ 已实施：bi-react `BiDesignerReact`，createApp 挂 Vue 设计器）；交互增强（下钻、跨图联动过滤、全屏、导出图片）；碰撞布局约束 | 部分完成 |
+| M3 | designer-react 桥接壳（✅）；schema v2 深化（✅ 聚合/多度量/排序 TopN/过滤器/样式面板/图型网格/复制粘贴/快捷键/碰撞推挤）；余项：下钻、跨图联动过滤、全屏、导出图片 | 部分完成 |
 | M4 | AntV 适配器按需接入（g6/s2/l7）；AI 钩子（NL→schema、问数结果转图表）；模板/主题市场 | 待排期 |
 
 ## 7. 与 go-wind-admin 的集成点（后续）

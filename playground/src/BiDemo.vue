@@ -84,7 +84,8 @@ const renderSchema: Partial<BiDashboardSchema> = {
       y: 0,
       w: 6,
       h: 4,
-      encoding: { dimension: "month", measure: "sales" },
+      encoding: { dimension: "month", measures: ["sales", "target"] },
+      style: { showLegend: true },
     },
     {
       id: "r_area",

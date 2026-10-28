@@ -4,7 +4,7 @@
  */
 import { useEffect, useRef, useState } from "react";
 
-import { getEngine } from "@go-wind-ui/bi-core";
+import { getEngine, transformRows } from "@go-wind-ui/bi-core";
 import type { BiChartEvent, BiChartSchema, BiResolvedTheme, ChartHandle } from "@go-wind-ui/bi-core";
 
 export interface BiChartProps {
@@ -41,7 +41,10 @@ export function BiChart(props: BiChartProps) {
 
     const engine = getEngine(chart.engine);
     if (!handleRef.current) {
-      handleRef.current = engine.mount(host, engine.compile(chart, rows, theme));
+      handleRef.current = engine.mount(
+        host,
+        engine.compile(chart, transformRows(chart, rows), theme)
+      );
       engine.bindEvents(handleRef.current, (e) =>
         clickRef.current?.({ ...e, chartId: chart.id })
       );
