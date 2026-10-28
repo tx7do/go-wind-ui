@@ -15,7 +15,15 @@ const BUILTIN_CHART_TYPES: BiChartType[] = [
   "scatter",
   "radar",
   "gauge",
+  "funnel",
+  "treemap",
+  "sunburst",
+  "sankey",
+  "heatmap",
 ];
+
+/** 边列表 / 矩阵型图：数据是边或三元组，默认不做维度聚合 */
+export const NON_AGG_TYPES = new Set(["sankey", "graph", "heatmap"]);
 
 const typeToEngine = new Map<string, string>();
 for (const t of BUILTIN_CHART_TYPES) typeToEngine.set(t, "echarts");

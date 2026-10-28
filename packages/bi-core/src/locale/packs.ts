@@ -115,6 +115,11 @@ export const BI_MESSAGES_ZH = {
     gauge: "仪表盘",
     pivot: "透视表",
     graph: "关系图",
+    funnel: "漏斗图",
+    treemap: "矩形树图",
+    sunburst: "旭日图",
+    sankey: "桑基图",
+    heatmap: "热力图",
   },
 };
 
@@ -229,5 +234,10 @@ export const BI_MESSAGES_EN = {
     gauge: "Gauge",
     pivot: "Pivot table",
     graph: "Graph",
+    funnel: "Funnel",
+    treemap: "Treemap",
+    sunburst: "Sunburst",
+    sankey: "Sankey",
+    heatmap: "Heatmap",
   },
 };

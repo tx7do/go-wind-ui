@@ -40,19 +40,24 @@ export function BiChart(props: BiChartProps) {
     }
 
     const engine = getEngine(chart.engine);
-    if (!handleRef.current) {
-      handleRef.current = engine.mount(
-        host,
-        engine.compile(chart, transformRows(chart, rows), theme)
-      );
-      engine.bindEvents(handleRef.current, (e) =>
-        clickRef.current?.({ ...e, chartId: chart.id })
-      );
-      observerRef.current = new ResizeObserver(() => handleRef.current?.resize());
-      observerRef.current.observe(host);
-      setReady(true);
-    } else {
-      handleRef.current.update(engine.compile(chart, rows, theme));
+    try {
+      if (!handleRef.current) {
+        handleRef.current = engine.mount(
+          host,
+          engine.compile(chart, transformRows(chart, rows), theme)
+        );
+        engine.bindEvents(handleRef.current, (e) =>
+          clickRef.current?.({ ...e, chartId: chart.id })
+        );
+        observerRef.current = new ResizeObserver(() => handleRef.current?.resize());
+        observerRef.current.observe(host);
+        setReady(true);
+      } else {
+        handleRef.current.update(engine.compile(chart, transformRows(chart, rows), theme));
+      }
+    } catch (err) {
+      // 引擎挂载/更新失败：错误留在控制台可见，不吞
+      console.error("[BiChart] render failed", err);
     }
   }, [chart, rows, theme]);
 

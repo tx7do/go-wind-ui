@@ -71,7 +71,9 @@ interface BiChartSchema {
 }
 ```
 
-类型映射速查：`bar/line/area/scatter` 用 `dimension+measure/measures(+series)`；`pie/donut` 用 `dimension+measure`；`radar` 用 `dimension+measure(+series)`；`gauge` 用 `measure`（取首行）。
+类型映射速查：`bar/line/area/scatter` 用 `dimension+measure/measures(+series)`；`pie/donut` 用 `dimension+measure`；`radar` 用 `dimension+measure(+series)`；`gauge` 用 `measure`（取首行）；`funnel/treemap` 用 `dimension+measure`（漏斗强制降序）；`sunburst` 用 `dimension+measure(+series 分层)`；`sankey` 边列表用 `dimension(起点)+series(终点)+measure(流量)`；`heatmap` 矩阵三元组用 `dimension(x)+series(y)+measure(值)`；`pivot/graph` 见对应引擎包。
+
+**非聚合图型**：sankey/graph/heatmap 按行消费（边列表/三元组），聚合管线跳过（`NON_AGG_TYPES`）。
 
 数据管线（bi-core `transformRows`，渲染器与设计器画布共用）：**过滤 → 聚合 → 排序/TopN → compile**。多度量（宽表）与系列拆分（长表）互斥，measures 优先。schemaVersion=1 的存量 JSON 由迁移器自动升到 2（新字段全可选，无需手工改）。
 

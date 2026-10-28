@@ -11,6 +11,7 @@ import type {
   BiChartSort,
   BiRow,
 } from "../schema/types";
+import { NON_AGG_TYPES } from "../engine/chart-types";
 import { toNumber, unique } from "./index";
 
 /** 单过滤器行判定；值解析：数字串转数，in 接数组 */
@@ -54,8 +55,10 @@ const AGG_FNS: Record<Exclude<BiAggFn, "none">, (nums: number[]) => number> = {
   count: (nums) => nums.length,
 };
 
-/** 是否应执行聚合：给了 dimension + 显式 agg（非 none） */
+/** 是否应执行聚合：给了 dimension + 显式 agg（非 none）；
+ *  边列表/矩阵型（sankey/graph/heatmap）天然按行消费，不做维度聚合 */
 function shouldAggregate(chart: BiChartSchema): boolean {
+  if (NON_AGG_TYPES.has(chart.type)) return false;
   const agg = chart.aggregation ?? "sum";
   const dim = chart.encoding?.dimension;
   if (!dim || agg === "none") return false;

@@ -23,7 +23,7 @@
 
       <main class="pg-main">
         <BiDemo v-if="view === 'bi'" :locale="locale" />
-        <SuiteDemo v-else-if="view === 'suite'" :locale="locale" />
+        <SuiteDemo v-else-if="view === 'suite'" :locale="locale" :dark="dark" />
         <EditorDemo v-else-if="view === 'editor'" />
         <ProPage v-else :config="pageConfig">
           <template #status="scope: any">

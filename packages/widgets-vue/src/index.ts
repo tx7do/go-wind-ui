@@ -13,6 +13,7 @@ export type { PaletteCommand } from "./palette/CommandPalette.vue";
 export { default as ThemeSwitch } from "./theme/ThemeSwitch.vue";
 export { default as LangSelect } from "./lang/LangSelect.vue";
 export type { WidgetsLangOption } from "./lang/LangSelect.vue";
+export { default as LockScreen } from "./lockscreen/LockScreen.vue";
 
 // 全局快捷键：Ctrl/Cmd+K 切换面板
 export { usePaletteHotkey } from "./palette/hotkey";

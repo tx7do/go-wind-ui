@@ -23,6 +23,15 @@ const ZH = {
       toDark: "切换为暗色",
       toLight: "切换为亮色",
     },
+    lockscreen: {
+      unlock: "点击解锁",
+      placeholder: "请输入锁屏密码",
+      entry: "进入系统",
+      backToLogin: "返回登录",
+      back: "返回",
+      wrongPassword: "密码错误，请重试",
+      verifyFailed: "解锁失败",
+    },
   },
 };
 
@@ -44,6 +53,15 @@ const EN = {
     theme: {
       toDark: "Switch to dark",
       toLight: "Switch to light",
+    },
+    lockscreen: {
+      unlock: "Click to unlock",
+      placeholder: "Enter lock password",
+      entry: "Enter",
+      backToLogin: "Back to login",
+      back: "Back",
+      wrongPassword: "Wrong password, try again",
+      verifyFailed: "Unlock failed",
     },
   },
 };

@@ -12,7 +12,7 @@
         />
         <button class="suite-demo__btn" @click="paletteVisible = true">命令面板 (Ctrl+K)</button>
         <ThemeSwitch v-model:dark="dark" @change="onThemeChange" />
-        <LangSelect v-model:locale="lang" :options="langOptions" @change="(v) => setWidgetsLocale(v)" />
+        <LangSelect v-model:locale="lang" :options="langOptions" @change="(v) => setWidgetsLocale(v as 'zh-CN' | 'en-US')" />
       </div>
 
       <CommandPalette

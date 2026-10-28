@@ -4,9 +4,22 @@
  * 避免 import * as echarts from 'echarts' 的全量引入。
  */
 import * as echarts from "echarts/core";
-import { BarChart, GaugeChart, LineChart, PieChart, RadarChart, ScatterChart } from "echarts/charts";
+import {
+  BarChart,
+  FunnelChart,
+  GaugeChart,
+  HeatmapChart,
+  LineChart,
+  PieChart,
+  RadarChart,
+  SankeyChart,
+  ScatterChart,
+  SunburstChart,
+  TreemapChart,
+} from "echarts/charts";
 import {
   DataZoomComponent,
+  VisualMapComponent,
   DataZoomInsideComponent,
   DataZoomSliderComponent,
   DatasetComponent,
@@ -55,12 +68,18 @@ function ensureRegistered() {
     ScatterChart,
     RadarChart,
     GaugeChart,
+    FunnelChart,
+    TreemapChart,
+    SankeyChart,
+    HeatmapChart,
+    SunburstChart,
     DatasetComponent,
     GridComponent,
     LegendComponent,
     TitleComponent,
     TooltipComponent,
     TransformComponent,
+    VisualMapComponent,
     DataZoomComponent,
     DataZoomInsideComponent,
     DataZoomSliderComponent,
@@ -333,6 +352,178 @@ export function compileEcharts(
               offsetCenter: [0, "62%"],
             },
             data: [{ value }],
+          },
+        ],
+        ...passthrough,
+      } as BiEChartsOption;
+    }
+
+    case "funnel": {
+      const cols = getColumns(rows);
+      const dim = enc.dimension ?? cols[0] ?? "name";
+      const measure = enc.measure ?? cols.find((c) => c !== dim) ?? "value";
+      // 漏斗要求降序
+      const sorted = [...rows]
+        .map((r) => ({ name: String(r[dim] ?? ""), value: toNumber(r[measure]) }))
+        .sort((a, b) => b.value - a.value);
+      return {
+        ...base,
+        tooltip: { ...tooltipStyles(theme), trigger: "item", ...fmtTooltip },
+        series: [
+          {
+            type: "funnel",
+            left: "10%",
+            top: 12,
+            bottom: 12,
+            width: "80%",
+            sort: "descending",
+            gap: 2,
+            label: { show: true, position: "inside", color: "#fff", ...(fmt ? { formatter: (p: any) => `${p.name} ${formatNumber(toNumber(p.value), fmt)}` } : {}) },
+            data: sorted,
+          },
+        ],
+        ...passthrough,
+      } as BiEChartsOption;
+    }
+
+    case "treemap": {
+      const cols = getColumns(rows);
+      const dim = enc.dimension ?? cols[0] ?? "name";
+      const measure = enc.measure ?? cols.find((c) => c !== dim) ?? "value";
+      return {
+        ...base,
+        series: [
+          {
+            type: "treemap",
+            left: 8,
+            right: 8,
+            top: 12,
+            bottom: 8,
+            roam: false,
+            nodeClick: false,
+            breadcrumb: { show: false },
+            label: { show: true, color: "#fff", ...(fmt ? { formatter: (p: any) => `${p.name} ${formatNumber(toNumber(p.value), fmt)}` } : {}) },
+            data: rows.map((r) => ({
+              name: String(r[dim] ?? ""),
+              value: toNumber(r[measure]),
+            })),
+          },
+        ],
+        ...passthrough,
+      } as BiEChartsOption;
+    }
+
+    case "sunburst": {
+      // 两层旭日：series 分组为内环，维度为外环叶子
+      const cols = getColumns(rows);
+      const dim = enc.dimension ?? cols[0] ?? "name";
+      const measure = enc.measure ?? cols.find((c) => c !== dim) ?? "value";
+      let data: any[];
+      if (enc.series) {
+        const seriesNames = unique(rows.map((r) => String(r[enc.series!])));
+        data = seriesNames.map((sn) => {
+          const subset = rows.filter((r) => String(r[enc.series!]) === sn);
+          return {
+            name: sn,
+            children: subset.map((r) => ({
+              name: String(r[dim] ?? ""),
+              value: toNumber(r[measure]),
+            })),
+          };
+        });
+      } else {
+        data = rows.map((r) => ({
+          name: String(r[dim] ?? ""),
+          value: toNumber(r[measure]),
+        }));
+      }
+      return {
+        ...base,
+        series: [
+          {
+            type: "sunburst",
+            radius: [enc.series ? "18%" : "0%", "82%"],
+            label: { color: theme.subText, rotate: "radial" },
+            itemStyle: { borderColor: "transparent", borderWidth: 1 },
+            data,
+          },
+        ],
+        ...passthrough,
+      } as BiEChartsOption;
+    }
+
+    case "sankey": {
+      // 边列表：dimension=起点，series=终点，measure=流量
+      const cols = getColumns(rows);
+      const sourceField = enc.dimension ?? cols[0] ?? "source";
+      const targetField = enc.series ?? cols[1] ?? "target";
+      const valueField = enc.measure ?? cols[2] ?? "value";
+      const nodeIds = new Set<string>();
+      const links: any[] = [];
+      for (const row of rows) {
+        const source = String(row[sourceField] ?? "");
+        const target = String(row[targetField] ?? "");
+        if (!source || !target) continue;
+        nodeIds.add(source);
+        nodeIds.add(target);
+        links.push({ source, target, value: toNumber(row[valueField]) });
+      }
+      return {
+        ...base,
+        series: [
+          {
+            type: "sankey",
+            left: 16,
+            right: 16,
+            top: 12,
+            bottom: 12,
+            nodeWidth: 14,
+            nodeGap: 10,
+            emphasis: { focus: "adjacency" },
+            lineStyle: { color: "gradient", curveness: 0.5 },
+            label: { color: theme.subText },
+            data: [...nodeIds].map((id) => ({ name: id })),
+            links,
+          },
+        ],
+        ...passthrough,
+      } as BiEChartsOption;
+    }
+
+    case "heatmap": {
+      // 矩阵三元组：dimension=x 轴，series=y 轴，measure=值
+      const cols = getColumns(rows);
+      const xField = enc.dimension ?? cols[0] ?? "x";
+      const yField = enc.series ?? cols[1] ?? "y";
+      const valueField = enc.measure ?? cols[2] ?? "value";
+      const xCats = unique(rows.map((r) => String(r[xField] ?? "")));
+      const yCats = unique(rows.map((r) => String(r[yField] ?? "")));
+      const data = rows.map((r) => [
+        xCats.indexOf(String(r[xField] ?? "")),
+        yCats.indexOf(String(r[yField] ?? "")),
+        toNumber(r[valueField]),
+      ]);
+      const max = Math.max(...rows.map((r) => toNumber(r[valueField])), 1);
+      return {
+        ...base,
+        grid: { left: 8, right: 24, top: 12, bottom: 8, containLabel: true },
+        xAxis: { type: "category", data: xCats, ...axisStyles(theme), splitArea: { show: true } },
+        yAxis: { type: "category", data: yCats, ...axisStyles(theme), splitArea: { show: true } },
+        visualMap: {
+          min: 0,
+          max,
+          calculable: true,
+          orient: "horizontal",
+          left: "center",
+          bottom: 0,
+          textStyle: { color: theme.subText },
+          inRange: { color: theme.palette.slice(0, 5) },
+        },
+        series: [
+          {
+            type: "heatmap",
+            data,
+            label: { show: true, color: theme.text, fontSize: 10 },
           },
         ],
         ...passthrough,
