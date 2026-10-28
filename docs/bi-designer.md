@@ -101,7 +101,10 @@ ECharts 适配器在 `bi-core/src/engine/echarts.ts`：按需注册（Bar/Line/P
 
 ## 4.5 大屏主题库与缩放容器
 
-- `schema.theme.key` 选择主题预设（`BI_DASHBOARD_THEMES`）：科技蓝/午夜紫/极光青/石墨灰/清晨浅色。预设把图表配色模式、色盘与画布/卡片/标题 chrome **钉死**——宿主亮暗翻转不跟随（大屏核心诉求）；缺省/auto 跟随宿主。
+- `schema.theme.key` 选择主题预设（`BI_DASHBOARD_THEMES`，9 套）：科技蓝/午夜紫/极光青/石墨灰/清晨浅色 + **iot 合流四套**（深海蓝 ocean/森林绿 forest/星云紫 purple/暮光橙 dawn，色值与 go-wind-iot screens 完全一致）。
+- 预设携带结构化舞台色板 `colors`（BiStageColors：bg/panelBg/panelBorder/accent/axis/legend/text/series）；`resolveStageColors` 支持 schema 持久化自定义主题的宽松逐字段回退（iot resolveTheme 同语义）。
+- `BI_SEMANTIC_COLORS`：告警红绿/严重级别等语义色不随主题（跨主题语义稳定）。
+- **模板文件格式**：`toTemplateFile/parseTemplateFile/exportTemplateFile/importTemplateFile`——.gwbi.json（魔术标识 $gwbi + 版本 + meta + schema），schema 走迁移器；服务端模板 CRUD（iot SCREEN/TEMPLATE 两 kind）属应用职责，库只管文件契约。预设把图表配色模式、色盘与画布/卡片/标题 chrome **钉死**——宿主亮暗翻转不跟随（大屏核心诉求）；缺省/auto 跟随宿主。
 - 预设 chrome 经 `--bi-card-*` / `--bi-canvas-bg` 变量注入渲染器/设计器画布，卡片样式全走变量链（宿主可整体接管）。
 - 渲染器 `view={{ designWidth: 1920, fit: "width" }}`：按设计稿宽布局 + transform 等比缩放（大屏投屏自适应）。
 - 设计器工具栏主题下拉实时预览（画布内图表主题同样钉死）。

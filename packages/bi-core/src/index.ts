@@ -35,11 +35,13 @@ export type { BiResolvedTheme } from "./theme";
 export { BI_PALETTES, BI_PALETTE_KEYS, resolvePalette } from "./theme/palettes";
 export {
   BI_DASHBOARD_THEMES,
+  BI_SEMANTIC_COLORS,
   BI_THEME_PRESET_KEYS,
   getDashboardThemePreset,
   resolveDashboardTheme,
+  resolveStageColors,
 } from "./theme/presets";
-export type { BiDashboardThemePreset } from "./theme/presets";
+export type { BiDashboardThemePreset, BiStageColors } from "./theme/presets";
 
 // 数据变换（过滤/聚合/排序/TopN + 字段类型推断 + 数值格式化）
 export {
@@ -77,9 +79,17 @@ export {
 } from "./ai";
 export type { NlSchemaBridgeOptions } from "./ai";
 
-// 模板库
+// 模板库 + 模板文件化（.json 导入导出；服务端模板存储属应用职责）
 export { BI_TEMPLATES, getTemplate } from "./templates";
 export type { BiTemplate } from "./templates";
+export {
+  exportTemplateFile,
+  importTemplateFile,
+  parseTemplateFile,
+  toTemplateFile,
+  builtinTemplateFile,
+} from "./templates/files";
+export type { BiTemplateFile } from "./templates/files";
 
 // 设计器状态机
 export { BiDesignerApi, CHART_MIN_SIZE } from "./designer/designer-api";

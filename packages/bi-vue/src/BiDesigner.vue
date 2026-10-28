@@ -73,6 +73,9 @@
         <button class="bd-btn" :disabled="!stateCharts.length" @click="handleExport">
           {{ t("designer.export") }}
         </button>
+        <button class="bd-btn" :disabled="!stateCharts.length" @click="handleExportTemplateFile">
+          {{ t("designer.exportTemplate") }}
+        </button>
         <button class="bd-btn" :disabled="preview" @click="importInputRef?.click()">
           {{ t("designer.import") }}
         </button>
@@ -669,7 +672,9 @@ import {
   BI_DASHBOARD_THEMES,
   BI_PALETTE_KEYS,
   BI_TEMPLATES,
+  exportTemplateFile,
   getDashboardThemePreset,
+  importTemplateFile,
   resolveDashboardTheme,
   defaultGrid,
   getChartTypes,
@@ -1228,17 +1233,16 @@ function handleImport(event: Event) {
   const file = input.files?.[0];
   input.value = "";
   if (!file) return;
-  const reader = new FileReader();
-  reader.onload = () => {
-    try {
-      api.loadSchema(String(reader.result ?? ""));
-    } catch (err) {
-      // 原始错误带控制台，界面提示统一文案（不吞错）
-      console.error("[bi-designer] import failed", err);
-      window.alert(t("designer.importFailed"));
-    }
-  };
-  reader.readAsText(file);
+  importTemplateFile(file)
+    .then((schema) => api.loadSchema(JSON.stringify(schema)))
+    .catch(() => window.alert(t("designer.importFailed")));
+}
+
+/** 导出当前画布为 .gwbi.json 模板文件（可分享/导入其它实例） */
+function handleExportTemplateFile() {
+  exportTemplateFile(api.getSnapshot(), {
+    name: state.value.name || "bi-dashboard",
+  });
 }
 
 // ============ 键盘快捷键（输入控件聚焦时不拦截） ============
