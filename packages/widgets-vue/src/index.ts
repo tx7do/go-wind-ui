@@ -1,5 +1,5 @@
 /**
- * @go-wind-ui/widgets-vue
+ * @go-wind/widgets-vue
  *
  * Admin 壳件套件（Vue 3 + Element Plus，纯展示、数据宿主注入）：
  * 通知铃铛 / 命令面板（Ctrl+K）/ 主题切换 / 语言选择。

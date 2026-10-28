@@ -5,9 +5,9 @@
 
 ## 0. 一句话定位
 
-`@go-wind-ui/bi-*` 是配置驱动的仪表盘（BI dashboard）组件族：**一个可序列化 JSON schema 描述整块仪表盘**（数据集 + 图表 + 网格布局），渲染器双框架原生（Vue/React），设计器先做 Vue 一等公民，引擎默认 ECharts、按适配器扩展。
+`@go-wind/bi-*` 是配置驱动的仪表盘（BI dashboard）组件族：**一个可序列化 JSON schema 描述整块仪表盘**（数据集 + 图表 + 网格布局），渲染器双框架原生（Vue/React），设计器先做 Vue 一等公民，引擎默认 ECharts、按适配器扩展。
 
-与仓库内其他包的关系：视觉对齐 `docs/design-language.md`（admin 侧）与 EP 语义色；i18n 复用 `@go-wind-ui/locale` 工厂；env 注入模式对齐 editor-vue/editor-react 的 `provideEditorEnv`/`EditorProvider`。
+与仓库内其他包的关系：视觉对齐 `docs/design-language.md`（admin 侧）与 EP 语义色；i18n 复用 `@go-wind/locale` 工厂；env 注入模式对齐 editor-vue/editor-react 的 `provideEditorEnv`/`EditorProvider`。
 
 ## 1. 定案记录（为什么是现在这个形状）
 

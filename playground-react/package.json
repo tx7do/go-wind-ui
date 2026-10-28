@@ -9,16 +9,16 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@go-wind-ui/editor-react": "workspace:*",
+    "@go-wind/editor-react": "workspace:*",
     "@ant-design/icons": "^5.6.1",
     "antd": "^6.4.3",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
-    "@go-wind-ui/bi-react": "workspace:*",
-    "@go-wind-ui/bi-vue": "workspace:*",
-    "@go-wind-ui/bi-engine-s2": "workspace:*",
-    "@go-wind-ui/bi-engine-g6": "workspace:*",
-    "@go-wind-ui/chat-react": "workspace:*"
+    "@go-wind/bi-react": "workspace:*",
+    "@go-wind/bi-vue": "workspace:*",
+    "@go-wind/bi-engine-s2": "workspace:*",
+    "@go-wind/bi-engine-g6": "workspace:*",
+    "@go-wind/chat-react": "workspace:*"
   },
   "devDependencies": {
     "@types/react": "^19.2.15",

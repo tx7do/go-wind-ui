@@ -11,7 +11,7 @@ export default defineConfig({
       fileName: () => "chat-vue.js",
     },
     rollupOptions: {
-      external: ["vue", "@go-wind-ui/locale", "marked", "dompurify"],
+      external: ["vue", "@go-wind/locale", "marked", "dompurify"],
     },
     cssCodeSplit: false,
     sourcemap: true,

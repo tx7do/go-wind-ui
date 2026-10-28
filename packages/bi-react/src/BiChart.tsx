@@ -4,8 +4,8 @@
  */
 import { useEffect, useRef, useState } from "react";
 
-import { getEngine, transformRows } from "@go-wind-ui/bi-core";
-import type { BiChartEvent, BiChartSchema, BiResolvedTheme, ChartHandle } from "@go-wind-ui/bi-core";
+import { getEngine, transformRows } from "@go-wind/bi-core";
+import type { BiChartEvent, BiChartSchema, BiResolvedTheme, ChartHandle } from "@go-wind/bi-core";
 
 export interface BiChartProps {
   chart: BiChartSchema;

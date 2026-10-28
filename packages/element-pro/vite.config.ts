@@ -14,7 +14,7 @@ export default defineConfig({
     rollupOptions: {
       // 运行时依赖全部外置：peer（vue/EP/vxe）+ dependencies 由宿主或包管理器提供
       external: [
-        "@go-wind-ui/locale",
+        "@go-wind/locale",
         "vue",
         "element-plus",
         "vxe-table",
@@ -28,7 +28,7 @@ export default defineConfig({
       output: {
         globals: {
           vue: "Vue",
-          "@go-wind-ui/locale": "GoWindUiLocale",
+          "@go-wind/locale": "GoWindUiLocale",
           "element-plus": "ElementPlus",
           "vxe-table": "VxeTable",
           "@element-plus/icons-vue": "ElementPlusIconsVue",

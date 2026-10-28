@@ -1,4 +1,4 @@
-# @go-wind-ui/bi-core
+# @go-wind/bi-core
 
 框架无关的 BI 仪表盘内核：可序列化 dashboard schema、数据集解析、图表引擎注册表（内置 ECharts 适配器）、亮/暗主题 token、设计器状态机。渲染器（`bi-vue` / `bi-react`）与设计器（`designer-vue`）构建在本包之上。
 
@@ -29,7 +29,7 @@ const schema = {
 ## 引擎扩展
 
 ```ts
-import { registerEngine } from "@go-wind-ui/bi-core";
+import { registerEngine } from "@go-wind/bi-core";
 
 registerEngine("g6", createG6Engine()); // 实现.ChartEngine 三方法即可接入
 ```

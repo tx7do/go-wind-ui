@@ -1,5 +1,5 @@
 /**
- * @go-wind-ui/bi-engine-s2
+ * @go-wind/bi-engine-s2
  *
  * AntV S2 透视表引擎适配器：注册图型 "pivot"（引擎 "s2"）。
  * 可选安装——不用就不付体积；引入并 installS2Engine() 后，
@@ -11,8 +11,8 @@
 import { PivotSheet, S2Event } from "@antv/s2";
 import type { S2DataConfig, S2Options } from "@antv/s2";
 
-import { registerEngine, registerChartType } from "@go-wind-ui/bi-core";
-import type { BiChartSchema, BiRow, ChartEngine, ChartHandle } from "@go-wind-ui/bi-core";
+import { registerEngine, registerChartType } from "@go-wind/bi-core";
+import type { BiChartSchema, BiRow, ChartEngine, ChartHandle } from "@go-wind/bi-core";
 
 type AnySheet = PivotSheet;
 

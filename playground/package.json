@@ -10,16 +10,16 @@
     "typecheck": "vue-tsc --noEmit"
   },
   "dependencies": {
-    "@go-wind-ui/element-pro": "workspace:*",
+    "@go-wind/element-pro": "workspace:*",
     "element-plus": "^2.13.5",
     "vue": "^3.5.30",
     "vxe-table": "4.18.13",
-    "@go-wind-ui/editor-vue": "workspace:*",
-    "@go-wind-ui/bi-vue": "workspace:*",
-    "@go-wind-ui/bi-engine-s2": "workspace:*",
-    "@go-wind-ui/bi-engine-g6": "workspace:*",
-    "@go-wind-ui/widgets-vue": "workspace:*",
-    "@go-wind-ui/chat-vue": "workspace:*"
+    "@go-wind/editor-vue": "workspace:*",
+    "@go-wind/bi-vue": "workspace:*",
+    "@go-wind/bi-engine-s2": "workspace:*",
+    "@go-wind/bi-engine-g6": "workspace:*",
+    "@go-wind/widgets-vue": "workspace:*",
+    "@go-wind/chat-vue": "workspace:*"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.5",

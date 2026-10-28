@@ -17,7 +17,7 @@
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
-      "@go-wind-ui/locale": [
+      "@go-wind/locale": [
         "../locale/src/index.ts"
       ]
     }

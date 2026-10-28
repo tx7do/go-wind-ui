@@ -19,25 +19,25 @@
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
-      "@go-wind-ui/element-pro": [
+      "@go-wind/element-pro": [
         "../packages/element-pro/src/index.ts"
       ],
-      "@go-wind-ui/bi-vue": [
+      "@go-wind/bi-vue": [
         "../packages/bi-vue/src/index.ts"
       ],
-      "@go-wind-ui/bi-core": [
+      "@go-wind/bi-core": [
         "../packages/bi-core/src/index.ts"
       ],
-      "@go-wind-ui/bi-engine-s2": [
+      "@go-wind/bi-engine-s2": [
         "../packages/bi-engine-s2/src/index.ts"
       ],
-      "@go-wind-ui/bi-engine-g6": [
+      "@go-wind/bi-engine-g6": [
         "../packages/bi-engine-g6/src/index.ts"
       ],
-      "@go-wind-ui/widgets-vue": [
+      "@go-wind/widgets-vue": [
         "../packages/widgets-vue/src/index.ts"
       ],
-      "@go-wind-ui/chat-vue": [
+      "@go-wind/chat-vue": [
         "../packages/chat-vue/src/index.ts"
       ]
     }

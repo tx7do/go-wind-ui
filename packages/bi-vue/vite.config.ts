@@ -11,7 +11,7 @@ export default defineConfig({
       fileName: () => "bi-vue.js",
     },
     rollupOptions: {
-      external: ["vue", "@go-wind-ui/bi-core", "@go-wind-ui/locale", "echarts", /^echarts\//],
+      external: ["vue", "@go-wind/bi-core", "@go-wind/locale", "echarts", /^echarts\//],
     },
     cssCodeSplit: false,
     sourcemap: true,

@@ -1,5 +1,5 @@
 /**
- * @go-wind-ui/editor-vue
+ * @go-wind/editor-vue
  *
  * Vue 3 编辑器套件：富文本（Tiptap 3）、代码（Monaco）、JSON、Markdown（md-editor-v3）、纯文本。
  * 主题跟随与图片上传可通过 provideEditorEnv 注入，缺省零配置可用。

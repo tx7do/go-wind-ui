@@ -16,7 +16,7 @@ export default defineConfig({
         "vue",
         "element-plus",
         "@element-plus/icons-vue",
-        "@go-wind-ui/locale",
+        "@go-wind/locale",
         /^@tiptap\//,
         "highlight.js",
         "lowlight",

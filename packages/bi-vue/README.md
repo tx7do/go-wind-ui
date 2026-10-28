@@ -1,24 +1,24 @@
-# @go-wind-ui/bi-vue
+# @go-wind/bi-vue
 
-Vue 3 BI 仪表盘：`<BiDashboard>` 只读渲染器 + `<BiDesigner>` 画布设计器，构建在 `@go-wind-ui/bi-core` 的 schema 与状态机之上。设计文档：`docs/bi-designer.md`。
+Vue 3 BI 仪表盘：`<BiDashboard>` 只读渲染器 + `<BiDesigner>` 画布设计器，构建在 `@go-wind/bi-core` 的 schema 与状态机之上。设计文档：`docs/bi-designer.md`。
 
 ## 快速开始
 
 ```bash
-pnpm add @go-wind-ui/bi-vue
+pnpm add @go-wind/bi-vue
 ```
 
 ```ts
 // main.ts：vxe/EP 按你的应用惯例；BI 卡片颜色走 EP 变量 + 裸应用回退
-import "@go-wind-ui/bi-vue/style.css";
+import "@go-wind/bi-vue/style.css";
 ```
 
 ### 渲染器（只读）
 
 ```vue
 <script setup lang="ts">
-import { BiDashboard, provideBiEnv } from "@go-wind-ui/bi-vue";
-import type { BiDashboardSchema } from "@go-wind-ui/bi-core";
+import { BiDashboard, provideBiEnv } from "@go-wind/bi-vue";
+import type { BiDashboardSchema } from "@go-wind/bi-core";
 
 const schema: Partial<BiDashboardSchema> = { /* datasets + charts，见 bi-core README */ };
 

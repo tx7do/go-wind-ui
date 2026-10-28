@@ -1,11 +1,11 @@
-# @go-wind-ui/editor-vue
+# @go-wind/editor-vue
 
 Vue 3 编辑器套件：富文本（Tiptap 3）、代码（Monaco）、JSON（json-editor-vue）、Markdown（md-editor-v3）、纯文本。抽自 go-wind-admin 生产套件，主题跟随与图片上传可注入、缺省零配置可用。
 
 ## 安装
 
 ```bash
-pnpm add @go-wind-ui/editor-vue
+pnpm add @go-wind/editor-vue
 ```
 
 ## 快速开始
@@ -13,7 +13,7 @@ pnpm add @go-wind-ui/editor-vue
 ```vue
 <script setup lang="ts">
 import { ref } from "vue";
-import { Editor, EditorType } from "@go-wind-ui/editor-vue";
+import { Editor, EditorType } from "@go-wind/editor-vue";
 
 const content = ref("<p>hello</p>");
 </script>
@@ -29,7 +29,7 @@ const content = ref("<p>hello</p>");
 ## 环境注入（可选）
 
 ```ts
-import { provideEditorEnv } from "@go-wind-ui/editor-vue";
+import { provideEditorEnv } from "@go-wind/editor-vue";
 
 provideEditorEnv({
   // 图片上传：返回可内嵌 URL；缺省转 base64 data URL

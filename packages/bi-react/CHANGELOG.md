@@ -1,4 +1,4 @@
-# @go-wind-ui/bi-react
+# @go-wind/bi-react
 
 ## 0.2.0
 
@@ -6,9 +6,9 @@
 
 - [`563dfbe`](https://github.com/tx7do/go-wind-ui/commit/563dfbe1109c7838053085eb991d59113d126c13) Thanks [@tx7do](https://github.com/tx7do)! - BI dashboard suite (M0–M2 of docs/bi-designer.md):
 
-  - **@go-wind-ui/bi-core** (new): framework-agnostic kernel — versioned serializable dashboard schema (`schemaVersion: 1` with migrate entry), dataset model (static rows / api declared, resolved via injected resolvers — zero backend coupling), chart engine registry with built-in ECharts adapter (on-demand registration, 8 chart types: bar/line/area/pie/donut/scatter/radar/gauge), light/dark theme tokens compiled into options, grid layout math (`layoutCharts`, shared by renderer and designer canvas), and `BiDesignerApi` — a framework-agnostic designer state machine (select/add/remove/move/resize/compact/undo/redo/import/export) on a tiny snapshot store.
-  - **@go-wind-ui/bi-vue** (new): `<BiDashboard>` read-only renderer + `<BiDesigner>` canvas — dataset panel, pointer drag/resize with grid snapping, property panel, undo/redo, schema import/export, preview mode. `provideBiEnv` injects resolvers/theme/locale; dark theme auto-follows `html.dark`.
-  - **@go-wind-ui/bi-react** (new): `<BiProvider>` + `<BiDashboard>` renderer with identical schema and identical layout math (designer output renders pixel-identical); cards shipped with a stylesheet so bare antd hosts get dark-mode card chrome without Element Plus vars.
+  - **@go-wind/bi-core** (new): framework-agnostic kernel — versioned serializable dashboard schema (`schemaVersion: 1` with migrate entry), dataset model (static rows / api declared, resolved via injected resolvers — zero backend coupling), chart engine registry with built-in ECharts adapter (on-demand registration, 8 chart types: bar/line/area/pie/donut/scatter/radar/gauge), light/dark theme tokens compiled into options, grid layout math (`layoutCharts`, shared by renderer and designer canvas), and `BiDesignerApi` — a framework-agnostic designer state machine (select/add/remove/move/resize/compact/undo/redo/import/export) on a tiny snapshot store.
+  - **@go-wind/bi-vue** (new): `<BiDashboard>` read-only renderer + `<BiDesigner>` canvas — dataset panel, pointer drag/resize with grid snapping, property panel, undo/redo, schema import/export, preview mode. `provideBiEnv` injects resolvers/theme/locale; dark theme auto-follows `html.dark`.
+  - **@go-wind/bi-react** (new): `<BiProvider>` + `<BiDashboard>` renderer with identical schema and identical layout math (designer output renders pixel-identical); cards shipped with a stylesheet so bare antd hosts get dark-mode card chrome without Element Plus vars.
   - Designer-react bridge and AntV/AI hooks are planned M3/M4 (see docs/bi-designer.md).
 
 - [`d12cd4c`](https://github.com/tx7do/go-wind-ui/commit/d12cd4cf3e1c1820d94775e1c2aec4fb67fff9a6) Thanks [@tx7do](https://github.com/tx7do)! - BI designer M3/M4 completion — everything planned in docs/bi-designer.md now shipped:
@@ -30,7 +30,7 @@
   - **bi-vue / bi-react BiDashboard**: preset chrome applied via `--bi-card-*` / `--bi-canvas-bg` variable injection (card styles now consume the variable chain), chart themes pinned to the preset mode/palette; new `view` prop `{ designWidth, fit: "width" | "none" }` renders the dashboard on a fixed design width with proportional scale-to-fit (大屏等比缩放容器).
   - **bi-vue BiDesigner**: toolbar theme-preset select (auto / 5 presets). The canvas injects the preset variables so cards, canvas and in-canvas charts all preview the dashboard theme live while editing.
 
-- [`e886808`](https://github.com/tx7do/go-wind-ui/commit/e886808c122536d7e610b0916f2dfc35f457b024) Thanks [@tx7do](https://github.com/tx7do)! - - **bi-react**: `BiDesignerReact` — the M3 designer bridge. Mounts the Vue `<BiDesigner>` canvas inside a React host via `createApp` (props: `initialSchema` mount-time snapshot / `demo` / `onChange` / `env`), so React apps get the full designer (datasets panel, drag/resize, property panel, undo/redo, import/export) with identical schema and layout math. Requires `vue` peer and `@go-wind-ui/bi-vue`.
+- [`e886808`](https://github.com/tx7do/go-wind-ui/commit/e886808c122536d7e610b0916f2dfc35f457b024) Thanks [@tx7do](https://github.com/tx7do)! - - **bi-react**: `BiDesignerReact` — the M3 designer bridge. Mounts the Vue `<BiDesigner>` canvas inside a React host via `createApp` (props: `initialSchema` mount-time snapshot / `demo` / `onChange` / `env`), so React apps get the full designer (datasets panel, drag/resize, property panel, undo/redo, import/export) with identical schema and layout math. Requires `vue` peer and `@go-wind/bi-vue`.
 
   - **bi-vue**: global dark-mode stylesheet overrides (`html.dark .bi-designer*`, EP-dark equivalents with `--bi-*` host variable chain) so the designer and renderer surfaces follow dark mode on bare hosts without Element Plus css-vars (e.g. pure antd apps).
   - playground-react: editor kind-switch no longer leaks into the BI view; BI demo now has a working renderer/designer toggle via the bridge.
@@ -54,5 +54,5 @@
   **playground**: demos for funnel (conversion), heatmap (time-bucket matrix), sankey (service call flow).
 
 - Updated dependencies [[`563dfbe`](https://github.com/tx7do/go-wind-ui/commit/563dfbe1109c7838053085eb991d59113d126c13), [`d12cd4c`](https://github.com/tx7do/go-wind-ui/commit/d12cd4cf3e1c1820d94775e1c2aec4fb67fff9a6), [`9fd0c18`](https://github.com/tx7do/go-wind-ui/commit/9fd0c1882044ab45867bb3440b565169e544b874), [`8358302`](https://github.com/tx7do/go-wind-ui/commit/83583029ee97ae8c3fd2648b785dcc8a3e9982c4), [`e886808`](https://github.com/tx7do/go-wind-ui/commit/e886808c122536d7e610b0916f2dfc35f457b024), [`969467b`](https://github.com/tx7do/go-wind-ui/commit/969467b92fee7a135dd0ff42c0570ee460a14777), [`ff00c44`](https://github.com/tx7do/go-wind-ui/commit/ff00c44f00bf4a0e28bb9588b51f3d1a144709fa)]:
-  - @go-wind-ui/bi-core@0.2.0
-  - @go-wind-ui/bi-vue@0.2.0
+  - @go-wind/bi-core@0.2.0
+  - @go-wind/bi-vue@0.2.0

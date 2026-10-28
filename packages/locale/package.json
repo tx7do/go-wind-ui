@@ -1,5 +1,5 @@
 {
-  "name": "@go-wind-ui/locale",
+  "name": "@go-wind/locale",
   "version": "0.2.0",
   "description": "Tiny reactive i18n store factory shared by go-wind-ui packages: built-in locale packs, dot-path lookup, {param} interpolation, no vue-i18n dependency.",
   "type": "module",

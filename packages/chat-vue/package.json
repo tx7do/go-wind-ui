@@ -1,5 +1,5 @@
 {
-  "name": "@go-wind-ui/chat-vue",
+  "name": "@go-wind/chat-vue",
   "version": "0.2.0",
   "description": "AI streaming chat UI for Vue 3: message list with markdown rendering, typing indicator, auto-scroll, chat input with stop — transport injected by the host.",
   "type": "module",
@@ -32,7 +32,7 @@
     "vue": ">=3.5.0"
   },
   "dependencies": {
-    "@go-wind-ui/locale": "workspace:*",
+    "@go-wind/locale": "workspace:*",
     "dompurify": "^3.2.0",
     "marked": "^18.0.3"
   },

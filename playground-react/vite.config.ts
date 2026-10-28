@@ -9,67 +9,67 @@ export default defineConfig({
     alias: [
       {
         // 开发态直连包源码（热更新），发布产物仍走包的 exports
-        find: "@go-wind-ui/editor-react/style.css",
+        find: "@go-wind/editor-react/style.css",
         replacement: fileURLToPath(
           new URL("../packages/editor-react/src/tiptap-editor.css", import.meta.url)
         ),
       },
       {
-        find: "@go-wind-ui/bi-vue",
+        find: "@go-wind/bi-vue",
         replacement: fileURLToPath(
           new URL("../packages/bi-vue/src/index.ts", import.meta.url)
         ),
       },
       {
-        find: "@go-wind-ui/bi-react/style.css",
+        find: "@go-wind/bi-react/style.css",
         replacement: fileURLToPath(
           new URL("../packages/bi-react/src/styles.css", import.meta.url)
         ),
       },
       {
-        find: "@go-wind-ui/bi-react",
+        find: "@go-wind/bi-react",
         replacement: fileURLToPath(
           new URL("../packages/bi-react/src/index.ts", import.meta.url)
         ),
       },
       {
-        find: "@go-wind-ui/bi-engine-s2",
+        find: "@go-wind/bi-engine-s2",
         replacement: fileURLToPath(
           new URL("../packages/bi-engine-s2/src/index.ts", import.meta.url)
         ),
       },
       {
-        find: "@go-wind-ui/bi-engine-g6",
+        find: "@go-wind/bi-engine-g6",
         replacement: fileURLToPath(
           new URL("../packages/bi-engine-g6/src/index.ts", import.meta.url)
         ),
       },
       {
-        find: "@go-wind-ui/bi-core",
+        find: "@go-wind/bi-core",
         replacement: fileURLToPath(
           new URL("../packages/bi-core/src/index.ts", import.meta.url)
         ),
       },
       {
-        find: "@go-wind-ui/locale",
+        find: "@go-wind/locale",
         replacement: fileURLToPath(
           new URL("../packages/locale/src/index.ts", import.meta.url)
         ),
       },
       {
-        find: "@go-wind-ui/chat-react/style.css",
+        find: "@go-wind/chat-react/style.css",
         replacement: fileURLToPath(
           new URL("../packages/chat-react/src/styles.css", import.meta.url)
         ),
       },
       {
-        find: "@go-wind-ui/chat-react",
+        find: "@go-wind/chat-react",
         replacement: fileURLToPath(
           new URL("../packages/chat-react/src/index.ts", import.meta.url)
         ),
       },
       {
-        find: "@go-wind-ui/editor-react",
+        find: "@go-wind/editor-react",
         replacement: fileURLToPath(
           new URL("../packages/editor-react/src/index.ts", import.meta.url)
         ),
@@ -78,14 +78,14 @@ export default defineConfig({
   },
   optimizeDeps: {
     exclude: [
-      "@go-wind-ui/editor-react",
-      "@go-wind-ui/bi-react",
-      "@go-wind-ui/bi-vue",
-      "@go-wind-ui/bi-core",
-      "@go-wind-ui/bi-engine-s2",
-      "@go-wind-ui/bi-engine-g6",
-      "@go-wind-ui/chat-react",
-      "@go-wind-ui/locale",
+      "@go-wind/editor-react",
+      "@go-wind/bi-react",
+      "@go-wind/bi-vue",
+      "@go-wind/bi-core",
+      "@go-wind/bi-engine-s2",
+      "@go-wind/bi-engine-g6",
+      "@go-wind/chat-react",
+      "@go-wind/locale",
     ],
   },
   server: {

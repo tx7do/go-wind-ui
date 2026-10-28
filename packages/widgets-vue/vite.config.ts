@@ -11,7 +11,7 @@ export default defineConfig({
       fileName: () => "widgets-vue.js",
     },
     rollupOptions: {
-      external: ["vue", "element-plus", "@go-wind-ui/locale"],
+      external: ["vue", "element-plus", "@go-wind/locale"],
     },
     cssCodeSplit: false,
     sourcemap: true,

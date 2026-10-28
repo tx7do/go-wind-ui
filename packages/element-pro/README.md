@@ -1,4 +1,4 @@
-# @go-wind-ui/element-pro
+# @go-wind/element-pro
 
 一套基于 Vue 3 + Element Plus + vxe-table 的企业级业务组件库，提供**配置化驱动**的 CRUD 页面开发体验。
 
@@ -9,7 +9,7 @@
 ## 安装与集成
 
 ```bash
-pnpm add @go-wind-ui/element-pro
+pnpm add @go-wind/element-pro
 ```
 
 ```ts
@@ -19,7 +19,7 @@ import "element-plus/dist/index.css";
 import "element-plus/theme-chalk/dark/css-vars.css";
 import VXETable from "vxe-table";
 import "vxe-table/lib/style.css";
-import "@go-wind-ui/element-pro/style.css";
+import "@go-wind/element-pro/style.css";
 
 const app = createApp(App);
 app.use(ElementPlus); // 注册 v-loading 等指令
@@ -94,7 +94,7 @@ Pro/
 </template>
 
 <script setup lang="ts">
-import { ProPage, type ProPageConfig } from "@go-wind-ui/element-pro";
+import { ProPage, type ProPageConfig } from "@go-wind/element-pro";
 
 const pageConfig: ProPageConfig = {
   table: {
@@ -129,7 +129,7 @@ const pageConfig: ProPageConfig = {
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { ProPage, type ProPageConfig } from "@go-wind-ui/element-pro";
+import { ProPage, type ProPageConfig } from "@go-wind/element-pro";
 
 const pageRef = ref();
 
@@ -198,7 +198,7 @@ Pro 组件库设计为**渐进式**，从 0 模板的配置驱动到完全自由
 </template>
 
 <script setup lang="ts">
-import { ProPage, type ProPageConfig } from "@go-wind-ui/element-pro";
+import { ProPage, type ProPageConfig } from "@go-wind/element-pro";
 import { fetchListTenants, useDeleteTenant } from "@/api/composables";
 import { PaginationQuery } from "@/core/transport/rest";
 
@@ -303,7 +303,7 @@ const pageConfig: ProPageConfig = {
 <script setup lang="ts">
 import { ref, watch } from "vue";
 import { ElCard, ElTree, ElTag } from "element-plus";
-import { useProPage, type ProPageConfig } from "@go-wind-ui/element-pro";
+import { useProPage, type ProPageConfig } from "@go-wind/element-pro";
 
 // useProPage 返回 [组件, api]
 const [Page, pageApi] = useProPage({
@@ -443,7 +443,7 @@ Level 1 的配置 + 插槽 + 事件组合，可以覆盖大多数复杂场景，
 <script setup lang="ts">
 import { ref } from "vue";
 import { ElTag, ElSwitch, ElDescriptions, ElDescriptionsItem, ElButton } from "element-plus";
-import { ProPage, type ProPageConfig } from "@go-wind-ui/element-pro";
+import { ProPage, type ProPageConfig } from "@go-wind/element-pro";
 
 const pageRef = ref();
 
@@ -483,7 +483,7 @@ function handleBatchExport() { /* 批量导出逻辑 */ }
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { ProPage } from "@go-wind-ui/element-pro";
+import { ProPage } from "@go-wind/element-pro";
 import TenantDrawer from "./tenant-drawer.vue";
 
 const pageRef = ref();
@@ -533,7 +533,7 @@ function handleSuccess() {
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { ProPage, useProModal, type ProPageConfig } from "@go-wind-ui/element-pro";
+import { ProPage, useProModal, type ProPageConfig } from "@go-wind/element-pro";
 import UserDrawer from "./user-drawer.vue";
 
 const pageRef = ref();
@@ -582,7 +582,7 @@ function handleEdit(row: any) {
 
 <script setup lang="ts">
 import { ref, reactive, computed } from "vue";
-import { injectProModalApi } from "@go-wind-ui/element-pro";
+import { injectProModalApi } from "@go-wind/element-pro";
 
 // 通过 inject 获取列表页传入的 modalApi
 const modalApi = injectProModalApi();
@@ -694,7 +694,7 @@ import {
   type ProTableColumn,
   type ProModalConfig,
   type ToolbarButton,
-} from "@go-wind-ui/element-pro";
+} from "@go-wind/element-pro";
 
 // === 搜索 ===
 const searchFields: ProFormField[] = [
@@ -1132,7 +1132,7 @@ interface ProFormField<T> {
 表格数据状态管理，处理分页、加载、选中。
 
 ```typescript
-import { useTableState } from "@go-wind-ui/element-pro";
+import { useTableState } from "@go-wind/element-pro";
 
 const tableState = useTableState({
   indexAction: (params) => fetchList(params), // 必填
@@ -1157,7 +1157,7 @@ tableState.getSelectionIds() // 获取选中行 ID
 弹窗状态管理。
 
 ```typescript
-import { useModalState } from "@go-wind-ui/element-pro";
+import { useModalState } from "@go-wind/element-pro";
 
 const modalState = useModalState("id"); // 传入 rowKey
 
@@ -1173,7 +1173,7 @@ modalState.open(mode, row?) // 打开弹窗
 命令式 Api 控制。
 
 ```typescript
-import { useProPage } from "@go-wind-ui/element-pro";
+import { useProPage } from "@go-wind/element-pro";
 
 const [Page, pageApi] = useProPage({
   table: {
@@ -1212,7 +1212,7 @@ pageApi.waitForMounted()                        // 等待组件挂载
 弹窗抽离，通过 `connectedComponent` + provide/inject 将弹窗组件自包含。
 
 ```typescript
-import { useProModal, injectProModalApi } from "@go-wind-ui/element-pro";
+import { useProModal, injectProModalApi } from "@go-wind/element-pro";
 
 // === 列表页 ===
 const [Modal, modalApi] = useProModal({

@@ -31,11 +31,11 @@ import {
   CodeEditor,
   JsonEditor,
   PlainTextEditor,
-} from "@go-wind-ui/editor-vue";
+} from "@go-wind/editor-vue";
 
 const current = ref("tiptap");
 
-const html = ref(`<h2>@go-wind-ui/editor-vue</h2>
+const html = ref(`<h2>@go-wind/editor-vue</h2>
 <p>富文本编辑器：<strong>加粗</strong>、<em>斜体</em>、<u>下划线</u>、<code>行内代码</code>。</p>
 <ul><li>列表项一</li><li>列表项二</li></ul>
 <p>直接粘贴或拖入图片试试（缺省转 base64）。</p>`);

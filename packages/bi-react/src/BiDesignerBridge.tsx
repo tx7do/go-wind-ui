@@ -8,8 +8,8 @@
 import { useEffect, useRef } from "react";
 import { createApp, defineComponent, h } from "vue";
 import type { Component, App as VueApp } from "vue";
-import { BiDesigner, provideBiEnv } from "@go-wind-ui/bi-vue";
-import type { BiDashboardSchema } from "@go-wind-ui/bi-core";
+import { BiDesigner, provideBiEnv } from "@go-wind/bi-vue";
+import type { BiDashboardSchema } from "@go-wind/bi-core";
 
 import type { BiEnv } from "./env";
 

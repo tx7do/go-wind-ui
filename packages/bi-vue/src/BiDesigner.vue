@@ -682,7 +682,7 @@ import {
   inferFieldType,
   layoutCharts,
   resolveDatasetRows,
-} from "@go-wind-ui/bi-core";
+} from "@go-wind/bi-core";
 import type {
   BiChartFilter,
   BiChartSchema,
@@ -690,7 +690,7 @@ import type {
   BiDashboardSchema,
   BiDatasetData,
   BiPlacedChart,
-} from "@go-wind-ui/bi-core";
+} from "@go-wind/bi-core";
 
 import { applyBiLocaleFromEnv, useBiEnv, useBiI18n, useBiTheme } from "./env";
 import BiChart from "./BiChart.vue";

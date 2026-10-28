@@ -1,16 +1,16 @@
-# @go-wind-ui/bi-react
+# @go-wind/bi-react
 
-React 19 BI 仪表盘渲染器，构建在 `@go-wind-ui/bi-core` 之上（设计器当前为 Vue 一等公民，React 侧桥接壳规划于 M3）。设计文档：`docs/bi-designer.md`。
+React 19 BI 仪表盘渲染器，构建在 `@go-wind/bi-core` 之上（设计器当前为 Vue 一等公民，React 侧桥接壳规划于 M3）。设计文档：`docs/bi-designer.md`。
 
 ## 快速开始
 
 ```bash
-pnpm add @go-wind-ui/bi-react
+pnpm add @go-wind/bi-react
 ```
 
 ```tsx
-import "@go-wind-ui/bi-react/style.css";
-import { BiProvider, BiDashboard } from "@go-wind-ui/bi-react";
+import "@go-wind/bi-react/style.css";
+import { BiProvider, BiDashboard } from "@go-wind/bi-react";
 
 <BiProvider
   env={{
@@ -29,7 +29,7 @@ import { BiProvider, BiDashboard } from "@go-wind-ui/bi-react";
 设计器画布是 Vue 一等公民；React 侧经 `BiDesignerReact` 桥接使用（内部 createApp 挂载 Vue 版设计器，schema/布局数学/主题同源）：
 
 ```tsx
-import { BiDesignerReact } from "@go-wind-ui/bi-react";
+import { BiDesignerReact } from "@go-wind/bi-react";
 
 <BiDesignerReact
   demo // 无 initialSchema 时内置演示 schema

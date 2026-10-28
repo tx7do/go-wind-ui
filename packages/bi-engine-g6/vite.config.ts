@@ -9,7 +9,7 @@ export default defineConfig({
       fileName: () => "bi-engine-g6.js",
     },
     rollupOptions: {
-      external: ["@antv/g6", "@go-wind-ui/bi-core", /^echarts/, "echarts"],
+      external: ["@antv/g6", "@go-wind/bi-core", /^echarts/, "echarts"],
     },
     cssCodeSplit: false,
     sourcemap: true,

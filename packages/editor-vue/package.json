@@ -1,5 +1,5 @@
 {
-  "name": "@go-wind-ui/editor-vue",
+  "name": "@go-wind/editor-vue",
   "version": "0.2.0",
   "description": "Vue 3 editor suite: Tiptap 3 rich text, Monaco code, JSON, Markdown (md-editor-v3), plain text — theme-aware and zero-config with injectable upload.",
   "type": "module",
@@ -35,7 +35,7 @@
     "@element-plus/icons-vue": ">=2.3.0"
   },
   "dependencies": {
-    "@go-wind-ui/locale": "workspace:*",
+    "@go-wind/locale": "workspace:*",
     "@tiptap/core": "^3.20.0",
     "@tiptap/extension-code-block-lowlight": "^3.20.0",
     "@tiptap/extension-color": "^3.20.0",

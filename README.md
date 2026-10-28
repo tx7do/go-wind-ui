@@ -4,18 +4,18 @@ Framework-generic admin UI building blocks from the [GoWind](https://github.com/
 
 | Package | Description | Status |
 |---------|-------------|--------|
-| [`@go-wind-ui/element-pro`](./packages/element-pro) | Config-driven CRUD pages for Vue 3 + Element Plus + vxe-table: search bar, toolbar, dual-engine table, pagination, form modal, full-page orchestration | v0.1 |
-| [`@go-wind-ui/editor-vue`](./packages/editor-vue) | Vue 3 editor suite: Tiptap rich text, Monaco code, JSON, Markdown, plain text | v0.1 |
-| [`@go-wind-ui/editor-react`](./packages/editor-react) | React 19 editor suite: same five editors, antd-based modals | v0.1 |
-| [`@go-wind-ui/locale`](./packages/locale) | Tiny reactive i18n store factory shared by the packages above | v0.1 |
-| [`@go-wind-ui/bi-core`](./packages/bi-core) | Framework-agnostic BI kernel: serializable dashboard schema, ECharts engine registry, designer state machine | v0.1 |
-| [`@go-wind-ui/bi-vue`](./packages/bi-vue) | Vue 3 BI dashboard renderer + designer canvas (drag/resize grid, undo/redo, schema import/export) | v0.1 |
-| [`@go-wind-ui/bi-react`](./packages/bi-react) | React 19 BI dashboard renderer + designer bridge (same schema, same layout math) | v0.1 |
-| [`@go-wind-ui/bi-engine-s2`](./packages/bi-engine-s2) | AntV S2 pivot-table engine adapter (optional, tree-shakeable) | v0.1 |
-| [`@go-wind-ui/bi-engine-g6`](./packages/bi-engine-g6) | AntV G6 relation-graph engine adapter (optional, tree-shakeable) | v0.1 |
-| [`@go-wind-ui/widgets-vue`](./packages/widgets-vue) | Admin shell widgets for Vue 3: notification bell, Ctrl+K command palette, theme switch, language select | v0.1 |
-| [`@go-wind-ui/chat-vue`](./packages/chat-vue) | AI streaming chat UI for Vue 3 (markdown, typing, stop; transport injected) | v0.1 |
-| [`@go-wind-ui/chat-react`](./packages/chat-react) | React 19 mirror of chat-vue | v0.1 |
+| [`@go-wind/element-pro`](./packages/element-pro) | Config-driven CRUD pages for Vue 3 + Element Plus + vxe-table: search bar, toolbar, dual-engine table, pagination, form modal, full-page orchestration | v0.1 |
+| [`@go-wind/editor-vue`](./packages/editor-vue) | Vue 3 editor suite: Tiptap rich text, Monaco code, JSON, Markdown, plain text | v0.1 |
+| [`@go-wind/editor-react`](./packages/editor-react) | React 19 editor suite: same five editors, antd-based modals | v0.1 |
+| [`@go-wind/locale`](./packages/locale) | Tiny reactive i18n store factory shared by the packages above | v0.1 |
+| [`@go-wind/bi-core`](./packages/bi-core) | Framework-agnostic BI kernel: serializable dashboard schema, ECharts engine registry, designer state machine | v0.1 |
+| [`@go-wind/bi-vue`](./packages/bi-vue) | Vue 3 BI dashboard renderer + designer canvas (drag/resize grid, undo/redo, schema import/export) | v0.1 |
+| [`@go-wind/bi-react`](./packages/bi-react) | React 19 BI dashboard renderer + designer bridge (same schema, same layout math) | v0.1 |
+| [`@go-wind/bi-engine-s2`](./packages/bi-engine-s2) | AntV S2 pivot-table engine adapter (optional, tree-shakeable) | v0.1 |
+| [`@go-wind/bi-engine-g6`](./packages/bi-engine-g6) | AntV G6 relation-graph engine adapter (optional, tree-shakeable) | v0.1 |
+| [`@go-wind/widgets-vue`](./packages/widgets-vue) | Admin shell widgets for Vue 3: notification bell, Ctrl+K command palette, theme switch, language select | v0.1 |
+| [`@go-wind/chat-vue`](./packages/chat-vue) | AI streaming chat UI for Vue 3 (markdown, typing, stop; transport injected) | v0.1 |
+| [`@go-wind/chat-react`](./packages/chat-react) | React 19 mirror of chat-vue | v0.1 |
 
 ## Why
 

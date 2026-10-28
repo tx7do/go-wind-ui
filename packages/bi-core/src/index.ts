@@ -1,5 +1,5 @@
 /**
- * @go-wind-ui/bi-core
+ * @go-wind/bi-core
  *
  * 框架无关的 BI 仪表盘内核：schema、数据集解析、图表引擎注册表（内置 ECharts
  * 适配器）、主题 token、设计器状态机。渲染器（bi-vue / bi-react）与设计器

@@ -40,7 +40,7 @@ importers:
         specifier: ^5.0.0
         version: 5.1.1
     devDependencies:
-      '@go-wind-ui/bi-core':
+      '@go-wind/bi-core':
         specifier: workspace:*
         version: link:../bi-core
       typescript:
@@ -56,7 +56,7 @@ importers:
         specifier: ^2.0.0
         version: 2.7.2
     devDependencies:
-      '@go-wind-ui/bi-core':
+      '@go-wind/bi-core':
         specifier: workspace:*
         version: link:../bi-core
       typescript:
@@ -68,10 +68,10 @@ importers:
 
   packages/bi-react:
     dependencies:
-      '@go-wind-ui/bi-core':
+      '@go-wind/bi-core':
         specifier: workspace:*
         version: link:../bi-core
-      '@go-wind-ui/bi-vue':
+      '@go-wind/bi-vue':
         specifier: workspace:*
         version: link:../bi-vue
     devDependencies:
@@ -102,10 +102,10 @@ importers:
 
   packages/bi-vue:
     dependencies:
-      '@go-wind-ui/bi-core':
+      '@go-wind/bi-core':
         specifier: workspace:*
         version: link:../bi-core
-      '@go-wind-ui/locale':
+      '@go-wind/locale':
         specifier: workspace:*
         version: link:../locale
     devDependencies:
@@ -161,7 +161,7 @@ importers:
 
   packages/chat-vue:
     dependencies:
-      '@go-wind-ui/locale':
+      '@go-wind/locale':
         specifier: workspace:*
         version: link:../locale
       dompurify:
@@ -307,7 +307,7 @@ importers:
 
   packages/editor-vue:
     dependencies:
-      '@go-wind-ui/locale':
+      '@go-wind/locale':
         specifier: workspace:*
         version: link:../locale
       '@tiptap/core':
@@ -431,7 +431,7 @@ importers:
       '@element-plus/icons-vue':
         specifier: ^2.3.2
         version: 2.3.2(vue@3.5.44(typescript@5.9.3))
-      '@go-wind-ui/locale':
+      '@go-wind/locale':
         specifier: workspace:*
         version: link:../locale
       '@iconify/vue':
@@ -495,7 +495,7 @@ importers:
 
   packages/widgets-vue:
     dependencies:
-      '@go-wind-ui/locale':
+      '@go-wind/locale':
         specifier: workspace:*
         version: link:../locale
     devDependencies:
@@ -520,25 +520,25 @@ importers:
 
   playground:
     dependencies:
-      '@go-wind-ui/bi-engine-g6':
+      '@go-wind/bi-engine-g6':
         specifier: workspace:*
         version: link:../packages/bi-engine-g6
-      '@go-wind-ui/bi-engine-s2':
+      '@go-wind/bi-engine-s2':
         specifier: workspace:*
         version: link:../packages/bi-engine-s2
-      '@go-wind-ui/bi-vue':
+      '@go-wind/bi-vue':
         specifier: workspace:*
         version: link:../packages/bi-vue
-      '@go-wind-ui/chat-vue':
+      '@go-wind/chat-vue':
         specifier: workspace:*
         version: link:../packages/chat-vue
-      '@go-wind-ui/editor-vue':
+      '@go-wind/editor-vue':
         specifier: workspace:*
         version: link:../packages/editor-vue
-      '@go-wind-ui/element-pro':
+      '@go-wind/element-pro':
         specifier: workspace:*
         version: link:../packages/element-pro
-      '@go-wind-ui/widgets-vue':
+      '@go-wind/widgets-vue':
         specifier: workspace:*
         version: link:../packages/widgets-vue
       element-plus:
@@ -572,22 +572,22 @@ importers:
       '@ant-design/icons':
         specifier: ^5.6.1
         version: 5.6.1(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
-      '@go-wind-ui/bi-engine-g6':
+      '@go-wind/bi-engine-g6':
         specifier: workspace:*
         version: link:../packages/bi-engine-g6
-      '@go-wind-ui/bi-engine-s2':
+      '@go-wind/bi-engine-s2':
         specifier: workspace:*
         version: link:../packages/bi-engine-s2
-      '@go-wind-ui/bi-react':
+      '@go-wind/bi-react':
         specifier: workspace:*
         version: link:../packages/bi-react
-      '@go-wind-ui/bi-vue':
+      '@go-wind/bi-vue':
         specifier: workspace:*
         version: link:../packages/bi-vue
-      '@go-wind-ui/chat-react':
+      '@go-wind/chat-react':
         specifier: workspace:*
         version: link:../packages/chat-react
-      '@go-wind-ui/editor-react':
+      '@go-wind/editor-react':
         specifier: workspace:*
         version: link:../packages/editor-react
       antd:

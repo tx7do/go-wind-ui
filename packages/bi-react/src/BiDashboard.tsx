@@ -12,14 +12,14 @@ import {
   layoutCharts,
   resolveDashboardTheme,
   resolveDatasetRows,
-} from "@go-wind-ui/bi-core";
-import type { BiDashboardThemePreset } from "@go-wind-ui/bi-core";
+} from "@go-wind/bi-core";
+import type { BiDashboardThemePreset } from "@go-wind/bi-core";
 import type {
   BiChartEvent,
   BiChartSchema,
   BiDashboardSchema,
   BiDatasetData,
-} from "@go-wind-ui/bi-core";
+} from "@go-wind/bi-core";
 
 import { useBiEnv, useBiTheme, useContainerWidth } from "./env";
 import { BiChart } from "./BiChart";

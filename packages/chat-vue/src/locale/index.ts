@@ -1,7 +1,7 @@
 /**
  * chat 文案包（widgets 同款工厂）。
  */
-import { createLocaleStore } from "@go-wind-ui/locale";
+import { createLocaleStore } from "@go-wind/locale";
 
 const ZH = {
   chat: {

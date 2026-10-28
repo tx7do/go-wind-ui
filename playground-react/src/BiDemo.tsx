@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Radio } from "antd";
-import { BiProvider, BiDashboard, BiDesignerReact } from "@go-wind-ui/bi-react";
-import type { BiDashboardSchema } from "@go-wind-ui/bi-core";
+import { BiProvider, BiDashboard, BiDesignerReact } from "@go-wind/bi-react";
+import type { BiDashboardSchema } from "@go-wind/bi-core";
 
 const SCHEMA: Partial<BiDashboardSchema> = {
   name: "render-demo",

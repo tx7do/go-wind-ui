@@ -7,7 +7,7 @@
  */
 import { computed, inject, provide, ref, watchEffect } from "vue";
 import type { ComputedRef, InjectionKey, Ref } from "vue";
-import { createLocaleStore } from "@go-wind-ui/locale";
+import { createLocaleStore } from "@go-wind/locale";
 
 import zhCN from "./locale/zh-CN";
 import enUS from "./locale/en-US";

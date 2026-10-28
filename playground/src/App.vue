@@ -10,7 +10,7 @@
         </ElRadioGroup>
       </div>
       <header class="pg-header">
-        <h1>@go-wind-ui/element-pro playground</h1>
+        <h1>@go-wind/element-pro playground</h1>
         <div class="pg-controls">
           <ElSwitch v-model="dark" active-text="暗色" inactive-text="亮色" />
           <ElSelect v-model="locale" style="width: 120px">
@@ -45,9 +45,9 @@ import {
   ProConfigProvider,
   ProPage,
   type ProPageConfig,
-} from "@go-wind-ui/element-pro";
-import { setEditorLocale } from "@go-wind-ui/editor-vue";
-import { setBiLocale } from "@go-wind-ui/bi-vue";
+} from "@go-wind/element-pro";
+import { setEditorLocale } from "@go-wind/editor-vue";
+import { setBiLocale } from "@go-wind/bi-vue";
 import BiDemo from "./BiDemo.vue";
 import SuiteDemo from "./SuiteDemo.vue";
 import EditorDemo from "./EditorDemo.vue";

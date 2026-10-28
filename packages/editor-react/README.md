@@ -1,17 +1,17 @@
-# @go-wind-ui/editor-react
+# @go-wind/editor-react
 
 React 19 编辑器套件：富文本（Tiptap 3）、代码（Monaco）、JSON、Markdown（md-editor-rt）、纯文本。抽自 go-wind-admin 生产套件，主题跟随与图片上传可注入、缺省零配置可用。
 
 ## 安装
 
 ```bash
-pnpm add @go-wind-ui/editor-react
+pnpm add @go-wind/editor-react
 ```
 
 ## 快速开始
 
 ```tsx
-import { Editor, EditorType } from "@go-wind-ui/editor-react";
+import { Editor, EditorType } from "@go-wind/editor-react";
 
 <Editor
   value={html}
@@ -26,7 +26,7 @@ import { Editor, EditorType } from "@go-wind-ui/editor-react";
 ## 环境注入（可选）
 
 ```tsx
-import { EditorProvider } from "@go-wind-ui/editor-react";
+import { EditorProvider } from "@go-wind/editor-react";
 
 <EditorProvider
   env={{

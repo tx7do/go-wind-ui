@@ -60,16 +60,16 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 import { ElLink } from "element-plus";
-import { ProDescriptions } from "@go-wind-ui/element-pro";
-import type { ProDescriptionSection } from "@go-wind-ui/element-pro";
+import { ProDescriptions } from "@go-wind/element-pro";
+import type { ProDescriptionSection } from "@go-wind/element-pro";
 import {
   NoticeDropdown,
   CommandPalette,
   ThemeSwitch,
   LangSelect,
   setWidgetsLocale,
-} from "@go-wind-ui/widgets-vue";
-import { ChatMessages, ChatInput, useChat, setChatLocale } from "@go-wind-ui/chat-vue";
+} from "@go-wind/widgets-vue";
+import { ChatMessages, ChatInput, useChat, setChatLocale } from "@go-wind/chat-vue";
 
 const props = defineProps<{ locale: "zh-CN" | "en-US"; dark: boolean }>();
 

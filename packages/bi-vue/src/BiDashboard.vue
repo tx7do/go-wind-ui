@@ -103,15 +103,15 @@ import {
   layoutCharts,
   resolveDashboardTheme,
   resolveDatasetRows,
-} from "@go-wind-ui/bi-core";
-import type { BiDashboardThemePreset } from "@go-wind-ui/bi-core";
+} from "@go-wind/bi-core";
+import type { BiDashboardThemePreset } from "@go-wind/bi-core";
 import type {
   BiChartEvent,
   BiChartSchema,
   BiDashboardSchema,
   BiDatasetData,
   BiRow,
-} from "@go-wind-ui/bi-core";
+} from "@go-wind/bi-core";
 
 import { applyBiLocaleFromEnv, useBiEnv, useBiI18n, useBiTheme } from "./env";
 import BiChart from "./BiChart.vue";

@@ -5,9 +5,9 @@ import "element-plus/theme-chalk/dark/css-vars.css";
 import VXETable from "vxe-table";
 import "vxe-table/lib/style.css";
 
-import "@go-wind-ui/element-pro/style.css";
-import { installS2Engine } from "@go-wind-ui/bi-engine-s2";
-import { installG6Engine } from "@go-wind-ui/bi-engine-g6";
+import "@go-wind/element-pro/style.css";
+import { installS2Engine } from "@go-wind/bi-engine-s2";
+import { installG6Engine } from "@go-wind/bi-engine-g6";
 
 installS2Engine();
 installG6Engine();

@@ -1,5 +1,5 @@
 /**
- * @go-wind-ui/chat-vue
+ * @go-wind/chat-vue
  *
  * AI 流式聊天 UI（Vue 3）：useChat 状态机 + ChatMessages + ChatInput。
  * 传输函数宿主注入（fetch stream / SSE / WebSocket 任选）。

@@ -1,11 +1,11 @@
 /**
- * element-pro 的 i18n：内部实现委托给 @go-wind-ui/locale 的 store 工厂，
+ * element-pro 的 i18n：内部实现委托给 @go-wind/locale 的 store 工厂，
  * 公开 API（$t / useI18n / i18n / setProLocale / setProMessages）保持稳定。
  *
  * - 默认 zh-CN，内置 zh-CN / en-US 两包
  * - ProConfigProvider 可传 locale 切换内置包，或传 messages 深合并覆盖
  */
-import { createLocaleStore } from "@go-wind-ui/locale";
+import { createLocaleStore } from "@go-wind/locale";
 import zhCN from "./zh-CN";
 import enUS from "./en-US";
 

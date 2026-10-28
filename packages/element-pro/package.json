@@ -1,5 +1,5 @@
 {
-  "name": "@go-wind-ui/element-pro",
+  "name": "@go-wind/element-pro",
   "version": "0.2.0",
   "description": "Config-driven CRUD page components for Vue 3 + Element Plus + vxe-table: search bar, toolbar, dual-engine table, pagination, form modal, full-page orchestration.",
   "type": "module",
@@ -45,7 +45,7 @@
     "defu": "^6.1.7",
     "exceljs": "^4.4.0",
     "sortablejs": "^1.15.7",
-    "@go-wind-ui/locale": "workspace:*"
+    "@go-wind/locale": "workspace:*"
   },
   "devDependencies": {
     "@types/sortablejs": "^1.15.9",

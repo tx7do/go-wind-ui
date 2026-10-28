@@ -1,5 +1,5 @@
 /**
- * @go-wind-ui/editor-react
+ * @go-wind/editor-react
  *
  * React 19 编辑器套件：富文本（Tiptap 3）、代码（Monaco）、JSON、Markdown（md-editor-rt）、纯文本。
  * 主题跟随与图片上传可通过 EditorProvider 注入，缺省零配置可用。

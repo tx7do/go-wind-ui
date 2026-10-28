@@ -1,8 +1,8 @@
 /**
- * @go-wind-ui/bi-vue
+ * @go-wind/bi-vue
  *
  * Vue 3 BI 仪表盘：BiDashboard 只读渲染器 + BiDesigner 画布设计器。
- * schema 与状态机在 @go-wind-ui/bi-core，设计文档见 docs/bi-designer.md。
+ * schema 与状态机在 @go-wind/bi-core，设计文档见 docs/bi-designer.md。
  */
 import "./styles/base.scss";
 

@@ -11,9 +11,9 @@ import {
   PlainTextEditor,
   setEditorLocale,
   type EditorLocale,
-} from "@go-wind-ui/editor-react";
+} from "@go-wind/editor-react";
 
-const SAMPLE_HTML = `<h2>@go-wind-ui/editor-react</h2>
+const SAMPLE_HTML = `<h2>@go-wind/editor-react</h2>
 <p>富文本编辑器：<strong>加粗</strong>、<em>斜体</em>、<u>下划线</u>、<code>行内代码</code>。</p>
 <ul><li>列表项一</li><li>列表项二</li></ul>
 <p>直接粘贴或拖入图片试试（缺省转 base64）。</p>`;
@@ -58,7 +58,7 @@ export default function App() {
       <div className="pg-app">
         <header className="pg-header">
           <Typography.Title level={4} style={{ margin: 0 }}>
-            @go-wind-ui/editor-react playground
+            @go-wind/editor-react playground
           </Typography.Title>
           <Space size="middle" align="center">
             <Radio.Group value={view} onChange={(e) => setView(e.target.value)}>

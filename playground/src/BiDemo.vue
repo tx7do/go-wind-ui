@@ -21,9 +21,9 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 import { ElRadioButton, ElRadioGroup } from "element-plus";
-import { BiDashboard, BiDesigner, provideBiEnv } from "@go-wind-ui/bi-vue";
-import { setBiLocale } from "@go-wind-ui/bi-vue";
-import type { BiDashboardSchema } from "@go-wind-ui/bi-core";
+import { BiDashboard, BiDesigner, provideBiEnv } from "@go-wind/bi-vue";
+import { setBiLocale } from "@go-wind/bi-vue";
+import type { BiDashboardSchema } from "@go-wind/bi-core";
 
 const props = defineProps<{ locale: "zh-CN" | "en-US" }>();
 

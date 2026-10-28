@@ -1,5 +1,5 @@
 /**
- * @go-wind-ui/bi-engine-g6
+ * @go-wind/bi-engine-g6
  *
  * AntV G6 关系图引擎适配器：注册图型 "graph"（引擎 "g6"）。
  * 可选安装——不用就不付体积；引入并 installG6Engine() 后，
@@ -10,8 +10,8 @@
  */
 import { Graph } from "@antv/g6";
 
-import { registerChartType, registerEngine } from "@go-wind-ui/bi-core";
-import type { BiChartSchema, BiRow, ChartEngine, ChartHandle } from "@go-wind-ui/bi-core";
+import { registerChartType, registerEngine } from "@go-wind/bi-core";
+import type { BiChartSchema, BiRow, ChartEngine, ChartHandle } from "@go-wind/bi-core";
 
 /** compile 产物：G6 options（不含 container） */
 interface G6Build {

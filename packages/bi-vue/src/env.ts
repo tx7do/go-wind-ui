@@ -4,9 +4,9 @@
  */
 import { computed, inject, provide, ref, watchEffect } from "vue";
 import type { ComputedRef, InjectionKey } from "vue";
-import { createLocaleStore } from "@go-wind-ui/locale";
-import { BI_MESSAGES_EN, BI_MESSAGES_ZH, detectDark, resolveTheme, watchDark } from "@go-wind-ui/bi-core";
-import type { BiDatasetResolver, BiResolvedTheme } from "@go-wind-ui/bi-core";
+import { createLocaleStore } from "@go-wind/locale";
+import { BI_MESSAGES_EN, BI_MESSAGES_ZH, detectDark, resolveTheme, watchDark } from "@go-wind/bi-core";
+import type { BiDatasetResolver, BiResolvedTheme } from "@go-wind/bi-core";
 
 export type BiLocale = "zh-CN" | "en-US";
 

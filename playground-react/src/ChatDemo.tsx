@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Radio } from "antd";
-import { ChatMessages, ChatInput, useChat } from "@go-wind-ui/chat-react";
+import { ChatMessages, ChatInput, useChat } from "@go-wind/chat-react";
 
 // 模拟流式传输（真实场景走 fetch stream / SSE）
 const transport = async ({ messages, signal, onChunk }: any) => {

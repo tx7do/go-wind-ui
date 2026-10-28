@@ -10,8 +10,8 @@ import {
   detectDark,
   resolveTheme,
   watchDark,
-} from "@go-wind-ui/bi-core";
-import type { BiDatasetResolver, BiResolvedTheme, TinyStore } from "@go-wind-ui/bi-core";
+} from "@go-wind/bi-core";
+import type { BiDatasetResolver, BiResolvedTheme, TinyStore } from "@go-wind/bi-core";
 
 export interface BiEnv {
   /** 宿主主题模式 getter；缺省自动跟随 html.dark + 系统偏好 */

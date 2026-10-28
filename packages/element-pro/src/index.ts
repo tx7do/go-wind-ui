@@ -1,5 +1,5 @@
 /**
- * @go-wind-ui/element-pro
+ * @go-wind/element-pro
  *
  * Vue 3 + Element Plus + vxe-table 的配置驱动 CRUD 组件库。
  * 一个配置对象描述一个完整列表页（搜索 → 工具栏 → 表格 → 分页 → 弹窗）。

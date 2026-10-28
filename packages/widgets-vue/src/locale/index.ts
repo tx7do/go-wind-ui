@@ -1,8 +1,8 @@
 /**
- * widgets 文案：经 @go-wind-ui/locale 工厂建包内实例。
+ * widgets 文案：经 @go-wind/locale 工厂建包内实例。
  * 键形 widgets.*；宿主经 setWidgetsLocale / setWidgetsMessages 接管。
  */
-import { createLocaleStore } from "@go-wind-ui/locale";
+import { createLocaleStore } from "@go-wind/locale";
 
 const ZH = {
   widgets: {

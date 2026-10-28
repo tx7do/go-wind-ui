@@ -1,5 +1,5 @@
 /**
- * @go-wind-ui/chat-react
+ * @go-wind/chat-react
  *
  * AI 流式聊天 UI（React 19）：useChat 状态机 + ChatMessages + ChatInput。
  * 传输函数宿主注入（fetch stream / SSE / WebSocket 任选）。
