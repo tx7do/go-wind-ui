@@ -60,8 +60,8 @@ jobs:
 
       # 预构建 playground 后用 vite preview 冒烟：
       # 静态服务消灭 dev 依赖预构建竞态（CI 冷缓存 500/504 根因）
-      - name: Build playgrounds
-        run: pnpm --filter playground build && pnpm --filter playground-react build
+      - name: Build all (packages + playgrounds)
+        run: pnpm run build
 
       - name: Run smoke (preview mode)
         run: node scripts/smoke.mjs --preview

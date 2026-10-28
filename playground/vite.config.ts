@@ -26,6 +26,12 @@ export default defineConfig({
         ),
       },
       {
+        find: "@go-wind-ui/locale",
+        replacement: fileURLToPath(
+          new URL("../packages/locale/src/index.ts", import.meta.url)
+        ),
+      },
+      {
         find: "@go-wind-ui/bi-engine-s2",
         replacement: fileURLToPath(
           new URL("../packages/bi-engine-s2/src/index.ts", import.meta.url)
