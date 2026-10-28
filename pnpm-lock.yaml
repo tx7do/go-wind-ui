@@ -529,12 +529,18 @@ importers:
       '@go-wind-ui/bi-vue':
         specifier: workspace:*
         version: link:../packages/bi-vue
+      '@go-wind-ui/chat-vue':
+        specifier: workspace:*
+        version: link:../packages/chat-vue
       '@go-wind-ui/editor-vue':
         specifier: workspace:*
         version: link:../packages/editor-vue
       '@go-wind-ui/element-pro':
         specifier: workspace:*
         version: link:../packages/element-pro
+      '@go-wind-ui/widgets-vue':
+        specifier: workspace:*
+        version: link:../packages/widgets-vue
       element-plus:
         specifier: ^2.13.5
         version: 2.14.7(vue@3.5.44(typescript@5.9.3))
@@ -578,6 +584,9 @@ importers:
       '@go-wind-ui/bi-vue':
         specifier: workspace:*
         version: link:../packages/bi-vue
+      '@go-wind-ui/chat-react':
+        specifier: workspace:*
+        version: link:../packages/chat-react
       '@go-wind-ui/editor-react':
         specifier: workspace:*
         version: link:../packages/editor-react
