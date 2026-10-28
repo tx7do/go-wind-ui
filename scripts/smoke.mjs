@@ -1,23 +1,38 @@
 /**
- * Playwright 冒烟：起两端 playground dev server，
- * 断言核心 UI 挂载（ProTable 页面 / 编辑器工具栏 / BI 渲染器 canvas）。
- * CI 用；本地 `node scripts/smoke.mjs` 亦可跑。
+ * Playwright 冒烟：起 playground（默认 dev server；--preview 用 vite preview
+ * 对预构建产物冒烟——CI 推荐，静态服务无依赖预构建竞态），
+ * 断言核心 UI 挂载（ProTable / 编辑器 / BI 视图入口）+ 零 console/page 错误。
+ *
+ * 本地：node scripts/smoke.mjs            （dev server）
+ * CI  ：先 pnpm --filter playground build && pnpm --filter playground-react build
+ *       再 node scripts/smoke.mjs --preview
  */
 import { chromium } from "playwright";
 import { spawn } from "node:child_process";
 
+const PREVIEW = process.argv.includes("--preview");
 const VITE = process.platform === "win32" ? "npx.cmd vite" : "npx vite";
 const jobs = [
   { name: "vue playground", cwd: "playground", port: 15898, url: "http://localhost:15898/", probes: ["ProTable 页面", "BI 仪表盘"] },
   { name: "react playground", cwd: "playground-react", port: 15897, url: "http://localhost:15897/", probes: ["编辑器套件", "BI 仪表盘"] },
 ];
 
+/** 服务器输出捕获（失败时打印，成功时静默丢弃） */
+const serverLogs = new Map();
+
 function startServer(cwd, port) {
-  const child = spawn(VITE, ["--port", String(port), "--strictPort"], {
+  const args = PREVIEW
+    ? ["preview", "--port", String(port), "--strictPort"]
+    : ["--port", String(port), "--strictPort"];
+  const child = spawn(VITE, args, {
     cwd,
     stdio: ["ignore", "pipe", "pipe"],
     shell: true,
   });
+  const log = [];
+  serverLogs.set(cwd, log);
+  child.stdout.on("data", (d) => log.push(`[out] ${d.toString().trim()}`));
+  child.stderr.on("data", (d) => log.push(`[err] ${d.toString().trim()}`));
   return child;
 }
 
@@ -38,7 +53,7 @@ async function waitFor(url, timeoutMs = 90_000) {
 let failures = 0;
 const children = [];
 const browser = await chromium.launch();
-console.log("smoke: browser launched");
+console.log(`smoke: browser launched (mode = ${PREVIEW ? "preview" : "dev"})`);
 
 try {
   for (const job of jobs) {
@@ -56,8 +71,8 @@ try {
       if (msg.type() === "error") consoleErrors.push(msg.text());
     });
     await page.goto(job.url, { waitUntil: "networkidle", timeout: 60_000 });
-    // vite 冷转换在 CI 慢机上可能晚于 networkidle；给首屏渲染留缓冲
-    await page.waitForTimeout(3000);
+    // dev 模式下 vite 冷转换可能晚于 networkidle；preview 模式无此问题，保留小缓冲
+    await page.waitForTimeout(PREVIEW ? 500 : 3000);
 
     for (const probe of job.probes) {
       const found = (await page.getByText(probe).count()) > 0;
@@ -81,6 +96,12 @@ try {
       console.log(`PASS ${job.name}: no pageerror`);
     }
     await page.close();
+
+    if (failures > 0) {
+      const log = serverLogs.get(job.cwd) ?? [];
+      console.log(`INFO ${job.name}: server log tail:`);
+      console.log(log.slice(-25).join("\n"));
+    }
 
     child.kill();
     await new Promise((r) => setTimeout(r, 1500));
