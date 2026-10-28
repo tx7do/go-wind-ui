@@ -6,6 +6,7 @@
           <ElRadioButton value="table">ProTable 页面</ElRadioButton>
           <ElRadioButton value="editor">编辑器套件</ElRadioButton>
           <ElRadioButton value="bi">BI 仪表盘</ElRadioButton>
+          <ElRadioButton value="suite">组件套件</ElRadioButton>
         </ElRadioGroup>
       </div>
       <header class="pg-header">
@@ -22,6 +23,7 @@
 
       <main class="pg-main">
         <BiDemo v-if="view === 'bi'" :locale="locale" />
+        <SuiteDemo v-else-if="view === 'suite'" :locale="locale" />
         <EditorDemo v-else-if="view === 'editor'" />
         <ProPage v-else :config="pageConfig">
           <template #status="scope: any">
@@ -47,6 +49,7 @@ import {
 import { setEditorLocale } from "@go-wind-ui/editor-vue";
 import { setBiLocale } from "@go-wind-ui/bi-vue";
 import BiDemo from "./BiDemo.vue";
+import SuiteDemo from "./SuiteDemo.vue";
 import EditorDemo from "./EditorDemo.vue";
 
 // ============ 演示数据（内存数据源，模拟后端） ============
@@ -92,7 +95,7 @@ async function listAction(query: any) {
 const dark = ref(false);
 const locale = ref<"zh-CN" | "en-US">("zh-CN");
 const hasPerm = ref(true);
-const view = ref<"table" | "editor" | "bi">("table");
+const view = ref<"table" | "editor" | "bi" | "suite">("table");
 
 const providerConfig = computed(() => ({
   locale: locale.value,

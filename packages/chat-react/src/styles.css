@@ -1,0 +1,76 @@
+/**
+ * chat-react markdown 内容样式（组件外壳为 inline styles；这里提供
+ * markdown 排版 + 打字动画，选择器与 ChatMessages 的 className 对应）。
+ */
+.chat-messages__markdown p {
+  margin: 0 0 8px;
+}
+
+.chat-messages__markdown p:last-child {
+  margin-bottom: 0;
+}
+
+.chat-messages__markdown pre {
+  margin: 8px 0;
+  padding: 10px;
+  overflow: auto;
+  font-size: 12px;
+  background: var(--el-fill-color-darker, #e9e9eb);
+  border-radius: 6px;
+}
+
+.chat-messages__markdown code {
+  padding: 1px 4px;
+  font-family: ui-monospace, monospace;
+  font-size: 12px;
+  background: var(--el-fill-color-darker, #e9e9eb);
+  border-radius: 3px;
+}
+
+.chat-messages__markdown table {
+  margin: 8px 0;
+  border-collapse: collapse;
+}
+
+.chat-messages__markdown th,
+.chat-messages__markdown td {
+  padding: 4px 8px;
+  border: 1px solid var(--el-border-color-lighter, #ebeef5);
+}
+
+.chat-messages__typing {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+  height: 20px;
+}
+
+.chat-messages__typing i {
+  width: 5px;
+  height: 5px;
+  background: var(--el-text-color-secondary, #909399);
+  border-radius: 50%;
+  animation: chat-typing 1.2s infinite ease-in-out;
+}
+
+.chat-messages__typing i:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.chat-messages__typing i:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes chat-typing {
+  0%,
+  60%,
+  100% {
+    opacity: 0.3;
+    transform: translateY(0);
+  }
+
+  30% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+}

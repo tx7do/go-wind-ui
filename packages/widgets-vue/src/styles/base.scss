@@ -1,0 +1,5 @@
+/**
+ * widgets 全局样式占位：组件主样式在各 SFC scoped 块内
+ * （颜色 = EP 变量 + 裸应用回退），CommandPalette 的弹层样式
+ * 因 append-to-body 已在其 SFC 内用非 scoped 块声明。
+ */

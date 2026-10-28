@@ -33,6 +33,12 @@
       ],
       "@go-wind-ui/bi-engine-g6": [
         "../packages/bi-engine-g6/src/index.ts"
+      ],
+      "@go-wind-ui/widgets-vue": [
+        "../packages/widgets-vue/src/index.ts"
+      ],
+      "@go-wind-ui/chat-vue": [
+        "../packages/chat-vue/src/index.ts"
       ]
     }
   },

@@ -83,6 +83,9 @@ try {
 
 if (failures > 0) {
   console.error(`\nsmoke FAILED with ${failures} failure(s)`);
+  // 显式退出：被 shell 包裹的 vite 子进程会挂住事件循环（Windows 尤甚），
+  // 不主动 exit 会让 CI 超时误报
   process.exit(1);
 }
 console.log("\nsmoke PASS");
+process.exit(0);

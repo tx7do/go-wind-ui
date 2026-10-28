@@ -17,7 +17,9 @@
     "@go-wind-ui/editor-vue": "workspace:*",
     "@go-wind-ui/bi-vue": "workspace:*",
     "@go-wind-ui/bi-engine-s2": "workspace:*",
-    "@go-wind-ui/bi-engine-g6": "workspace:*"
+    "@go-wind-ui/bi-engine-g6": "workspace:*",
+    "@go-wind-ui/widgets-vue": "workspace:*",
+    "@go-wind-ui/chat-vue": "workspace:*"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.5",

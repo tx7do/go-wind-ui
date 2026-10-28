@@ -17,7 +17,8 @@
     "@go-wind-ui/bi-react": "workspace:*",
     "@go-wind-ui/bi-vue": "workspace:*",
     "@go-wind-ui/bi-engine-s2": "workspace:*",
-    "@go-wind-ui/bi-engine-g6": "workspace:*"
+    "@go-wind-ui/bi-engine-g6": "workspace:*",
+    "@go-wind-ui/chat-react": "workspace:*"
   },
   "devDependencies": {
     "@types/react": "^19.2.15",

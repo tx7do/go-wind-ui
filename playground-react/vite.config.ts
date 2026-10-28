@@ -51,6 +51,18 @@ export default defineConfig({
         ),
       },
       {
+        find: "@go-wind-ui/chat-react/style.css",
+        replacement: fileURLToPath(
+          new URL("../packages/chat-react/src/styles.css", import.meta.url)
+        ),
+      },
+      {
+        find: "@go-wind-ui/chat-react",
+        replacement: fileURLToPath(
+          new URL("../packages/chat-react/src/index.ts", import.meta.url)
+        ),
+      },
+      {
         find: "@go-wind-ui/editor-react",
         replacement: fileURLToPath(
           new URL("../packages/editor-react/src/index.ts", import.meta.url)
@@ -66,6 +78,7 @@ export default defineConfig({
       "@go-wind-ui/bi-core",
       "@go-wind-ui/bi-engine-s2",
       "@go-wind-ui/bi-engine-g6",
+      "@go-wind-ui/chat-react",
     ],
   },
   server: {

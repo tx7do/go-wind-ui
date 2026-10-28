@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button, Radio, Select, Switch, Space, Typography } from "antd";
 import BiDemo from "./BiDemo";
+import ChatDemo from "./ChatDemo";
 import {
   EditorProvider,
   TiptapEditor,
@@ -30,7 +31,7 @@ const SAMPLE_JSON = JSON.stringify(
 );
 
 type EditorKind = "tiptap" | "markdown" | "code" | "json" | "plain";
-type AppView = "editor" | "bi";
+type AppView = "editor" | "bi" | "chat";
 
 export default function App() {
   const [dark, setDark] = useState(false);
@@ -63,6 +64,7 @@ export default function App() {
             <Radio.Group value={view} onChange={(e) => setView(e.target.value)}>
               <Radio.Button value="editor">编辑器套件</Radio.Button>
               <Radio.Button value="bi">BI 仪表盘</Radio.Button>
+              <Radio.Button value="chat">AI 对话</Radio.Button>
             </Radio.Group>
             <span>暗色</span>
             <Switch checked={dark} onChange={setDark} />
@@ -98,6 +100,7 @@ export default function App() {
         )}
 
         <main className="pg-main">
+          {view === "chat" && <ChatDemo />}
           {view === "bi" && <BiDemo />}
           {view === "editor" && kind === "tiptap" && <TiptapEditor value={html} onChange={setHtml} height={360} />}
           {view === "editor" && kind === "markdown" && <MarkdownEditor value={md} onChange={setMd} height={360} />}

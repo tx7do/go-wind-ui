@@ -18,6 +18,7 @@ export { default as ProPagination } from "./ProPagination/index.vue";
 export { default as ProToolbar } from "./ProToolbar/index.vue";
 export { default as ProPage } from "./ProPage/index.vue";
 export { default as ProFileSelect } from "./ProFileSelect/index.vue";
+export { default as ProDescriptions } from "./ProDescriptions/index.vue";
 export { default as ProSplitter } from "./ProSplitter/index.vue";
 export { default as ExportAllDropdown } from "./ExportAllDropdown.vue";
 
@@ -62,6 +63,7 @@ export * from "./ProPagination/types";
 export * from "./ProToolbar/types";
 export * from "./ProPage/types";
 export * from "./ProFileSelect/types";
+export * from "./ProDescriptions/types";
 
 // ========== Composables ==========
 export { useTableState } from "./composables/useTableState";

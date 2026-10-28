@@ -38,6 +38,18 @@ export default defineConfig({
         ),
       },
       {
+        find: "@go-wind-ui/widgets-vue",
+        replacement: fileURLToPath(
+          new URL("../packages/widgets-vue/src/index.ts", import.meta.url)
+        ),
+      },
+      {
+        find: "@go-wind-ui/chat-vue",
+        replacement: fileURLToPath(
+          new URL("../packages/chat-vue/src/index.ts", import.meta.url)
+        ),
+      },
+      {
         find: "@go-wind-ui/bi-core",
         replacement: fileURLToPath(
           new URL("../packages/bi-core/src/index.ts", import.meta.url)
@@ -61,6 +73,8 @@ export default defineConfig({
       "@go-wind-ui/bi-core",
       "@go-wind-ui/bi-engine-s2",
       "@go-wind-ui/bi-engine-g6",
+      "@go-wind-ui/widgets-vue",
+      "@go-wind-ui/chat-vue",
     ],
   },
   server: {

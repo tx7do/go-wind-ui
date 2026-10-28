@@ -13,6 +13,9 @@ Framework-generic admin UI building blocks from the [GoWind](https://github.com/
 | [`@go-wind-ui/bi-react`](./packages/bi-react) | React 19 BI dashboard renderer + designer bridge (same schema, same layout math) | v0.1 |
 | [`@go-wind-ui/bi-engine-s2`](./packages/bi-engine-s2) | AntV S2 pivot-table engine adapter (optional, tree-shakeable) | v0.1 |
 | [`@go-wind-ui/bi-engine-g6`](./packages/bi-engine-g6) | AntV G6 relation-graph engine adapter (optional, tree-shakeable) | v0.1 |
+| [`@go-wind-ui/widgets-vue`](./packages/widgets-vue) | Admin shell widgets for Vue 3: notification bell, Ctrl+K command palette, theme switch, language select | v0.1 |
+| [`@go-wind-ui/chat-vue`](./packages/chat-vue) | AI streaming chat UI for Vue 3 (markdown, typing, stop; transport injected) | v0.1 |
+| [`@go-wind-ui/chat-react`](./packages/chat-react) | React 19 mirror of chat-vue | v0.1 |
 
 ## Why
 

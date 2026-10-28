@@ -1,0 +1,48 @@
+{
+  "name": "@go-wind-ui/chat-react",
+  "version": "0.1.0",
+  "description": "AI streaming chat UI for React 19: message list with markdown rendering, typing indicator, auto-scroll, chat input with stop — transport injected by the host.",
+  "type": "module",
+  "license": "MIT",
+  "keywords": [
+    "react",
+    "chat",
+    "ai",
+    "streaming",
+    "markdown"
+  ],
+  "files": [
+    "dist"
+  ],
+  "module": "./dist/chat-react.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/chat-react.js"
+    },
+    "./style.css": "./dist/chat-react.css"
+  },
+  "scripts": {
+    "build": "vite build && tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "react": ">=19.0.0",
+    "react-dom": ">=19.0.0"
+  },
+  "dependencies": {
+    "dompurify": "^3.2.0",
+    "marked": "^18.0.3"
+  },
+  "devDependencies": {
+    "@types/dompurify": "^3.2.0",
+    "@types/react": "^19.2.15",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.0.0",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "typescript": "^5.9.3",
+    "vite": "^8.0.0"
+  }
+}
