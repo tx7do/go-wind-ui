@@ -1,9 +1,10 @@
 import { fileURLToPath, URL } from "node:url";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import vue from "@vitejs/plugin-vue";
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), vue()],
   resolve: {
     alias: [
       {
@@ -11,6 +12,12 @@ export default defineConfig({
         find: "@go-wind-ui/editor-react/style.css",
         replacement: fileURLToPath(
           new URL("../packages/editor-react/src/tiptap-editor.css", import.meta.url)
+        ),
+      },
+      {
+        find: "@go-wind-ui/bi-vue",
+        replacement: fileURLToPath(
+          new URL("../packages/bi-vue/src/index.ts", import.meta.url)
         ),
       },
       {
@@ -40,7 +47,12 @@ export default defineConfig({
     ],
   },
   optimizeDeps: {
-    exclude: ["@go-wind-ui/editor-react", "@go-wind-ui/bi-react", "@go-wind-ui/bi-core"],
+    exclude: [
+      "@go-wind-ui/editor-react",
+      "@go-wind-ui/bi-react",
+      "@go-wind-ui/bi-vue",
+      "@go-wind-ui/bi-core",
+    ],
   },
   server: {
     port: 15897,

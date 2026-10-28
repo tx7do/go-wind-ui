@@ -1,4 +1,100 @@
 /**
- * BI 组件基础样式：卡片在 scoped 样式里自带样式，这里只放
- * 需要全局生效的细节（当前为空位占位）。保留入口以便后续扩展。
+ * BI 组件全局样式补充。
+ *
+ * 组件主样式在各 SFC 的 scoped 块里（颜色 = EP 变量 + 裸应用回退）。
+ * 这里放 html.dark 覆盖：裸宿主（无 Element Plus css-vars，如纯 antd 应用）
+ * 切暗色时，设计器/渲染器表面须跟随 EP 暗色等值；宿主可用 --bi-* 变量接管。
+ * 特异性 html.dark .x 高于 scoped .x[data-v]，宿主有 EP 变量时值一致无感。
  */
+
+/* ===== 渲染器卡片（与 bi-react styles.css 同口径） ===== */
+html.dark .bi-dashboard__card {
+  background: var(--bi-card-bg, #141414);
+  border-color: var(--bi-card-border, #414243);
+}
+
+html.dark .bi-dashboard__card-title {
+  color: var(--bi-card-text, #e5eaf3);
+}
+
+/* ===== 设计器 ===== */
+html.dark .bi-designer {
+  color: #e5eaf3;
+}
+
+html.dark .bi-designer__toolbar,
+html.dark .bi-designer__panel,
+html.dark .bi-designer__card {
+  background: var(--bi-card-bg, #141414);
+  border-color: var(--bi-card-border, #414243);
+}
+
+html.dark .bi-designer__canvas {
+  background: var(--bi-canvas-bg, #0f0f10);
+  border-color: var(--bi-card-border, #303030);
+}
+
+html.dark .bi-designer__panel-section,
+html.dark .bi-designer__field,
+html.dark .bi-designer__ds-meta {
+  color: #a3a6ad;
+}
+
+html.dark .bi-designer__card-title {
+  color: #e5eaf3;
+}
+
+html.dark .bd-input {
+  color: #e5eaf3;
+  background: #141414;
+  border-color: #4c4d4f;
+}
+
+html.dark .bd-btn {
+  color: #e5eaf3;
+  background: #141414;
+  border-color: #4c4d4f;
+}
+
+html.dark .bd-btn--primary {
+  color: #fff;
+  background: var(--el-color-primary, #409eff);
+  border-color: var(--el-color-primary, #409eff);
+}
+
+html.dark .bd-btn--danger {
+  color: #f56c6c;
+  background: rgb(245 108 108 / 12%);
+  border-color: rgb(245 108 108 / 40%);
+}
+
+html.dark .bi-designer__ds-item {
+  border-color: #303030;
+}
+
+html.dark .bi-designer__form {
+  border-color: #4c4d4f;
+}
+
+html.dark .bi-designer__card-resize {
+  border-color: #4c4d4f;
+}
+
+html.dark .bi-designer__card-resize:hover {
+  border-color: var(--el-color-primary, #409eff);
+}
+
+html.dark .bi-designer__card-delete:hover,
+html.dark .bi-designer__ds-delete:hover {
+  background: rgb(245 108 108 / 12%);
+}
+
+html.dark .bi-designer__ds-tag--static {
+  color: #67c23a;
+  background: rgb(103 194 58 / 12%);
+}
+
+html.dark .bi-designer__ds-tag--api {
+  color: #e6a23c;
+  background: rgb(230 162 60 / 12%);
+}

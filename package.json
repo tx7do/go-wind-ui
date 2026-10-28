@@ -11,7 +11,8 @@
     "build": "pnpm -r build",
     "typecheck": "pnpm -r typecheck",
     "dev": "pnpm --filter playground dev",
-    "build:playground": "pnpm --filter playground build"
+    "build:playground": "pnpm --filter playground build",
+    "dev:react": "pnpm --filter playground-react dev"
   },
   "devDependencies": {
     "@changesets/cli": "^2.29.0",

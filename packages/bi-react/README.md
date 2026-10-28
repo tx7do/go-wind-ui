@@ -24,6 +24,22 @@ import { BiProvider, BiDashboard } from "@go-wind-ui/bi-react";
 </BiProvider>
 ```
 
+## 设计器（React 桥接壳）
+
+设计器画布是 Vue 一等公民；React 侧经 `BiDesignerReact` 桥接使用（内部 createApp 挂载 Vue 版设计器，schema/布局数学/主题同源）：
+
+```tsx
+import { BiDesignerReact } from "@go-wind-ui/bi-react";
+
+<BiDesignerReact
+  demo // 无 initialSchema 时内置演示 schema
+  env={{ resolvers }}
+  onChange={(schema) => save(schema)}
+/>
+```
+
+边界：`initialSchema` 为挂载时快照，运行期变更需换 `key` 重挂。
+
 ## 主题
 
 暗色判定缺省自动跟随 `html.dark` + 系统偏好（`useSyncExternalStore` 订阅共享源）；宿主可经 `<BiProvider env={{ themeMode: () => mode }}>` 接入自己的偏好系统。卡片外观走 `--bi-card-*` 变量回退链，`html.dark` 下无宿主变量时自动落 EP 暗色等值。

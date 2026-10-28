@@ -20,6 +20,12 @@
     "paths": {
       "@go-wind-ui/bi-core": [
         "../bi-core/src/index.ts"
+      ],
+      "@go-wind-ui/bi-vue": [
+        "../bi-vue/src/index.ts"
+      ],
+      "@go-wind-ui/locale": [
+        "../locale/src/index.ts"
       ]
     }
   },

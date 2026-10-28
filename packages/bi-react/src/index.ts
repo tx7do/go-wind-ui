@@ -13,3 +13,5 @@ export { BiChart } from "./BiChart";
 export type { BiChartProps } from "./BiChart";
 export { BiDashboard } from "./BiDashboard";
 export type { BiDashboardProps } from "./BiDashboard";
+export { BiDesignerReact } from "./BiDesignerBridge";
+export type { BiDesignerReactProps } from "./BiDesignerBridge";

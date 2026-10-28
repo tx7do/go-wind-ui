@@ -78,18 +78,24 @@ export default function App() {
           </Space>
         </header>
 
-        <div className="pg-switch">
-          <Radio.Group value={kind} onChange={(e) => setKind(e.target.value)}>
-            <Radio.Button value="tiptap">富文本 Tiptap</Radio.Button>
-            <Radio.Button value="markdown">Markdown</Radio.Button>
-            <Radio.Button value="code">代码 Monaco</Radio.Button>
-            <Radio.Button value="json">JSON</Radio.Button>
-            <Radio.Button value="plain">纯文本</Radio.Button>
-          </Radio.Group>
-          <Button type="primary" ghost onClick={() => console.log("html:", html, "md:", md, "code:", code, "json:", json, "text:", text)}>
-            打印当前值
-          </Button>
-        </div>
+        {view === "editor" && (
+          <div className="pg-switch">
+            <Radio.Group value={kind} onChange={(e) => setKind(e.target.value)}>
+              <Radio.Button value="tiptap">富文本 Tiptap</Radio.Button>
+              <Radio.Button value="markdown">Markdown</Radio.Button>
+              <Radio.Button value="code">代码 Monaco</Radio.Button>
+              <Radio.Button value="json">JSON</Radio.Button>
+              <Radio.Button value="plain">纯文本</Radio.Button>
+            </Radio.Group>
+            <Button
+              type="primary"
+              ghost
+              onClick={() => console.log("html:", html, "md:", md, "code:", code, "json:", json, "text:", text)}
+            >
+              打印当前值
+            </Button>
+          </div>
+        )}
 
         <main className="pg-main">
           {view === "bi" && <BiDemo />}

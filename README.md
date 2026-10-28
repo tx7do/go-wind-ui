@@ -27,7 +27,8 @@ Framework-generic admin UI building blocks from the [GoWind](https://github.com/
 ```bash
 # node >= 20.19
 npx pnpm install
-npx pnpm dev          # playground demo at http://localhost:15898
+npx pnpm dev          # vue playground at http://localhost:15898
+npx pnpm dev:react    # react playground at http://localhost:15897
 npx pnpm build        # build all packages
 npx pnpm typecheck    # vue-tsc across packages
 ```

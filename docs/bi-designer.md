@@ -96,7 +96,7 @@ ECharts 适配器在 `bi-core/src/engine/echarts.ts`：按需注册（Bar/Line/P
 | M0 | schema v1 + 引擎接口 + echarts 适配器 + 主题 token + BiDesignerApi | ✅ 本次 |
 | M1 | bi-vue / bi-react 渲染器（网格布局 + 亮暗主题 + chart-click 事件）+ 双端 playground demo | ✅ 本次 |
 | M2 | designer-vue MVP：数据集面板 / 图型选择 / 属性面板 / 指针拖拽缩放（栅格吸附）/ 撤销重做 / schema 导入导出 | ✅ 本次 |
-| M3 | designer-react 桥接壳；交互增强（下钻、跨图联动过滤、全屏、导出图片）；碰撞布局约束 | 待排期 |
+| M3 | designer-react 桥接壳（✅ 已实施：bi-react `BiDesignerReact`，createApp 挂 Vue 设计器）；交互增强（下钻、跨图联动过滤、全屏、导出图片）；碰撞布局约束 | 部分完成 |
 | M4 | AntV 适配器按需接入（g6/s2/l7）；AI 钩子（NL→schema、问数结果转图表）；模板/主题市场 | 待排期 |
 
 ## 7. 与 go-wind-admin 的集成点（后续）

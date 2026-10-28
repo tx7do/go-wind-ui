@@ -1,6 +1,6 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Radio } from "antd";
-import { BiProvider, BiDashboard } from "@go-wind-ui/bi-react";
+import { BiProvider, BiDashboard, BiDesignerReact } from "@go-wind-ui/bi-react";
 import type { BiDashboardSchema } from "@go-wind-ui/bi-core";
 
 const SCHEMA: Partial<BiDashboardSchema> = {
@@ -104,19 +104,31 @@ const resolvers = {
   },
 };
 
+type BiView = "render" | "designer";
+
 export default function BiDemo() {
   const schema = useMemo(() => SCHEMA, []);
+  const [view, setView] = useState<BiView>("render");
+
   return (
     <BiProvider env={{ resolvers, emptyText: "暂无数据" }}>
       <div className="bi-demo">
         <div className="bi-demo__hint">
-          <Radio.Group disabled value="render">
+          <Radio.Group value={view} onChange={(e) => setView(e.target.value)}>
             <Radio.Button value="render">渲染器</Radio.Button>
-            <Radio.Button value="designer">设计器（Vue 侧先行）</Radio.Button>
+            <Radio.Button value="designer">设计器（React 桥接）</Radio.Button>
           </Radio.Group>
         </div>
         <div className="bi-demo__main">
-          <BiDashboard schema={schema} />
+          {view === "render" ? (
+            <BiDashboard schema={schema} />
+          ) : (
+            <BiDesignerReact
+              demo
+              env={{ resolvers }}
+              onChange={(s) => console.log("[bi-demo] designer change:", s.name, s.charts.length, "charts")}
+            />
+          )}
         </div>
       </div>
     </BiProvider>
