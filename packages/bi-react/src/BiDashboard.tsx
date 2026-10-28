@@ -5,7 +5,15 @@
  */
 import { useEffect, useMemo, useRef, useState } from "react";
 
-import { applyFilters, defaultGrid, layoutCharts, resolveDatasetRows } from "@go-wind-ui/bi-core";
+import {
+  applyFilters,
+  defaultGrid,
+  getDashboardThemePreset,
+  layoutCharts,
+  resolveDashboardTheme,
+  resolveDatasetRows,
+} from "@go-wind-ui/bi-core";
+import type { BiDashboardThemePreset } from "@go-wind-ui/bi-core";
 import type {
   BiChartEvent,
   BiChartSchema,
@@ -18,6 +26,8 @@ import { BiChart } from "./BiChart";
 
 export interface BiDashboardProps {
   schema: Partial<BiDashboardSchema>;
+  /** 大屏视图：设计稿宽度 + 等比缩放（fit=width 按容器宽缩放，none 原样滚动） */
+  view?: { designWidth?: number; fit?: "width" | "none" };
   onChartClick?: (event: BiChartEvent) => void;
   onChartSelect?: (chartId: string) => void;
   onLinkageChange?: (info: { datasetId: string; field: string; value: string } | null) => void;
@@ -37,9 +47,28 @@ const TOOL_BTN: React.CSSProperties = {
 };
 
 export function BiDashboard(props: BiDashboardProps) {
-  const { schema, onChartClick, onChartSelect, onLinkageChange } = props;
+  const { schema, view, onChartClick, onChartSelect, onLinkageChange } = props;
   const env = useBiEnv();
-  const theme = useBiTheme();
+  const autoTheme = useBiTheme();
+  const theme = useMemo(
+    () => resolveDashboardTheme(schema.theme?.key, autoTheme.mode === "dark").theme,
+    [schema.theme?.key, autoTheme]
+  );
+  const themePreset: BiDashboardThemePreset | null = useMemo(
+    () => getDashboardThemePreset(schema.theme?.key),
+    [schema.theme?.key]
+  );
+  const chromeVars = useMemo(() => {
+    const preset = themePreset;
+    if (!preset) return {} as Record<string, string>;
+    const vars: Record<string, string> = {
+      "--bi-card-bg": preset.cardBg ?? "",
+      "--bi-card-border": preset.cardBorder ?? "",
+      "--bi-card-text": preset.cardTitle ?? "",
+    };
+    if (preset.canvasBg) vars["--bi-canvas-bg"] = preset.canvasBg;
+    return vars;
+  }, [themePreset]);
   const [rootRef, containerWidth] = useContainerWidth();
   const [rowsMap, setRowsMap] = useState<Record<string, BiDatasetData>>({});
 
@@ -180,9 +209,15 @@ export function BiDashboard(props: BiDashboardProps) {
     return out;
   }, [rowsMap, linkageMap]);
 
+  const fitMode = view?.fit ?? "none";
+  const designWidth = view?.designWidth ?? 1920;
+  const layoutWidth = fitMode === "width" ? designWidth : containerWidth;
+  const scaleFactor =
+    fitMode === "width" && containerWidth > 0 ? containerWidth / designWidth : 1;
+
   const layout = useMemo(
-    () => layoutCharts(schema.charts ?? [], schema.grid, containerWidth),
-    [schema.charts, schema.grid, containerWidth]
+    () => layoutCharts(schema.charts ?? [], schema.grid, layoutWidth),
+    [schema.charts, schema.grid, layoutWidth]
   );
 
   const emptyText = env.emptyText ?? "暂无数据";
@@ -216,7 +251,26 @@ export function BiDashboard(props: BiDashboardProps) {
   };
 
   return (
-    <div ref={rootRef} className="bi-dashboard" style={{ position: "relative", width: "100%", height: layout.height }}>
+    <div
+      ref={rootRef}
+      className="bi-dashboard"
+      style={{
+        position: "relative",
+        width: "100%",
+        height: Math.round(layout.height * scaleFactor),
+        background: "var(--bi-canvas-bg, transparent)",
+        ...chromeVars,
+      } as React.CSSProperties}
+    >
+      <div
+        style={{
+          width: layoutWidth,
+          height: layout.height,
+          transform: `scale(${scaleFactor})`,
+          transformOrigin: "0 0",
+          position: "relative",
+        }}
+      >
       {layout.items.map((item) => {
         const data = renderRows[item.chart.datasetId] ?? { rows: [], loading: false, error: null };
         const drillLabel_ = drillLabel(item.chart.id);
@@ -233,8 +287,8 @@ export function BiDashboard(props: BiDashboardProps) {
               boxSizing: "border-box",
               padding: "10px 12px",
               overflow: "hidden",
-              background: "var(--el-bg-color, #fff)",
-              border: "1px solid var(--el-border-color-lighter, #ebeef5)",
+              background: "var(--bi-card-bg, var(--el-bg-color, #fff))",
+              border: "1px solid var(--bi-card-border, var(--el-border-color-lighter, #ebeef5))",
               borderRadius: 8,
               left: item.left,
               top: item.top,
@@ -260,7 +314,7 @@ export function BiDashboard(props: BiDashboardProps) {
                     minWidth: 0,
                     fontSize: 13,
                     fontWeight: 600,
-                    color: "var(--el-text-color-primary, #1f2937)",
+                    color: "var(--bi-card-text, var(--el-text-color-primary, #1f2937))",
                     whiteSpace: "nowrap",
                     overflow: "hidden",
                     textOverflow: "ellipsis",
@@ -310,6 +364,7 @@ export function BiDashboard(props: BiDashboardProps) {
           </div>
         );
       })}
+      </div>
     </div>
   );
 }

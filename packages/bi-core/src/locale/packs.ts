@@ -103,6 +103,8 @@ export const BI_MESSAGES_ZH = {
     linkage: "跨图联动",
     linkageTip: "开启后，点击图表以维度值过滤同数据集的其它图表",
     templates: "模板",
+    themePreset: "仪表盘主题",
+    themeAuto: "跟随宿主亮暗",
   },
   types: {
     bar: "柱状图",
@@ -222,6 +224,8 @@ export const BI_MESSAGES_EN = {
     linkage: "Cross-filter",
     linkageTip: "Clicking a chart filters sibling charts on the same dataset",
     templates: "Templates",
+    themePreset: "Dashboard theme",
+    themeAuto: "Follow host",
   },
   types: {
     bar: "Bar",

@@ -142,6 +142,12 @@ export interface BiDashboardSchema {
    * 其它消费同一数据集的图表；再点同值或 clearLinkage 取消。
    */
   linkage?: { enabled?: boolean };
+  /**
+   * 仪表盘主题预设（大屏主题库）：具名预设把图表配色模式与
+   * 卡片/画布外观钉死，不随宿主亮暗翻转；缺省跟随宿主。
+   * 可用键见 BI_DASHBOARD_THEMES。
+   */
+  theme?: { key?: string };
 }
 
 // ============ 常量与缺省 ============
@@ -187,6 +193,9 @@ export function normalizeSchema(input: Partial<BiDashboardSchema>): BiDashboardS
     schemaVersion: BI_SCHEMA_VERSION,
     name: input.name ?? "Dashboard",
     grid: defaultGrid(input.grid),
+    // 页面级配置透传（linkage/theme 等可选配置块）
+    ...(input.linkage ? { linkage: input.linkage } : {}),
+    ...(input.theme ? { theme: input.theme } : {}),
     datasets: input.datasets ?? [],
     charts: (input.charts ?? []).map((c) => ({
       ...c,

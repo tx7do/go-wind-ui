@@ -6,7 +6,12 @@
     </ElRadioGroup>
 
     <!-- 渲染器：固定 schema + 注入 api resolver（演示 loading→数据） -->
-    <BiDashboard v-if="mode === 'render'" :schema="renderSchema" class="bi-demo__main" />
+    <BiDashboard
+      v-if="mode === 'render'"
+      :schema="renderSchema"
+      :view="{ designWidth: 1920, fit: 'width' }"
+      class="bi-demo__main"
+    />
 
     <!-- 设计器：内置 demo schema；@change 抛出最新 schema -->
     <BiDesigner v-else :demo="true" class="bi-demo__main" @change="onDesignerChange" />
@@ -46,6 +51,7 @@ const mode = ref<"render" | "designer">("render");
 const renderSchema: Partial<BiDashboardSchema> = {
   name: "render-demo",
   linkage: { enabled: true },
+  theme: { key: "tech-blue" },
   datasets: [
     {
       id: "ds_month",

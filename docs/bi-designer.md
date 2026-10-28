@@ -99,6 +99,13 @@ ECharts 适配器在 `bi-core/src/engine/echarts.ts`：按需注册（Bar/Line/P
 - **设计器状态机进 core**：`BiDesignerApi`（选区/增删改/移动缩放/撤销重做/导入导出）是纯 TS 类 + 微型订阅 store（`subscribe/getSnapshot`），React 走 `useSyncExternalStore`、Vue 走 subscribe→shallowRef。UI 逻辑不进 core。
 - **designer-vue 一等公民**（M2，已实施）；**designer-react M3 桥接壳**（React 容器 createApp 挂 Vue 设计器），原生重写视需求再议。
 
+## 4.5 大屏主题库与缩放容器
+
+- `schema.theme.key` 选择主题预设（`BI_DASHBOARD_THEMES`）：科技蓝/午夜紫/极光青/石墨灰/清晨浅色。预设把图表配色模式、色盘与画布/卡片/标题 chrome **钉死**——宿主亮暗翻转不跟随（大屏核心诉求）；缺省/auto 跟随宿主。
+- 预设 chrome 经 `--bi-card-*` / `--bi-canvas-bg` 变量注入渲染器/设计器画布，卡片样式全走变量链（宿主可整体接管）。
+- 渲染器 `view={{ designWidth: 1920, fit: "width" }}`：按设计稿宽布局 + transform 等比缩放（大屏投屏自适应）。
+- 设计器工具栏主题下拉实时预览（画布内图表主题同样钉死）。
+
 ## 5. 主题与环境注入
 
 - 亮/暗 token 各一份（text/subText/axisLine/splitLine + 色盘），暗色判定缺省自动跟随 `html.dark`（MutationObserver）+ 系统偏好，与 editor 双端同机制；宿主可经 env 注入 `themeMode` 覆盖。

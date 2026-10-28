@@ -33,6 +33,13 @@ export {
 } from "./theme";
 export type { BiResolvedTheme } from "./theme";
 export { BI_PALETTES, BI_PALETTE_KEYS, resolvePalette } from "./theme/palettes";
+export {
+  BI_DASHBOARD_THEMES,
+  BI_THEME_PRESET_KEYS,
+  getDashboardThemePreset,
+  resolveDashboardTheme,
+} from "./theme/presets";
+export type { BiDashboardThemePreset } from "./theme/presets";
 
 // 数据变换（过滤/聚合/排序/TopN + 字段类型推断 + 数值格式化）
 export {

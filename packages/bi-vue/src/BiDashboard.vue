@@ -1,5 +1,14 @@
 <template>
-  <div ref="rootRef" class="bi-dashboard" :style="{ height: layout.height + 'px' }">
+  <div ref="rootRef" class="bi-dashboard" :style="{ height: wrapHeight + 'px', ...chromeStyle }">
+  <div
+    class="bi-dashboard__scaled"
+    :style="{
+      width: layoutWidth + 'px',
+      height: layout.height + 'px',
+      transform: 'scale(' + scaleFactor + ')',
+      transformOrigin: '0 0',
+    }"
+  >
     <div
       v-for="item in layout.items"
       :key="item.chart.id"
@@ -74,6 +83,7 @@
       </div>
     </div>
   </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -86,7 +96,15 @@
  * - 卡片工具：⇩ 导出 PNG（引擎 getDataURL）、⛶ 全屏（requestFullscreen）
  */
 import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from "vue";
-import { applyFilters, defaultGrid, layoutCharts, resolveDatasetRows } from "@go-wind-ui/bi-core";
+import {
+  applyFilters,
+  defaultGrid,
+  getDashboardThemePreset,
+  layoutCharts,
+  resolveDashboardTheme,
+  resolveDatasetRows,
+} from "@go-wind-ui/bi-core";
+import type { BiDashboardThemePreset } from "@go-wind-ui/bi-core";
 import type {
   BiChartEvent,
   BiChartSchema,
@@ -101,6 +119,8 @@ import BiChart from "./BiChart.vue";
 const props = withDefaults(
   defineProps<{
     schema: Partial<BiDashboardSchema>;
+    /** 大屏视图：设计稿宽度 + 等比缩放（fit=width 按容器宽缩放，none 原样滚动） */
+    view?: { designWidth?: number; fit?: "width" | "none" };
   }>(),
   {}
 );
@@ -115,7 +135,27 @@ const emit = defineEmits<{
 applyBiLocaleFromEnv();
 const env = useBiEnv();
 const { t } = useBiI18n();
-const theme = useBiTheme();
+const autoTheme = useBiTheme();
+/** 生效主题：schema.theme.key 命中预设时钉死（大屏），否则跟随宿主亮暗 */
+const theme = computed(() => {
+  const { theme: resolved } = resolveDashboardTheme(props.schema.theme?.key, autoTheme.value.mode === "dark");
+  return resolved;
+});
+const themePreset = computed<BiDashboardThemePreset | null>(() =>
+  getDashboardThemePreset(props.schema.theme?.key)
+);
+/** 卡片/画布 chrome 变量（预设注入；无预设时不设，走宿主变量链） */
+const chromeVars = computed(() => {
+  const preset = themePreset.value;
+  if (!preset) return {};
+  const vars: Record<string, string> = {
+    "--bi-card-bg": preset.cardBg ?? "",
+    "--bi-card-border": preset.cardBorder ?? "",
+    "--bi-card-text": preset.cardTitle ?? "",
+  };
+  if (preset.canvasBg) vars["--bi-canvas-bg"] = preset.canvasBg;
+  return vars;
+});
 
 const rootRef = ref<HTMLElement | null>(null);
 const containerWidth = ref(0);
@@ -283,9 +323,26 @@ function rowsForRender(chart: { datasetId: string }): BiDatasetData {
 }
 
 // ============ 布局 ============
-const layout = computed(() =>
-  layoutCharts(props.schema.charts ?? [], props.schema.grid, containerWidth.value)
+const fitMode = computed(() => props.view?.fit ?? "none");
+const designWidth = computed(() => props.view?.designWidth ?? 1920);
+/** 布局基准宽：缩放模式按设计稿宽布局，否则按容器实宽 */
+const layoutWidth = computed(() =>
+  fitMode.value === "width" ? designWidth.value : containerWidth.value
 );
+const scaleFactor = computed(() =>
+  fitMode.value === "width" && containerWidth.value > 0
+    ? containerWidth.value / designWidth.value
+    : 1
+);
+const wrapHeight = computed(() => Math.round(layout.value.height * scaleFactor.value));
+
+const layout = computed(() =>
+  layoutCharts(props.schema.charts ?? [], props.schema.grid, layoutWidth.value)
+);
+const chromeStyle = computed(() => {
+  void layout.value; // chromeVars 不依赖布局，这里仅为保持响应式链一致
+  return chromeVars.value;
+});
 
 // grid 变化时 root 高度由 layout.height 驱动；defaultGrid 兜底缺省
 const gridResolved = computed(() => defaultGrid(props.schema.grid));
@@ -356,6 +413,8 @@ defineExpose({
 .bi-dashboard {
   position: relative;
   width: 100%;
+  background: var(--bi-canvas-bg, transparent);
+  border-radius: 8px;
 }
 
 .bi-dashboard__card {
@@ -365,9 +424,10 @@ defineExpose({
   box-sizing: border-box;
   padding: 10px 12px;
   overflow: hidden;
-  background: var(--el-bg-color, #ffffff);
-  border: 1px solid var(--el-border-color-lighter, #ebeef5);
+  background: var(--bi-card-bg, var(--el-bg-color, #ffffff));
+  border: 1px solid var(--bi-card-border, var(--el-border-color-lighter, #ebeef5));
   border-radius: 8px;
+  color: var(--bi-card-text, var(--el-text-color-primary, #1f2937));
 }
 
 .bi-dashboard__card:fullscreen {

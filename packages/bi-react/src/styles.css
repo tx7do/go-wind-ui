@@ -3,6 +3,13 @@
  * 颜色链 = 宿主自定义 --bi-card-* > EP 变量 > 裸应用回退；
  * html.dark 下无宿主变量时落 EP 暗色等值，保证裸 antd 应用切暗色卡片跟随。
  */
+.bi-dashboard {
+  position: relative;
+  width: 100%;
+  background: var(--bi-canvas-bg, transparent);
+  border-radius: 8px;
+}
+
 .bi-dashboard__card {
   position: absolute;
   display: flex;
@@ -13,6 +20,7 @@
   background: var(--bi-card-bg, var(--el-bg-color, #ffffff));
   border: 1px solid var(--bi-card-border, var(--el-border-color-lighter, #ebeef5));
   border-radius: 8px;
+  color: var(--bi-card-text, var(--el-text-color-primary, #1f2937));
 }
 
 html.dark .bi-dashboard__card {

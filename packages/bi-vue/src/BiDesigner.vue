@@ -56,6 +56,18 @@
         >
           {{ t("designer.linkage") }}
         </button>
+        <select
+          class="bd-input bi-designer__theme-select"
+          :value="state.theme?.key ?? 'auto'"
+          :disabled="preview"
+          :title="t('designer.themePreset')"
+          @change="setThemePreset(($event.target as HTMLSelectElement).value)"
+        >
+          <option value="auto">{{ t("designer.themeAuto") }}</option>
+          <option v-for="preset in themePresets" :key="preset.key" :value="preset.key">
+            {{ preset.name }}
+          </option>
+        </select>
       </div>
       <div class="bi-designer__toolbar-group">
         <button class="bd-btn" :disabled="!stateCharts.length" @click="handleExport">
@@ -143,7 +155,7 @@
         <div
           ref="canvasRef"
           class="bi-designer__canvas"
-          :style="{ height: canvasHeight + 'px' }"
+          :style="{ height: canvasHeight + 'px', ...canvasChromeVars }"
           @pointerdown.self="api.select(null)"
         >
           <div
@@ -187,7 +199,7 @@
               <BiChart
                 :chart="item.chart"
                 :rows="rowsFor(item.chart).rows"
-                :theme="theme"
+                :theme="canvasTheme"
                 :error="rowsFor(item.chart).error"
                 :empty-text="t('common.noData')"
               />
@@ -654,8 +666,11 @@
 import { computed, onBeforeUnmount, onMounted, reactive, ref, shallowRef, watch } from "vue";
 import {
   BiDesignerApi,
+  BI_DASHBOARD_THEMES,
   BI_PALETTE_KEYS,
   BI_TEMPLATES,
+  getDashboardThemePreset,
+  resolveDashboardTheme,
   defaultGrid,
   getChartTypes,
   getColumns,
@@ -808,6 +823,32 @@ function applyTemplate(key: string) {
   if (!tpl) return;
   api.replaceSchema(tpl.schema);
   templateOpen.value = false;
+}
+
+const themePresets = Object.values(BI_DASHBOARD_THEMES);
+
+/** 画布 chrome：预设命中时把 --bi-* 变量注到画布容器（卡片 chrome 全走变量链） */
+const canvasChromeVars = computed(() => {
+  const preset = getDashboardThemePreset(state.value.theme?.key);
+  if (!preset) return {};
+  const vars: Record<string, string> = {
+    "--bi-card-bg": preset.cardBg ?? "",
+    "--bi-card-border": preset.cardBorder ?? "",
+    "--bi-card-text": preset.cardTitle ?? "",
+  };
+  if (preset.canvasBg) vars["--bi-canvas-bg"] = preset.canvasBg;
+  return vars;
+});
+
+/** 画布内图表主题：预设钉死（mode/palette），否则跟随宿主亮暗（theme 即 useBiTheme 结果） */
+const canvasTheme = computed(() => resolveDashboardTheme(state.value.theme?.key, theme.value.mode === "dark").theme);
+
+/** 主题预设（dashboard.theme.key；auto = 跟随宿主亮暗） */
+function setThemePreset(key: string) {
+  const next = { ...state.value };
+  if (key === "auto") next.theme = undefined;
+  else next.theme = { key };
+  api.replaceSchema(next);
 }
 
 /** 联动开关（dashboard.linkage.enabled） */
@@ -1651,8 +1692,8 @@ onMounted(() => {
 .bi-designer__canvas {
   position: relative;
   min-height: 100%;
-  background: var(--el-fill-color-lighter, #f5f7fa);
-  border: 1px solid var(--el-border-color-lighter, #ebeef5);
+  background: var(--bi-canvas-bg, var(--el-fill-color-lighter, #f5f7fa));
+  border: 1px solid var(--bi-card-border, var(--el-border-color-lighter, #ebeef5));
   border-radius: 8px;
 }
 
@@ -1673,10 +1714,11 @@ onMounted(() => {
   flex-direction: column;
   box-sizing: border-box;
   overflow: hidden;
-  background: var(--el-bg-color, #fff);
-  border: 1px solid var(--el-border-color-lighter, #ebeef5);
+  background: var(--bi-card-bg, var(--el-bg-color, #fff));
+  border: 1px solid var(--bi-card-border, var(--el-border-color-lighter, #ebeef5));
   border-radius: 8px;
   transition: box-shadow 0.15s;
+  color: var(--bi-card-text, var(--el-text-color-primary, #1f2937));
 }
 
 .bi-designer__card--selected {
@@ -1717,6 +1759,7 @@ onMounted(() => {
   min-width: 0;
   font-size: 13px;
   font-weight: 600;
+  color: var(--bi-card-text, var(--el-text-color-primary, #1f2937));
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1827,6 +1870,11 @@ onMounted(() => {
   background: transparent;
   border: none;
   cursor: pointer;
+}
+
+.bi-designer__theme-select {
+  width: 150px;
+  height: 28px;
 }
 
 .bi-designer__hidden-input {
