@@ -6,4 +6,7 @@ dist/
 .idea/
 .vscode/
 **/.npmrc
+# 构建产出的声明文件不入库（vitest 跑测时会落在 src 里）；手写的环境声明必须例外，
+# 否则干净检出后 bi-react（纯 tsc）无法解析 bi-vue 的 .vue 导入，CI typecheck 直接红。
 packages/*/src/**/*.d.ts
+!packages/bi-react/src/vue-shim.d.ts
