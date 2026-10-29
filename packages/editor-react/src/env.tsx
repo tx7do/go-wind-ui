@@ -110,12 +110,19 @@ export const $t: Translator = (key, params) =>
 // ============ 主题 ============
 
 /**
- * 是否暗色：html.dark class 优先，其次系统偏好。
- * 组件内的 MutationObserver 跟踪逻辑保持不变，只需在回调里读本函数。
+ * 是否暗色。判定顺序（前者一旦命中即终局）：
+ *   1. 宿主显式的 `data-theme="dark" | "light"`（antd 系宿主常用这套，如 go-wind-admin react 端）
+ *   2. `html.dark` / `body.dark` class（Tailwind / element-plus 系宿主）
+ *   3. 系统偏好 prefers-color-scheme
+ * 宿主只要给了 1 或 2，就不再看系统偏好——否则"应用亮色 + 系统暗色"会把编辑器染黑。
  */
 export function isDarkMode(): boolean {
-  if (typeof document !== "undefined" && document.documentElement.classList.contains("dark")) {
-    return true;
+  if (typeof document !== "undefined") {
+    const root = document.documentElement;
+    const attr = root.getAttribute("data-theme") ?? document.body?.getAttribute("data-theme");
+    if (attr === "dark") return true;
+    if (attr === "light") return false;
+    if (root.classList.contains("dark") || document.body?.classList.contains("dark")) return true;
   }
   if (typeof window !== "undefined" && window.matchMedia?.("(prefers-color-scheme: dark)").matches) {
     return true;

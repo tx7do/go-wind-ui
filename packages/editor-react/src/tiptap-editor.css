@@ -1,5 +1,27 @@
 /* ============ Base Container ============ */
 .tiptap-editor-wrapper {
+  /* 亮色档变量：此前只有 .tiptap-editor-dark 定义了 --tte-*，亮色下所有 var(--tte-*)
+     都是无效值（border-color 等直接失效），这里补齐亮色默认，暗色块用 !important 覆盖 */
+  --tte-bg-primary: #ffffff;
+  --tte-bg-secondary: #f8fafc;
+  --tte-bg-tertiary: #f1f5f9;
+  --tte-text-primary: #1f2937;
+  --tte-text-secondary: #4b5563;
+  --tte-text-muted: #9ca3af;
+  --tte-border-primary: #e5e7eb;
+  --tte-border-secondary: #eef2f7;
+  --tte-code-bg: #f1f5f9;
+  --tte-code-text: #b91c1c;
+  --tte-blockquote-border: #e5e7eb;
+  --tte-blockquote-text: #6b7280;
+  --tte-link: #1677ff;
+  --tte-link-hover: #4096ff;
+  --tte-toolbar-bg: #f8fafc;
+  --tte-toolbar-btn: #4b5563;
+  --tte-toolbar-btn-hover: #f1f5f9;
+  --tte-toolbar-btn-active: #1677ff;
+  --tte-statusbar-bg: #f8fafc;
+
   margin: 0 !important;
   padding: 0 !important;
   box-sizing: border-box !important;
@@ -10,9 +32,11 @@
      否则 !important 会把内联值打死，表单场景下 100% 解析不出即塌成一行 */
   overflow: hidden !important;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background-color: #fff;
-  border: none !important;
-  border-radius: 0 !important;
+  background-color: var(--tte-bg-primary);
+  /* 边框必须带 style/width：原先只写 border: none，暗色块再改 border-color 也画不出线，
+     编辑器贴在 L1 卡片上完全看不出输入区边界 */
+  border: 1px solid var(--tte-border-primary) !important;
+  border-radius: 8px !important;
   transition: all 0.2s ease;
 }
 

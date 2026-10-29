@@ -34,21 +34,27 @@ export function useEditorEnv(): EditorEnv {
 }
 
 // ============ 主题：单一响应式源 ============
-// html.dark class 监听器（模块级单例，多个编辑器共享）
+// html 上的两种宿主信号一起监听（模块级单例，多个编辑器共享）：
+//   - class="dark"（element-plus / Tailwind 系宿主）
+//   - data-theme="dark|light"（antd 系宿主，如 go-wind-admin react 端；显式值优先于系统偏好）
 const classDark = ref(false);
+const themeAttr = ref<"dark" | "light" | null>(null);
 let observerBound = false;
 
 function bindHtmlDarkObserver() {
   if (observerBound || typeof document === "undefined") return;
   observerBound = true;
   const sync = () => {
-    classDark.value = document.documentElement.classList.contains("dark");
+    const root = document.documentElement;
+    classDark.value = root.classList.contains("dark");
+    const attr = root.getAttribute("data-theme");
+    themeAttr.value = attr === "dark" || attr === "light" ? attr : null;
   };
   sync();
   const observer = new MutationObserver(sync);
   observer.observe(document.documentElement, {
     attributes: true,
-    attributeFilter: ["class"],
+    attributeFilter: ["class", "data-theme"],
   });
   // 模块级单例无需按组件卸载；页面级 SPA 生命周期内常驻
 }
@@ -67,12 +73,26 @@ function bindSystemDarkListener() {
 bindHtmlDarkObserver();
 bindSystemDarkListener();
 
-/** 主题翻转计数器：任何一次亮暗切换都自增，供 watch(() => themeTick.value) 触发 */
-export const themeTick = computed(() => (classDark.value ? 1 : 0) + (systemDark.value ? 1 : 0));
+/**
+ * 暗色判定（唯一入口）：宿主显式 data-theme 优先 → html.dark class → 系统偏好。
+ * 宿主给了显式主题就不再跟随系统，否则"应用亮色 + 系统暗色"会把编辑器染黑。
+ */
+function resolveDarkNow(): boolean {
+  if (themeAttr.value) return themeAttr.value === "dark";
+  return classDark.value || systemDark.value;
+}
+
+/** 主题翻转计数器：任一信号变化即变值，供 watch(() => themeTick.value) 触发（保持数值类型） */
+export const themeTick = computed(
+  () =>
+    (themeAttr.value === "dark" ? 1 : 0) +
+    (classDark.value ? 2 : 0) +
+    (systemDark.value ? 4 : 0)
+);
 
 /** 非响应式读取当前是否暗色（watch 回调里取值用） */
 export function isDarkNow(): boolean {
-  return classDark.value || systemDark.value;
+  return resolveDarkNow();
 }
 
 export { isDarkNow as isDarkMode };
@@ -88,11 +108,11 @@ export function useEditorDark(): ComputedRef<boolean> {
     const manual = ref(false);
     watchEffect(() => {
       const mode = env.themeMode!();
-      manual.value = mode === "dark" || (mode === "auto" ? classDark.value || systemDark.value : false);
+      manual.value = mode === "dark" || (mode === "auto" ? resolveDarkNow() : false);
     });
     return computed(() => manual.value);
   }
-  return computed(() => classDark.value || systemDark.value);
+  return computed(() => resolveDarkNow());
 }
 
 // ============ 上传 ============
