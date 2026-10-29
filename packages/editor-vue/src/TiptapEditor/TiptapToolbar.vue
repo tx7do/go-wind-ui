@@ -1,9 +1,9 @@
 <template>
   <!-- prettier-ignore -->
   <div
-    class="tiptap-toolbar flex flex-wrap gap-1 items-center px-3 py-2 select-none"
+    class="tiptap-toolbar"
   >
-    <div class="flex gap-0.5 items-center">
+    <div class="toolbar-group">
       <button
         type="button"
         class="tb"
@@ -34,9 +34,9 @@
       >P</button>
     </div>
 
-    <div class="toolbar-divider w-px h-4 mx-1.5"></div>
+    <div class="toolbar-divider"></div>
 
-    <div class="flex gap-0.5 items-center">
+    <div class="toolbar-group">
       <button type="button" class="tb" :class="{ 'tb-active': isActive('bold') }" :title="$t('editor.bold')" @click="actions.toggleBold">
         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 4h8a4 4 0 014 4 4 4 0 01-4 4H6z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 12h9a4 4 0 014 4 4 4 0 01-4 4H6z" /></svg>
       </button>
@@ -54,9 +54,9 @@
       </button>
     </div>
 
-    <div class="toolbar-divider w-px h-4 mx-1.5"></div>
+    <div class="toolbar-divider"></div>
 
-    <div class="flex gap-0.5 items-center">
+    <div class="toolbar-group">
       <button type="button" class="tb" :title="$t('editor.subscript')" @click="actions.toggleSubscript">
         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><text x="3" y="12" font-size="16" font-weight="bold">X</text><text x="14" y="18" font-size="10">2</text></svg>
       </button>
@@ -79,9 +79,9 @@
       />
     </div>
 
-    <div class="toolbar-divider w-px h-4 mx-1.5"></div>
+    <div class="toolbar-divider"></div>
 
-    <div class="flex gap-0.5 items-center">
+    <div class="toolbar-group">
       <button type="button" class="tb" :class="{ 'tb-active': isActive('bulletList') }" :title="$t('editor.bulletList')" @click="actions.toggleBulletList">
         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /><circle cx="3" cy="6" r="1" fill="currentColor" /><circle cx="3" cy="12" r="1" fill="currentColor" /><circle cx="3" cy="18" r="1" fill="currentColor" /></svg>
       </button>
@@ -108,9 +108,9 @@
       </button>
     </div>
 
-    <div class="toolbar-divider w-px h-4 mx-1.5"></div>
+    <div class="toolbar-divider"></div>
 
-    <div class="flex gap-0.5 items-center">
+    <div class="toolbar-group">
       <button type="button" class="tb" :class="{ 'tb-active': isActive('textAlign', { textAlign: 'left' }) }" :title="$t('editor.left')" @click="actions.setAlign('left')">
         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h10M4 18h14" /></svg>
       </button>
@@ -125,9 +125,9 @@
       </button>
     </div>
 
-    <div class="toolbar-divider w-px h-4 mx-1.5"></div>
+    <div class="toolbar-divider"></div>
 
-    <div v-if="isActive('table')" class="flex gap-0.5 items-center">
+    <div v-if="isActive('table')" class="toolbar-group">
       <button type="button" class="tb" :title="$t('editor.addRowBefore')" @click="actions.addRowBefore">R+</button>
       <button type="button" class="tb" :title="$t('editor.addRowAfter')" @click="actions.addRowAfter">+R</button>
       <button type="button" class="tb" :title="$t('editor.deleteRow')" @click="actions.deleteRow">R-</button>
@@ -141,9 +141,9 @@
       <button type="button" class="tb" :title="$t('editor.toggleHeaderCell')" @click="actions.toggleHeaderCell">H</button>
     </div>
 
-    <div v-if="isActive('table')" class="toolbar-divider w-px h-4 mx-1.5"></div>
+    <div v-if="isActive('table')" class="toolbar-divider"></div>
 
-    <div class="flex gap-0.5 items-center">
+    <div class="toolbar-group">
       <button type="button" class="tb" :disabled="!editor?.can().undo()" :title="$t('editor.undo')" @click="actions.undo">
         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a5 5 0 015 5v2M3 10l3-3m-3 3l3 3" /></svg>
       </button>
@@ -158,9 +158,9 @@
       </button>
     </div>
 
-    <div class="toolbar-divider w-px h-4 mx-1.5"></div>
+    <div class="toolbar-divider"></div>
 
-    <div class="flex gap-0.5 items-center">
+    <div class="toolbar-group">
       <button
         type="button"
         class="tb"
@@ -180,8 +180,8 @@
         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2" stroke-width="2" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h8M12 8v8" /></svg>
       </button>
       <button type="button" class="tb" :title="$t('editor.importMarkdown')" @click="actions.importMarkdown">MD</button>
-      <input ref="fileInputRef" type="file" accept="image/*" class="hidden" @change="emit('image-upload', $event)" />
-      <input ref="markdownInputRef" type="file" accept=".md,text/markdown" class="hidden" @change="emit('markdown-import', $event)" />
+      <input ref="fileInputRef" type="file" accept="image/*" class="toolbar-file-input" @change="emit('image-upload', $event)" />
+      <input ref="markdownInputRef" type="file" accept=".md,text/markdown" class="toolbar-file-input" @change="emit('markdown-import', $event)" />
     </div>
   </div>
 </template>
@@ -212,14 +212,37 @@ const markdownInputRef = defineModel<HTMLInputElement | undefined>("markdownInpu
 </script>
 
 <style scoped>
-/* ---- 工具栏容器 ---- */
+/* ---- 工具栏容器 ----
+   布局必须自包含：库不能假设宿主装了 Tailwind（此前用 flex/gap-1/px-3 等工具类，
+   未装 Tailwind 的宿主上会塌成竖排/无间距）。 */
 .tiptap-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 12px;
+  user-select: none;
   background-color: var(--tte-toolbar-bg);
   border-bottom: 1px solid var(--tte-toolbar-border);
 }
 
+/* ---- 按钮分组 ---- */
+.toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+/* ---- 隐藏的文件选择器 ---- */
+.toolbar-file-input {
+  display: none;
+}
+
 /* ---- 分割线 ---- */
 .toolbar-divider {
+  width: 1px;
+  height: 16px;
+  margin: 0 6px;
   background-color: var(--tte-toolbar-border);
 }
 

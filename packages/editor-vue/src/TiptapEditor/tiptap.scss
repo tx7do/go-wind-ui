@@ -71,6 +71,9 @@
   margin: 0 !important;
   padding: 0 !important;
   box-sizing: border-box !important;
+  /* 状态栏（.tiptap-statusbar）为 absolute 定位，锚点必须是编辑器自身；
+     缺这行时会锚到宿主里最近的定位祖先（如 .el-form-item__content），跑到容器顶部 */
+  position: relative !important;
   display: flex !important;
   flex-direction: column !important;
   width: 100% !important;
