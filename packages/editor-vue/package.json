@@ -1,6 +1,6 @@
 {
   "name": "@go-wind/editor-vue",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Vue 3 editor suite: Tiptap 3 rich text, Monaco code, JSON, Markdown (md-editor-v3), plain text — theme-aware and zero-config with injectable upload.",
   "type": "module",
   "license": "MIT",

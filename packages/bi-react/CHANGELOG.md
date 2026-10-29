@@ -1,5 +1,18 @@
 # @go-wind/bi-react
 
+## 0.3.0
+
+### Minor Changes
+
+- [`b88a107`](https://github.com/tx7do/go-wind-ui/commit/b88a107330f2a9237c8d0f9ccc825375412bf662) Thanks [@tx7do](https://github.com/tx7do)! - 渲染器新增 `fit: "contain"` 大屏视图模式：按容器宽高双向取小值等比缩放并居中，内容整体撑满容器且不滚动（root 高度取 100%，由宿主给足高度）。`width`（只按容器宽缩放、高度随内容）与 `none`（1:1）语义不变；React 端 `useContainerWidth` 同时回报容器高度，签名扩展为 `[ref, width, height]`。
+
+### Patch Changes
+
+- [`4a9d8a7`](https://github.com/tx7do/go-wind-ui/commit/4a9d8a733c85fb14485c3b06df94811678292c8a) Thanks [@tx7do](https://github.com/tx7do)! - 仪表盘卡片视觉样式从 inline style 移入 styles.css（含 `html.dark` 分支）。此前卡片背景/边框/文字色写死在 inline（`var(--bi-card-bg, var(--el-bg-color, #fff))`），inline 优先级压过任何 CSS 暗色分支——auto 主题（schema 不钉 `theme.key`）的仪表盘在宿主切暗色时卡片永远保持浅色，"跟随主题"在 react 端失效（vue 端走 scoped class 无此问题）。
+
+- Updated dependencies [[`b88a107`](https://github.com/tx7do/go-wind-ui/commit/b88a107330f2a9237c8d0f9ccc825375412bf662), [`fd172f0`](https://github.com/tx7do/go-wind-ui/commit/fd172f08ef1a814868961d4f5cf05561a8106a78)]:
+  - @go-wind/bi-vue@0.3.0
+
 ## 0.2.2
 
 ### Patch Changes

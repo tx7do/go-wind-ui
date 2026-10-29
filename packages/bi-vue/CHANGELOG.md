@@ -1,5 +1,15 @@
 # @go-wind/bi-vue
 
+## 0.3.0
+
+### Minor Changes
+
+- [`b88a107`](https://github.com/tx7do/go-wind-ui/commit/b88a107330f2a9237c8d0f9ccc825375412bf662) Thanks [@tx7do](https://github.com/tx7do)! - 渲染器新增 `fit: "contain"` 大屏视图模式：按容器宽高双向取小值等比缩放并居中，内容整体撑满容器且不滚动（root 高度取 100%，由宿主给足高度）。`width`（只按容器宽缩放、高度随内容）与 `none`（1:1）语义不变；React 端 `useContainerWidth` 同时回报容器高度，签名扩展为 `[ref, width, height]`。
+
+### Patch Changes
+
+- [`fd172f0`](https://github.com/tx7do/go-wind-ui/commit/fd172f08ef1a814868961d4f5cf05561a8106a78) Thanks [@tx7do](https://github.com/tx7do)! - BiDesigner 挂载时主动 emit 一次当前 schema 快照。此前 `BiDesignerApi` 只在用户操作时 emit，宿主（三端设计器抽屉）在"打开后未做任何编辑直接保存"的场景下 onChange 永远不触发，会把待保存 schema 判成空而拒绝保存。
+
 ## 0.2.2
 
 ### Patch Changes
