@@ -121,6 +121,26 @@ ECharts 适配器在 `bi-core/src/engine/echarts.ts`：按需注册（Bar/Line/P
 - Vue：`provideBiEnv({ themeMode?, resolvers?, locale?, messages? })`；React：`<BiProvider env={...}>`。
 - resolvers：`Record<datasetId, (dataset, params) => Promise<rows>>`——后端约定全在这层，schema 与渲染器不认识任何 HTTP 客户端。
 
+## 5.5 宿主持久化契约（设计器 ↔ 服务端）
+
+库只管 schema 与画布，存取是宿主职责（参考实现：go-wind-admin 的 `bi_dashboards` 模块，
+仓内 docs/bi_dashboard.md）。宿主必须遵守三条，否则必然踩坑（都是从真实 bug 里交的学费）：
+
+1. **挂载即 emit 一次快照**：BiDesigner 挂载时主动 `change` 一次当前 schema——宿主据此
+   拿到待保存初值。若没有这次 emit，宿主在「打开未编辑直接保存」时拿不到内容。
+2. **`initialSchema` 是挂载时快照**：运行期改 prop 不回灌画布；换目标（换行/换 id）
+   必须换 key 强制重挂载，且**画布要在取数完成后才挂**（ready 门）——先挂画布会以
+   demo 落地、不回灌，宿主自动保存会把演示内容覆盖进库。
+3. **自动保存基线 = 首帧 emit**：`normalizeSchema` 补默认值后，画布规范化 JSON 与
+   服务端原文永不字符串相等；拿原文当基线挡不住回显误保存。正确做法：首帧 emit
+   定基线（跳过）、此后与基线相同跳过、保存成功后更新基线。
+
+### bi-react 卡片样式（styles.css 契约）
+
+bi-react 卡片视觉全部在 `styles.css`（`.bi-dashboard__card` 等含 `html.dark` 分支）——
+**不允许 inline 写视觉值**（inline 优先级压过 CSS 暗色分支，auto 主题切暗时卡片恒浅）。
+宿主接管时覆盖 `--bi-card-*` / `--bi-canvas-bg` 变量链即可，无需改组件。
+
 ## 6. 分期与实施状态
 
 | 阶段 | 内容 | 状态 |
@@ -128,7 +148,7 @@ ECharts 适配器在 `bi-core/src/engine/echarts.ts`：按需注册（Bar/Line/P
 | M0 | schema v1 + 引擎接口 + echarts 适配器 + 主题 token + BiDesignerApi | ✅ 本次 |
 | M1 | bi-vue / bi-react 渲染器（网格布局 + 亮暗主题 + chart-click 事件）+ 双端 playground demo | ✅ 本次 |
 | M2 | designer-vue MVP：数据集面板 / 图型选择 / 属性面板 / 指针拖拽缩放（栅格吸附）/ 撤销重做 / schema 导入导出 | ✅ 本次 |
-| M3 | designer-react 桥接壳（✅）；schema v2 深化（✅ 聚合/多度量/排序 TopN/过滤器/样式面板/图型网格/复制粘贴/快捷键/碰撞推挤）；余项：下钻、跨图联动过滤、全屏、导出图片 | 部分完成 |
+| M3 | designer-react 桥接壳（✅）；schema v2 深化（✅ 聚合/多度量/排序 TopN/过滤器/样式面板/图型网格/复制粘贴/快捷键/碰撞推挤）；✅ 下钻 / 跨图联动过滤 / 全屏 / 导出图片 | ✅ 完成 |
 | M4 | AntV 适配器按需接入（g6/s2/l7）；AI 钩子（NL→schema、问数结果转图表）；模板/主题市场 | 待排期 |
 
 ## 7. 与 go-wind-admin 的集成点（后续）
