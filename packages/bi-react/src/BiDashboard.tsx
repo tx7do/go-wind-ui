@@ -26,8 +26,13 @@ import { BiChart } from "./BiChart";
 
 export interface BiDashboardProps {
   schema: Partial<BiDashboardSchema>;
-  /** 大屏视图：设计稿宽度 + 等比缩放（fit=width 按容器宽缩放，none 原样滚动） */
-  view?: { designWidth?: number; fit?: "width" | "none" };
+  /**
+   * 大屏视图：设计稿宽度 + 等比缩放
+   * - width：按容器宽缩放，高度随内容（页面可滚动）
+   * - contain：按容器宽高双向取小值缩放并居中，内容整体撑满容器、不滚动
+   * - none：原样 1:1
+   */
+  view?: { designWidth?: number; fit?: "width" | "contain" | "none" };
   onChartClick?: (event: BiChartEvent) => void;
   onChartSelect?: (chartId: string) => void;
   onLinkageChange?: (info: { datasetId: string; field: string; value: string } | null) => void;
@@ -69,7 +74,7 @@ export function BiDashboard(props: BiDashboardProps) {
     if (preset.canvasBg) vars["--bi-canvas-bg"] = preset.canvasBg;
     return vars;
   }, [themePreset]);
-  const [rootRef, containerWidth] = useContainerWidth();
+  const [rootRef, containerWidth, containerHeight] = useContainerWidth();
   const [rowsMap, setRowsMap] = useState<Record<string, BiDatasetData>>({});
 
   const cardRefs = useRef(new Map<string, HTMLDivElement | null>());
@@ -211,14 +216,39 @@ export function BiDashboard(props: BiDashboardProps) {
 
   const fitMode = view?.fit ?? "none";
   const designWidth = view?.designWidth ?? 1920;
-  const layoutWidth = fitMode === "width" ? designWidth : containerWidth;
-  const scaleFactor =
-    fitMode === "width" && containerWidth > 0 ? containerWidth / designWidth : 1;
+  const layoutWidth = fitMode === "none" ? containerWidth : designWidth;
 
   const layout = useMemo(
     () => layoutCharts(schema.charts ?? [], schema.grid, layoutWidth),
     [schema.charts, schema.grid, layoutWidth]
   );
+
+  let scaleFactor = 1;
+  if (fitMode !== "none" && containerWidth > 0) {
+    const byWidth = containerWidth / designWidth;
+    if (fitMode === "width") scaleFactor = byWidth;
+    else if (containerHeight > 0 && layout.height > 0)
+      scaleFactor = Math.min(byWidth, containerHeight / layout.height);
+    else scaleFactor = byWidth;
+  }
+
+  // contain：root 铺满容器（高度由宿主给定）并居中缩放层；其余按缩放后内容高度
+  const containMode = fitMode === "contain";
+  const scaledWidth = designWidth * scaleFactor;
+  const scaledHeight = layout.height * scaleFactor;
+  const stageStyle: React.CSSProperties = {
+    width: layoutWidth,
+    height: layout.height,
+    transform: `scale(${scaleFactor})`,
+    transformOrigin: "0 0",
+    position: containMode ? "absolute" : "relative",
+    ...(containMode
+      ? {
+          left: Math.max(0, (containerWidth - scaledWidth) / 2),
+          top: Math.max(0, (containerHeight - scaledHeight) / 2),
+        }
+      : {}),
+  };
 
   const emptyText = env.emptyText ?? "暂无数据";
 
@@ -257,20 +287,13 @@ export function BiDashboard(props: BiDashboardProps) {
       style={{
         position: "relative",
         width: "100%",
-        height: Math.round(layout.height * scaleFactor),
+        height: containMode ? "100%" : Math.round(scaledHeight),
+        overflow: containMode ? "hidden" : undefined,
         background: "var(--bi-canvas-bg, transparent)",
         ...chromeVars,
       } as React.CSSProperties}
     >
-      <div
-        style={{
-          width: layoutWidth,
-          height: layout.height,
-          transform: `scale(${scaleFactor})`,
-          transformOrigin: "0 0",
-          position: "relative",
-        }}
-      >
+      <div style={stageStyle}>
       {layout.items.map((item) => {
         const data = renderRows[item.chart.datasetId] ?? { rows: [], loading: false, error: null };
         const drillLabel_ = drillLabel(item.chart.id);

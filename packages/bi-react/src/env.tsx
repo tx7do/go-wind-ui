@@ -55,18 +55,23 @@ export function useBiTheme(): BiResolvedTheme {
   }, [env, dark]);
 }
 
-/** 容器宽度跟踪（渲染器布局需要像素宽） */
-export function useContainerWidth(): [RefObject<HTMLDivElement | null>, number] {
+/** 容器尺寸跟踪（渲染器布局需要像素宽；fit=contain 还需要高度） */
+export function useContainerWidth(): [RefObject<HTMLDivElement | null>, number, number] {
   const ref = useRef<HTMLDivElement | null>(null);
-  const [width, setWidth] = useState(0);
+  const [size, setSize] = useState({ width: 0, height: 0 });
   useEffect(() => {
     if (!ref.current) return;
     const observer = new ResizeObserver((entries) => {
-      const w = entries[0]?.contentRect.width ?? 0;
-      if (w > 0) setWidth(w);
+      const rect = entries[0]?.contentRect;
+      if (!rect) return;
+      setSize((prev) => {
+        const width = rect.width > 0 ? rect.width : prev.width;
+        const height = rect.height > 0 ? rect.height : prev.height;
+        return width === prev.width && height === prev.height ? prev : { width, height };
+      });
     });
     observer.observe(ref.current);
     return () => observer.disconnect();
   }, []);
-  return [ref, width];
+  return [ref, size.width, size.height];
 }

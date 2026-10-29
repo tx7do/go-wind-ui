@@ -5,13 +5,21 @@
       <ElRadioButton value="designer">设计器</ElRadioButton>
     </ElRadioGroup>
 
+    <!-- 视图缩放模式：width 只按容器宽缩放（高度随内容）/ contain 双向适配铺满容器 / none 1:1 -->
+    <ElRadioGroup v-if="mode === 'render'" v-model="fit" class="bi-demo__switch">
+      <ElRadioButton value="width">fit: width</ElRadioButton>
+      <ElRadioButton value="contain">fit: contain</ElRadioButton>
+      <ElRadioButton value="none">fit: none</ElRadioButton>
+    </ElRadioGroup>
+
     <!-- 渲染器：固定 schema + 注入 api resolver（演示 loading→数据） -->
-    <BiDashboard
-      v-if="mode === 'render'"
-      :schema="renderSchema"
-      :view="{ designWidth: 1920, fit: 'width' }"
-      class="bi-demo__main"
-    />
+    <div v-if="mode === 'render'" :class="['bi-demo__stage', fit === 'contain' && 'bi-demo__stage--fixed']">
+      <BiDashboard
+        :schema="renderSchema"
+        :view="{ designWidth: 1920, fit }"
+        class="bi-demo__main"
+      />
+    </div>
 
     <!-- 设计器：内置 demo schema；@change 抛出最新 schema -->
     <BiDesigner v-else :demo="true" class="bi-demo__main" @change="onDesignerChange" />
@@ -47,6 +55,8 @@ provideBiEnv({
 });
 
 const mode = ref<"render" | "designer">("render");
+/** 视图缩放模式（演示 width / contain / none 三种语义） */
+const fit = ref<"width" | "contain" | "none">("width");
 
 const renderSchema: Partial<BiDashboardSchema> = {
   name: "render-demo",
@@ -283,5 +293,17 @@ function onDesignerChange(schema: BiDashboardSchema) {
 .bi-demo__main {
   flex: 1;
   min-height: 0;
+}
+
+/* contain 需要一个有确定高度的宿主：演示"撑满容器并居中" */
+.bi-demo__stage {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+
+.bi-demo__stage--fixed {
+  height: 480px;
+  flex: none;
 }
 </style>

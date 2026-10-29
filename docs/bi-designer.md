@@ -106,7 +106,13 @@ ECharts 适配器在 `bi-core/src/engine/echarts.ts`：按需注册（Bar/Line/P
 - `BI_SEMANTIC_COLORS`：告警红绿/严重级别等语义色不随主题（跨主题语义稳定）。
 - **模板文件格式**：`toTemplateFile/parseTemplateFile/exportTemplateFile/importTemplateFile`——.gwbi.json（魔术标识 $gwbi + 版本 + meta + schema），schema 走迁移器；服务端模板 CRUD（iot SCREEN/TEMPLATE 两 kind）属应用职责，库只管文件契约。预设把图表配色模式、色盘与画布/卡片/标题 chrome **钉死**——宿主亮暗翻转不跟随（大屏核心诉求）；缺省/auto 跟随宿主。
 - 预设 chrome 经 `--bi-card-*` / `--bi-canvas-bg` 变量注入渲染器/设计器画布，卡片样式全走变量链（宿主可整体接管）。
-- 渲染器 `view={{ designWidth: 1920, fit: "width" }}`：按设计稿宽布局 + transform 等比缩放（大屏投屏自适应）。
+- 渲染器 `view={{ designWidth: 1920, fit: "width" }}`：按设计稿宽布局 + transform 等比缩放（大屏投屏自适应）。三种 fit 语义：
+  - `width`：只按容器宽缩放，高度随内容（页面可滚动）；
+  - `contain`：按容器宽高双向取小值缩放并居中，内容整体撑满容器、不滚动（root 高度取 100%，由宿主给足高度）；
+  - `none`：1:1 不缩放。
+- 管理页里想"铺满可视区"且不要 letterbox：宿主按容器宽高比反推设计宽
+  `designWidth = 内容高 × W / H`（内容高取 `layoutCharts(charts, grid, 1920).height`），仍用 `fit: "width"`，
+  图表随容器双向拉伸；要保设计稿纵横比则直接用 `fit: "contain"`。
 - 设计器工具栏主题下拉实时预览（画布内图表主题同样钉死）。
 
 ## 5. 主题与环境注入

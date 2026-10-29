@@ -1,13 +1,8 @@
 <template>
-  <div ref="rootRef" class="bi-dashboard" :style="{ height: wrapHeight + 'px', ...chromeStyle }">
+  <div ref="rootRef" class="bi-dashboard" :style="rootStyle">
   <div
     class="bi-dashboard__scaled"
-    :style="{
-      width: layoutWidth + 'px',
-      height: layout.height + 'px',
-      transform: 'scale(' + scaleFactor + ')',
-      transformOrigin: '0 0',
-    }"
+    :style="scaledStyle"
   >
     <div
       v-for="item in layout.items"
@@ -119,8 +114,11 @@ import BiChart from "./BiChart.vue";
 const props = withDefaults(
   defineProps<{
     schema: Partial<BiDashboardSchema>;
-    /** 大屏视图：设计稿宽度 + 等比缩放（fit=width 按容器宽缩放，none 原样滚动） */
-    view?: { designWidth?: number; fit?: "width" | "none" };
+    /** 大屏视图：设计稿宽度 + 等比缩放
+     *  - width：按容器宽缩放，高度随内容（页面可滚动）
+     *  - contain：按容器宽高双向取小值缩放并居中，内容整体撑满容器、不滚动
+     *  - none：原样 1:1 */
+    view?: { designWidth?: number; fit?: "width" | "contain" | "none" };
   }>(),
   {}
 );
@@ -159,13 +157,16 @@ const chromeVars = computed(() => {
 
 const rootRef = ref<HTMLElement | null>(null);
 const containerWidth = ref(0);
+const containerHeight = ref(0);
 let observer: ResizeObserver | null = null;
 
 onMounted(() => {
   if (!rootRef.value) return;
   observer = new ResizeObserver((entries) => {
-    const width = entries[0]?.contentRect.width ?? 0;
-    if (width > 0) containerWidth.value = width;
+    const rect = entries[0]?.contentRect;
+    if (!rect) return;
+    if (rect.width > 0) containerWidth.value = rect.width;
+    if (rect.height > 0) containerHeight.value = rect.height;
   });
   observer.observe(rootRef.value);
 });
@@ -327,21 +328,49 @@ const fitMode = computed(() => props.view?.fit ?? "none");
 const designWidth = computed(() => props.view?.designWidth ?? 1920);
 /** 布局基准宽：缩放模式按设计稿宽布局，否则按容器实宽 */
 const layoutWidth = computed(() =>
-  fitMode.value === "width" ? designWidth.value : containerWidth.value
+  fitMode.value === "none" ? containerWidth.value : designWidth.value
 );
-const scaleFactor = computed(() =>
-  fitMode.value === "width" && containerWidth.value > 0
-    ? containerWidth.value / designWidth.value
-    : 1
-);
-const wrapHeight = computed(() => Math.round(layout.value.height * scaleFactor.value));
+const scaleFactor = computed(() => {
+  if (fitMode.value === "none" || containerWidth.value <= 0) return 1;
+  const byWidth = containerWidth.value / designWidth.value;
+  if (fitMode.value === "width") return byWidth;
+  // contain：还要容得下内容高度，取两者较小值
+  if (containerHeight.value <= 0 || layout.value.height <= 0) return byWidth;
+  return Math.min(byWidth, containerHeight.value / layout.value.height);
+});
 
 const layout = computed(() =>
   layoutCharts(props.schema.charts ?? [], props.schema.grid, layoutWidth.value)
 );
-const chromeStyle = computed(() => {
-  void layout.value; // chromeVars 不依赖布局，这里仅为保持响应式链一致
-  return chromeVars.value;
+
+/** root 高度：contain 铺满容器（高度由宿主给定），其余按缩放后内容高度 */
+const rootStyle = computed(() => {
+  const style: Record<string, string> = { ...chromeVars.value };
+  if (fitMode.value === "contain") {
+    style.height = "100%";
+    style.overflow = "hidden";
+  } else {
+    style.height = Math.round(layout.value.height * scaleFactor.value) + "px";
+  }
+  return style;
+});
+
+/** 缩放层：contain 用绝对定位做水平/垂直居中 */
+const scaledStyle = computed(() => {
+  const style: Record<string, string> = {
+    width: layoutWidth.value + "px",
+    height: layout.value.height + "px",
+    transform: "scale(" + scaleFactor.value + ")",
+    transformOrigin: "0 0",
+  };
+  if (fitMode.value === "contain") {
+    const scaledW = designWidth.value * scaleFactor.value;
+    const scaledH = layout.value.height * scaleFactor.value;
+    style.position = "absolute";
+    style.left = Math.max(0, (containerWidth.value - scaledW) / 2) + "px";
+    style.top = Math.max(0, (containerHeight.value - scaledH) / 2) + "px";
+  }
+  return style;
 });
 
 // grid 变化时 root 高度由 layout.height 驱动；defaultGrid 兜底缺省

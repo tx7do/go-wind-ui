@@ -148,10 +148,13 @@ const resolvers = {
 };
 
 type BiView = "render" | "designer";
+type BiFit = "width" | "contain" | "none";
 
 export default function BiDemo() {
   const schema = useMemo(() => SCHEMA, []);
   const [view, setView] = useState<BiView>("render");
+  /** 视图缩放模式：width 只按容器宽缩放（高度随内容）/ contain 双向适配铺满容器 / none 1:1 */
+  const [fit, setFit] = useState<BiFit>("width");
 
   return (
     <BiProvider env={{ resolvers, emptyText: "暂无数据" }}>
@@ -161,10 +164,20 @@ export default function BiDemo() {
             <Radio.Button value="render">渲染器</Radio.Button>
             <Radio.Button value="designer">设计器（React 桥接）</Radio.Button>
           </Radio.Group>
+          {view === "render" && (
+            <Radio.Group value={fit} onChange={(e) => setFit(e.target.value)} style={{ marginLeft: 12 }}>
+              <Radio.Button value="width">fit: width</Radio.Button>
+              <Radio.Button value="contain">fit: contain</Radio.Button>
+              <Radio.Button value="none">fit: none</Radio.Button>
+            </Radio.Group>
+          )}
         </div>
-        <div className="bi-demo__main">
+        <div
+          className="bi-demo__main"
+          style={fit === "contain" ? { flex: "none", height: 480, display: "flex" } : undefined}
+        >
           {view === "render" ? (
-            <BiDashboard schema={schema} />
+            <BiDashboard schema={schema} view={{ designWidth: 1920, fit }} />
           ) : (
             <BiDesignerReact
               demo
