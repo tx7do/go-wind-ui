@@ -52,8 +52,8 @@
       />
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="handleLinkCancel">{{ $t("button.cancel") }}</el-button>
-          <el-button type="primary" @click="handleLinkOk">{{ $t("button.confirm") }}</el-button>
+          <ElButton @click="handleLinkCancel">{{ $t("button.cancel") }}</ElButton>
+          <ElButton type="primary" @click="handleLinkOk">{{ $t("button.confirm") }}</ElButton>
         </div>
       </template>
     </ElDialog>
@@ -99,8 +99,8 @@
       </div>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="handleCodeBlockCancel">{{ $t("button.cancel") }}</el-button>
-          <el-button type="primary" @click="handleCodeBlockOk">{{ $t("button.confirm") }}</el-button>
+          <ElButton @click="handleCodeBlockCancel">{{ $t("button.cancel") }}</ElButton>
+          <ElButton type="primary" @click="handleCodeBlockOk">{{ $t("button.confirm") }}</ElButton>
         </div>
       </template>
     </ElDialog>
@@ -140,8 +140,8 @@
       </div>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="handleVideoCancel">{{ $t("button.cancel") }}</el-button>
-          <el-button type="primary" @click="handleVideoOk">{{ $t("button.confirm") }}</el-button>
+          <ElButton @click="handleVideoCancel">{{ $t("button.cancel") }}</ElButton>
+          <ElButton type="primary" @click="handleVideoOk">{{ $t("button.confirm") }}</ElButton>
         </div>
       </template>
     </ElDialog>
@@ -214,8 +214,8 @@
       </div>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="handleIframeCancel">{{ $t("button.cancel") }}</el-button>
-          <el-button type="primary" @click="handleIframeOk">{{ $t("button.confirm") }}</el-button>
+          <ElButton @click="handleIframeCancel">{{ $t("button.cancel") }}</ElButton>
+          <ElButton type="primary" @click="handleIframeOk">{{ $t("button.confirm") }}</ElButton>
         </div>
       </template>
     </ElDialog>
@@ -234,7 +234,7 @@ const uploadImageFile = useEditorUpload();
 import { ElMessage } from "element-plus";
 import { EditorContent } from "@tiptap/vue-3";
 import { marked } from "marked";
-import { ElDialog, ElInput, ElSelect, ElOption, ElSwitch } from "element-plus";
+import { ElButton, ElDialog, ElInput, ElSelect, ElOption, ElSwitch } from "element-plus";
 
 import { languages } from "./constants";
 import { useEditorModals } from "./composables/useEditorModals";
