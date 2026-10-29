@@ -816,6 +816,13 @@ api.subscribe(() => {
   emit("change", api.getSnapshot());
 });
 
+// 挂载即抛一次当前快照：宿主（三端设计器抽屉）据此拿到「待保存 schema」的初值——
+// api 只在用户操作时 emit，若不主动抛，宿主的 onChange 在纯打开+保存的场景下
+// 永远不会触发，会把「未做任何编辑」误判为「设计器未就绪」。
+onMounted(() => {
+  emit("change", api.getSnapshot());
+});
+
 const preview = ref(false);
 const importInputRef = ref<HTMLInputElement | null>(null);
 // 图型网格来自注册表（引擎适配器包可扩展，如 s2/g6）
