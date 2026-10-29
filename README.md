@@ -27,6 +27,35 @@ Framework-generic admin UI building blocks from the [GoWind](https://github.com/
 - **Built-in zh-CN / en-US** locale packs (no vue-i18n dependency), injectable `hasAccess` permission checking, skeleton screen, column settings with drag order, client-side CSV/XLSX export-all, Excel batch import, form drawer close guard
 - Full TypeScript types, ESM + UMD builds, tree-shakable
 
+## Host integration notes (Vite)
+
+`@go-wind/editor-*` 的产物里有 Monaco 的 `?worker` 导入，依赖优化器处理不了，宿主必须在
+`optimizeDeps.exclude` 里排除它。被排除的子树其传递依赖也不再预构建，其中几个是裸 CJS，
+浏览器会报 `does not provide an export named ...`——把下面这些显式纳入预构建即可：
+
+```ts
+// vite.config.ts
+optimizeDeps: {
+  exclude: ['@go-wind/editor-react'], // Vue 宿主换成 '@go-wind/editor-vue'
+  include: [
+    // @tiptap/react → use-sync-external-store/shim（CJS 具名导出）
+    'use-sync-external-store/shim',
+    'use-sync-external-store/shim/index.js',
+    'use-sync-external-store/shim/with-selector',
+    'use-sync-external-store/shim/with-selector.js',
+    // lowlight → highlight.js/lib/*（es/*.js 只是转发到 lib/*.js 的 CJS 实现）
+    'lowlight',
+    'highlight.js',
+    'highlight.js/lib/core',
+    // 仅 Vue 宿主：json-editor-vue 的 ESM 产物 import json-source-map（纯 CJS）
+    'json-editor-vue',
+    'json-source-map',
+  ],
+},
+```
+
+`@go-wind/bi-*` 无此类约束，正常消费即可。
+
 ## Publish
 
 版本与发布走 changesets（CI 自动化，见 .github/workflows/release.yml）：
@@ -36,7 +65,7 @@ npx changeset                 # 描述变更（patch/minor/major + 包清单）
 # push 后 Release 工作流开 Version PR；合入 PR 即自动发布到 npmjs.org
 ```
 
-前置（一次性）：npmjs.org 创建 org **go-wind-ui**（免费，公开包无费用），
+前置（一次性）：npmjs.org 创建 org **go-wind**（免费，公开包无费用），
 仓库 Settings → Secrets 添加 `NPM_TOKEN`（npmjs → Access Tokens → Automation）。
 
 ## Develop
