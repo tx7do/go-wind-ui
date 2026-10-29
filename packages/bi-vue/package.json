@@ -1,6 +1,6 @@
 {
   "name": "@go-wind/bi-vue",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Vue 3 BI dashboard renderer + designer canvas on top of @go-wind/bi-core: config-driven dashboard schema, drag/resize grid, undo/redo, schema import/export.",
   "type": "module",
   "license": "MIT",

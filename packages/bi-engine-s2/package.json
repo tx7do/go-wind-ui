@@ -1,6 +1,6 @@
 {
   "name": "@go-wind/bi-engine-s2",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "AntV S2 pivot-table engine adapter for @go-wind/bi-core: registerChartType(\"pivot\", \"s2\"). Optional install — tree-shakeable by design.",
   "type": "module",
   "license": "MIT",

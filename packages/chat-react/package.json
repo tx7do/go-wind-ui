@@ -1,6 +1,6 @@
 {
   "name": "@go-wind/chat-react",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "AI streaming chat UI for React 19: message list with markdown rendering, typing indicator, auto-scroll, chat input with stop — transport injected by the host.",
   "type": "module",
   "license": "MIT",

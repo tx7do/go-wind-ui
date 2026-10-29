@@ -1,6 +1,6 @@
 {
   "name": "@go-wind/editor-react",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "React 19 editor suite: Tiptap 3 rich text, Monaco code, JSON, Markdown (md-editor-rt), plain text — theme-aware and zero-config with injectable upload.",
   "type": "module",
   "license": "MIT",

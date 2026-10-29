@@ -1,6 +1,6 @@
 {
   "name": "@go-wind/bi-react",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "React 19 BI dashboard renderer on top of @go-wind/bi-core: config-driven dashboard schema, responsive grid layout, light/dark theme following.",
   "type": "module",
   "license": "MIT",

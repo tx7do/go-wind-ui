@@ -1,6 +1,6 @@
 {
   "name": "@go-wind/bi-engine-g6",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "AntV G6 relation-graph engine adapter for @go-wind/bi-core: registerChartType(\"graph\", \"g6\"). Optional install — tree-shakeable by design.",
   "type": "module",
   "license": "MIT",

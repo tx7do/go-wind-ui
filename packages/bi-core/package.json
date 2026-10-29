@@ -1,6 +1,6 @@
 {
   "name": "@go-wind/bi-core",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Framework-agnostic BI dashboard kernel: serializable dashboard schema, dataset resolution, chart engine registry (built-in ECharts adapter), light/dark theme tokens, designer state machine.",
   "type": "module",
   "license": "MIT",
