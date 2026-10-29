@@ -38,17 +38,12 @@ export interface BiDashboardProps {
   onLinkageChange?: (info: { datasetId: string; field: string; value: string } | null) => void;
 }
 
+// 工具按钮颜色走 .bi-dashboard__tool 类（styles.css 含暗色分支），inline 只留定位
 const TOOL_BTN: React.CSSProperties = {
   width: 20,
   height: 20,
   padding: 0,
-  fontSize: 12,
   lineHeight: "18px",
-  color: "var(--el-text-color-secondary, #9ca3af)",
-  background: "transparent",
-  border: "none",
-  borderRadius: 4,
-  cursor: "pointer",
 };
 
 export function BiDashboard(props: BiDashboardProps) {
@@ -304,15 +299,13 @@ export function BiDashboard(props: BiDashboardProps) {
             ref={setCardRef(item.chart.id)}
             className="bi-dashboard__card"
             style={{
+              // 视觉（背景/边框/文字色）不在这里写：inline 会压过 styles.css 的
+              // html.dark 分支，auto 主题下切暗卡片永远不变。样式统一走类。
               position: "absolute",
               display: "flex",
               flexDirection: "column",
-              boxSizing: "border-box",
               padding: "10px 12px",
               overflow: "hidden",
-              background: "var(--bi-card-bg, var(--el-bg-color, #fff))",
-              border: "1px solid var(--bi-card-border, var(--el-border-color-lighter, #ebeef5))",
-              borderRadius: 8,
               left: item.left,
               top: item.top,
               width: item.width,
@@ -332,43 +325,36 @@ export function BiDashboard(props: BiDashboardProps) {
                 }}
               >
                 <div
-                  style={{
-                    flex: 1,
-                    minWidth: 0,
-                    fontSize: 13,
-                    fontWeight: 600,
-                    color: "var(--bi-card-text, var(--el-text-color-primary, #1f2937))",
-                    whiteSpace: "nowrap",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                  }}
+                  className="bi-dashboard__card-title"
+                  style={{ flex: 1, minWidth: 0 }}
                 >
                   {item.chart.title || drillLabel_}
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: 2, flexShrink: 0 }}>
                   {drillLabel_ && (
-                    <button style={TOOL_BTN} title="返回上一层" onClick={(e) => { e.stopPropagation(); drillUp(item.chart.id); }}>
+                    <button className="bi-dashboard__tool" style={TOOL_BTN} title="返回上一层" onClick={(e) => { e.stopPropagation(); drillUp(item.chart.id); }}>
                       ↩
                     </button>
                   )}
                   {item.chart.drill?.path?.length ? (
-                    <button style={TOOL_BTN} title="重置下钻" onClick={(e) => { e.stopPropagation(); drillReset(item.chart.id); }}>
+                    <button className="bi-dashboard__tool" style={TOOL_BTN} title="重置下钻" onClick={(e) => { e.stopPropagation(); drillReset(item.chart.id); }}>
                       ⤾
                     </button>
                   ) : null}
                   {linkageHit && (
                     <button
-                      style={{ ...TOOL_BTN, color: "var(--el-color-warning, #e6a23c)" }}
+                      className="bi-dashboard__tool bi-dashboard__tool--linkage"
+                      style={TOOL_BTN}
                       title={`联动: ${linkageHit.value}`}
                       onClick={(e) => { e.stopPropagation(); clearLinkage(item.chart.datasetId); }}
                     >
                       ◉
                     </button>
                   )}
-                  <button style={TOOL_BTN} title="导出图片" onClick={(e) => { e.stopPropagation(); exportChart(item.chart.id, item.chart.title); }}>
+                  <button className="bi-dashboard__tool" style={TOOL_BTN} title="导出图片" onClick={(e) => { e.stopPropagation(); exportChart(item.chart.id, item.chart.title); }}>
                     ⇩
                   </button>
-                  <button style={TOOL_BTN} title="全屏" onClick={(e) => { e.stopPropagation(); fullscreen(item.chart.id); }}>
+                  <button className="bi-dashboard__tool" style={TOOL_BTN} title="全屏" onClick={(e) => { e.stopPropagation(); fullscreen(item.chart.id); }}>
                     ⛶
                   </button>
                 </div>

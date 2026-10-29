@@ -42,3 +42,49 @@ html.dark .bi-dashboard__card {
 html.dark .bi-dashboard__card-title {
   color: var(--bi-card-text, var(--el-text-color-primary, #e5eaf3));
 }
+
+/* 卡片头与工具按钮（亮暗跟随；此前 inline 写死浅色回退，暗色分支永远被压） */
+.bi-dashboard__card-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  margin-bottom: 4px;
+  min-height: 20px;
+}
+
+.bi-dashboard__card-tools {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.bi-dashboard__tool {
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--bi-card-text, var(--el-text-color-secondary, #9ca3af));
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+html.dark .bi-dashboard__tool {
+  color: var(--bi-card-text, var(--el-text-color-secondary, #6e7681));
+}
+
+.bi-dashboard__tool:hover {
+  background: rgb(0 0 0 / 6%);
+}
+
+html.dark .bi-dashboard__tool:hover {
+  background: rgb(255 255 255 / 10%);
+}
+
+.bi-dashboard__tool--linkage {
+  color: var(--el-color-warning, #e6a23c);
+}
