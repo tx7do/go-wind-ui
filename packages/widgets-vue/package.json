@@ -1,6 +1,6 @@
 {
   "name": "@go-wind/widgets-vue",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "description": "Admin shell widgets for Vue 3 + Element Plus: notification bell, command palette (Ctrl+K), theme switch, language select — presentational, data injected by the host.",
   "type": "module",
   "license": "MIT",
@@ -25,7 +25,7 @@
     "./style.css": "./dist/widgets-vue.css"
   },
   "scripts": {
-    "build": "vite build && vue-tsc -p tsconfig.build.json",
+    "build": "vite build && vue-tsc -p tsconfig.build.json && node ../../scripts/flatten-dts.mjs",
     "typecheck": "vue-tsc --noEmit"
   },
   "peerDependencies": {

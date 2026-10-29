@@ -1,6 +1,6 @@
 {
   "name": "@go-wind/chat-vue",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "description": "AI streaming chat UI for Vue 3: message list with markdown rendering, typing indicator, auto-scroll, chat input with stop — transport injected by the host.",
   "type": "module",
   "license": "MIT",
@@ -25,7 +25,7 @@
     "./style.css": "./dist/chat-vue.css"
   },
   "scripts": {
-    "build": "vite build && vue-tsc -p tsconfig.build.json",
+    "build": "vite build && vue-tsc -p tsconfig.build.json && node ../../scripts/flatten-dts.mjs",
     "typecheck": "vue-tsc --noEmit"
   },
   "peerDependencies": {

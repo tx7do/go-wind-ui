@@ -1,6 +1,6 @@
 {
   "name": "@go-wind/editor-vue",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "description": "Vue 3 editor suite: Tiptap 3 rich text, Monaco code, JSON, Markdown (md-editor-v3), plain text — theme-aware and zero-config with injectable upload.",
   "type": "module",
   "license": "MIT",
@@ -26,7 +26,7 @@
     "./style.css": "./dist/editor-vue.css"
   },
   "scripts": {
-    "build": "vite build && vue-tsc -p tsconfig.build.json",
+    "build": "vite build && vue-tsc -p tsconfig.build.json && node ../../scripts/flatten-dts.mjs",
     "typecheck": "vue-tsc --noEmit"
   },
   "peerDependencies": {

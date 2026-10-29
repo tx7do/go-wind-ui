@@ -1,6 +1,6 @@
 {
   "name": "@go-wind/bi-engine-s2",
-  "version": "1.0.0",
+  "version": "0.2.2",
   "description": "AntV S2 pivot-table engine adapter for @go-wind/bi-core: registerChartType(\"pivot\", \"s2\"). Optional install — tree-shakeable by design.",
   "type": "module",
   "license": "MIT",
@@ -24,11 +24,11 @@
     }
   },
   "scripts": {
-    "build": "vite build && tsc -p tsconfig.build.json",
+    "build": "vite build && tsc -p tsconfig.build.json && node ../../scripts/flatten-dts.mjs",
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
-    "@go-wind/bi-core": ">=0.2.0"
+    "@go-wind/bi-core": ">=0.2.2"
   },
   "dependencies": {
     "@antv/s2": "^2.0.0"

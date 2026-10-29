@@ -1,6 +1,6 @@
 {
   "name": "@go-wind/bi-core",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "description": "Framework-agnostic BI dashboard kernel: serializable dashboard schema, dataset resolution, chart engine registry (built-in ECharts adapter), light/dark theme tokens, designer state machine.",
   "type": "module",
   "license": "MIT",
@@ -24,7 +24,7 @@
     }
   },
   "scripts": {
-    "build": "vite build && tsc -p tsconfig.build.json",
+    "build": "vite build && tsc -p tsconfig.build.json && node ../../scripts/flatten-dts.mjs",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

@@ -1,6 +1,6 @@
 {
   "name": "@go-wind/element-pro",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "description": "Config-driven CRUD page components for Vue 3 + Element Plus + vxe-table: search bar, toolbar, dual-engine table, pagination, form modal, full-page orchestration.",
   "type": "module",
   "license": "MIT",
@@ -29,7 +29,7 @@
     "./style.css": "./dist/element-pro.css"
   },
   "scripts": {
-    "build": "vite build && vue-tsc -p tsconfig.build.json",
+    "build": "vite build && vue-tsc -p tsconfig.build.json && node ../../scripts/flatten-dts.mjs",
     "typecheck": "vue-tsc --noEmit",
     "watch": "vite build --watch"
   },

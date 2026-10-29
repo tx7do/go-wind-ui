@@ -1,5 +1,15 @@
 # @go-wind/bi-react
 
+## 0.2.2
+
+### Patch Changes
+
+- Fix: declaration files (.d.ts) now land at `dist/index.d.ts` matching the package.json `types` field. Previously vue-tsc preserved workspace-relative paths (e.g. `dist/bi-vue/src/index.d.ts`), making types unresolvable for npm consumers. Build tsconfigs now clear `paths` so declaration generation resolves workspace deps via their built d.ts (topological order), and a post-build flatten script normalizes output.
+
+- Updated dependencies []:
+  - @go-wind/bi-core@0.2.2
+  - @go-wind/bi-vue@0.2.2
+
 ## 0.2.0
 
 ### Minor Changes

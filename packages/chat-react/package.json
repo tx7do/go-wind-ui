@@ -1,6 +1,6 @@
 {
   "name": "@go-wind/chat-react",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "description": "AI streaming chat UI for React 19: message list with markdown rendering, typing indicator, auto-scroll, chat input with stop — transport injected by the host.",
   "type": "module",
   "license": "MIT",
@@ -24,7 +24,7 @@
     "./style.css": "./dist/chat-react.css"
   },
   "scripts": {
-    "build": "vite build && tsc -p tsconfig.build.json",
+    "build": "vite build && tsc -p tsconfig.build.json && node ../../scripts/flatten-dts.mjs",
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {

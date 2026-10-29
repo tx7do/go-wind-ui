@@ -1,6 +1,6 @@
 {
   "name": "@go-wind/locale",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "description": "Tiny reactive i18n store factory shared by go-wind-ui packages: built-in locale packs, dot-path lookup, {param} interpolation, no vue-i18n dependency.",
   "type": "module",
   "license": "MIT",
@@ -24,7 +24,7 @@
     }
   },
   "scripts": {
-    "build": "vite build && vue-tsc -p tsconfig.build.json",
+    "build": "vite build && vue-tsc -p tsconfig.build.json && node ../../scripts/flatten-dts.mjs",
     "typecheck": "vue-tsc --noEmit"
   },
   "peerDependencies": {
