@@ -1,0 +1,73 @@
+{
+  "name": "@go-wind/admin-react",
+  "version": "0.0.0",
+  "description": "React 19 admin shell mechanisms extracted from go-wind-admin: axios transport (token rotation/captcha headers), SSE client, auth store with injectable AuthGateway, route factory (frontend/backend access modes), access control, i18n engine, theme/preferences, query client, generic hooks & utils.",
+  "type": "module",
+  "license": "MIT",
+  "keywords": [
+    "react",
+    "admin",
+    "auth",
+    "router",
+    "i18n",
+    "theme",
+    "antd"
+  ],
+  "files": [
+    "dist"
+  ],
+  "module": "./dist/admin-react.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/admin-react.js"
+    },
+    "./style.css": "./dist/admin-react.css"
+  },
+  "scripts": {
+    "build": "vite build && tsc -p tsconfig.build.json && node ../../scripts/flatten-dts.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "@ant-design/icons": ">=5.6.0",
+    "@ant-design/pro-components": ">=2.8.0",
+    "@tanstack/react-query": ">=5.0.0",
+    "antd": ">=6.0.0",
+    "i18next": ">=25.0.0",
+    "react": ">=19.0.0",
+    "react-dom": ">=19.0.0",
+    "react-i18next": ">=17.0.0",
+    "react-router-dom": ">=6.26.0",
+    "zustand": ">=5.0.0"
+  },
+  "dependencies": {
+    "@microsoft/fetch-event-source": "^2.0.1",
+    "axios": "^1.16.1",
+    "dayjs": "^1.11.20",
+    "nprogress": "^0.2.0"
+  },
+  "devDependencies": {
+    "@ant-design/icons": "^5.6.1",
+    "@ant-design/pro-components": "^2.8.10",
+    "@tanstack/react-query": "^5.100.11",
+    "@types/nprogress": "^0.2.3",
+    "@types/react": "^19.2.15",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.2",
+    "antd": "^6.4.3",
+    "i18next": "^26.2.0",
+    "less": "^4.6.4",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "react-i18next": "^17.0.8",
+    "react-router-dom": "^6.26.0",
+    "typescript": "^5.9.3",
+    "vite": "^8.0.0",
+    "zustand": "^5.0.13"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}

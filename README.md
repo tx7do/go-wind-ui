@@ -16,6 +16,7 @@ Framework-generic admin UI building blocks from the [GoWind](https://github.com/
 | [`@go-wind/widgets-vue`](./packages/widgets-vue) | Admin shell widgets for Vue 3: notification bell, Ctrl+K command palette, theme switch, language select | v0.1 |
 | [`@go-wind/chat-vue`](./packages/chat-vue) | AI streaming chat UI for Vue 3 (markdown, typing, stop; transport injected) | v0.1 |
 | [`@go-wind/chat-react`](./packages/chat-react) | React 19 mirror of chat-vue | v0.1 |
+| [`@go-wind/admin-react`](./packages/admin-react) | React 19 admin shell mechanisms: transport (token rotation/captcha), SSE, auth store (injectable AuthGateway), route factory (frontend/backend modes), access control, i18n engine, theme/preferences | v0.1 |
 
 ## Why
 
