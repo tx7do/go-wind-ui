@@ -11,3 +11,4 @@ dist/
 packages/*/src/**/*.d.ts
 !packages/bi-react/src/vue-shim.d.ts
 !packages/admin-element/src/vue-shim.d.ts
+!packages/admin-vben/src/**/*.d.ts
