@@ -1,5 +1,11 @@
 # @go-wind/admin-vben
 
+## 0.1.4
+
+### Patch Changes
+
+- Drop the now-unused json-bigint dependency (JsonViewer switched to regex-preprocessed JSON.parse in 0.1.2; the dependency declaration was intentionally left for that patch train and is cleaned up here).
+
 ## 0.1.3
 
 ### Patch Changes
