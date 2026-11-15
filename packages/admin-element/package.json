@@ -1,0 +1,67 @@
+{
+  "name": "@go-wind/admin-element",
+  "version": "0.1.0",
+  "description": "React-free admin shell mechanisms for Vue 3 + Element Plus extracted from go-wind-admin: auth orchestration (injectable AuthGateway + app router), Pinia access/user stores, route factory (frontend/backend modes), i18n engine with host-injected locales, theme/preferences, access control. Transport/storage/utils come from @go-wind/admin-core.",
+  "type": "module",
+  "license": "MIT",
+  "keywords": [
+    "vue",
+    "admin",
+    "element-plus",
+    "auth",
+    "i18n",
+    "preferences"
+  ],
+  "files": [
+    "dist"
+  ],
+  "module": "./dist/admin-element.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/admin-element.js"
+    },
+    "./style.css": "./dist/admin-element.css"
+  },
+  "scripts": {
+    "build": "vite build && tsc -p tsconfig.build.json && node ../../scripts/flatten-dts.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "peerDependencies": {
+    "@tanstack/vue-query": ">=5.0.0",
+    "element-plus": ">=2.8.0",
+    "pinia": ">=2.2.0",
+    "pinia-plugin-persistedstate": ">=4.0.0",
+    "vue": ">=3.5.0",
+    "vue-i18n": ">=10.0.0",
+    "vue-router": ">=4.4.0",
+    "vxe-table": ">=4.7.0"
+  },
+  "dependencies": {
+    "@element-plus/icons-vue": "^2.3.2",
+    "@go-wind/admin-core": "workspace:*",
+    "@vueuse/core": "11.3.0"
+  },
+  "devDependencies": {
+    "@go-wind/admin-core": "workspace:*",
+    "@tanstack/vue-query": "^5.100.14",
+    "@types/node": "^24.12.4",
+    "@vitejs/plugin-vue": "^5.2.4",
+    "element-plus": "^2.8.8",
+    "pinia": "^2.2.2",
+    "pinia-plugin-persistedstate": "^4.2.0",
+    "typescript": "^5.9.3",
+    "vite": "^8.0.0",
+    "vitest": "^4.1.6",
+    "vue": "^3.5.13",
+    "vue-i18n": "^10.0.5",
+    "vue-router": "^5.4.0",
+    "vxe-table": "^4.15.9"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}

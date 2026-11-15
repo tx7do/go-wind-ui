@@ -1,0 +1,54 @@
+{
+  "name": "@go-wind/admin-core",
+  "version": "0.1.0",
+  "description": "Framework-agnostic admin mechanism layer extracted from go-wind-admin: axios transport (token rotation with 401 refresh queue, captcha headers, pagination query), SSE client, storage manager, and generic utils with parameterized crypto. Shared truth for admin-react / admin-element / vue hosts.",
+  "type": "module",
+  "license": "MIT",
+  "keywords": [
+    "admin",
+    "transport",
+    "axios",
+    "sse",
+    "storage",
+    "utils"
+  ],
+  "files": [
+    "dist"
+  ],
+  "module": "./dist/admin-core.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/admin-core.js"
+    }
+  },
+  "scripts": {
+    "build": "vite build && tsc -p tsconfig.build.json && node ../../scripts/flatten-dts.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@microsoft/fetch-event-source": "^2.0.1",
+    "axios": "^1.16.1",
+    "clsx": "^2.1.1",
+    "crypto-js": "^4.2.0",
+    "dayjs": "^1.11.20",
+    "defu": "^6.1.4",
+    "lodash.clonedeep": "^4.5.0",
+    "nprogress": "^0.2.0",
+    "tailwind-merge": "^3.0.2"
+  },
+  "devDependencies": {
+    "@types/crypto-js": "^4.2.2",
+    "@types/lodash.clonedeep": "^4.5.9",
+    "@types/nprogress": "^0.2.3",
+    "typescript": "^5.9.3",
+    "vite": "^8.0.0",
+    "vitest": "^4.1.6"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}
