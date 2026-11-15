@@ -1,5 +1,11 @@
 # @go-wind/admin-react
 
+## 0.3.0
+
+### Minor Changes
+
+- Add the list export trio extracted from go-wind-admin: **TableExportButton** (CSV/XLSX dropdown, client-side paginated aggregation capped at maxRows, optional server-side full export anchor), the underlying **exportTableData** engine (`exportAuditLogs` moved verbatim, RFC 4180 CSV + ExcelJS XLSX + download helpers), and **serverExportFile** (Bearer-authenticated `:export` anchor fetch — its `import.meta.env.VITE_API_URL` read is replaced by the new `configureAdminRuntime({ apiBaseUrl })` runtime injection). ExcelJS added as a dependency. Six new tests cover multi-page aggregation (BOM/RFC 4180 quoting/ProTable param stripping/maxRows truncation) and the server anchor (URL build, Bearer header, non-2xx error).
+
 ## 0.2.0
 
 ### Minor Changes

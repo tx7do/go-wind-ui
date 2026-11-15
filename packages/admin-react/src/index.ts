@@ -69,5 +69,10 @@ export * from './constants';
 // 列表页基座组件（ProTable 封装：列宽拖拽/骨架屏/滚动撑满）及其骨架屏
 export * from './components/ListTable';
 
+// 列表导出：客户端聚合（CSV/XLSX）+ 服务端全量锚点 + 导出按钮
+export * from './utils/export-table';
+export * from './transport/rest/server-export';
+export { default as TableExportButton } from './components/TableExportButton';
+
 // 主题化全屏加载器（原 components/common/Loading 的 default 导出，收编为命名导出）
 export { default as ThemeLoading } from './components/Loading';
