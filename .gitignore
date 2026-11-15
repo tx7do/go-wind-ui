@@ -10,3 +10,4 @@ dist/
 # 否则干净检出后 bi-react（纯 tsc）无法解析 bi-vue 的 .vue 导入，CI typecheck 直接红。
 packages/*/src/**/*.d.ts
 !packages/bi-react/src/vue-shim.d.ts
+!packages/admin-element/src/vue-shim.d.ts
