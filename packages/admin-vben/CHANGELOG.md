@@ -1,5 +1,11 @@
 # @go-wind/admin-vben
 
+## 0.1.2
+
+### Patch Changes
+
+- JsonViewer: drop the json-bigint runtime dependency. json-bigint is raw CJS; when the source-form package is optimizeDeps-excluded (required to keep a single vue instance), its bare imports can't be prebundle-rewritten and the browser crashes on the missing default export. Replaced with a regex-preprocessed JSON.parse that stringifies 15+ digit literals (same storeAsString semantics), and completed the dependency audit — all bare npm imports of the package (lucide-vue-next, class-variance-authority, sortablejs, @ctrl/tinycolor, theme-colors, defu, clsx, tailwind-merge, lodash.\*, json-bigint removed, @vue/shared, nprogress, @vueuse/integrations, watermark-js-plus, vue-json-viewer, @vee-validate/zod) are now declared, with devDeps pinned to the vben host toolchain versions (vue 3.5.13/vue-router 5.4.0/pinia 2.2.2).
+
 ## 0.1.1
 
 ### Patch Changes
