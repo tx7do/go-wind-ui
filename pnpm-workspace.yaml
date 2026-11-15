@@ -7,3 +7,7 @@ packages:
 onlyBuiltDependencies:
   - esbuild
   - vue-demi
+
+# ListTable 的 scrollbarSize 覆盖依赖 @rc-component/table 补丁（与 go-wind-admin 同款，见其 patches/）
+patchedDependencies:
+  '@rc-component/table@1.11.1': patches/@rc-component__table@1.11.1.patch

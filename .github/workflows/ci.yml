@@ -36,6 +36,10 @@ jobs:
       - name: Typecheck
         run: pnpm -r typecheck
 
+      # 单测（vitest，jsdom）：机制层回归护栏（PaginationQuery 规则/auth store 流程/i18n 等）
+      - name: Test
+        run: pnpm -r test
+
   smoke:
     name: Playwright smoke (playgrounds render)
     runs-on: ubuntu-latest

@@ -7,8 +7,8 @@ import { FALLBACK_LOCALE, type SupportedLocale } from '../../locales';
  * 文案 = 包内置框架命名空间（coreResources）+ 宿主业务命名空间合并后传入。
  */
 export interface InitI18nOptions {
-  /** 合并后的完整语言资源（语言 -> 命名空间 -> 文案） */
-  resources: Record<string, Record<string, Record<string, unknown>>>;
+  /** 合并后的完整语言资源（语言 -> 命名空间 -> 文案；i18next Resource 兼容形状） */
+  resources: Record<string, unknown>;
   /** 全部命名空间列表（一般取 merged['zh-CN'] 的键） */
   namespaces: string[];
   /** 支持的语言列表（默认 zh-CN/en-US） */

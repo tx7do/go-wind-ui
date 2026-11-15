@@ -51,6 +51,6 @@ export function configureQueryClient(options: { isDev?: boolean } = {}): void {
     const queries = queryClient.getDefaultOptions().queries;
     if (!queries) return;
     queries.retry = options.isDev
-        ? (failureCount: number) => failureCount < 3
+        ? (failureCount: number, _error: Error) => failureCount < 3
         : defaultRetry;
 }

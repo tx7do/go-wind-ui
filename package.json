@@ -10,6 +10,7 @@
   "scripts": {
     "build": "pnpm -r build",
     "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r test",
     "dev": "pnpm --filter playground dev",
     "build:playground": "pnpm --filter playground build",
     "dev:react": "pnpm --filter playground-react dev",

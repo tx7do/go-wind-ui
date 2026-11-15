@@ -1,5 +1,11 @@
 # @go-wind/admin-react
 
+## 0.2.0
+
+### Minor Changes
+
+- Add config-driven list base component and generic hooks extracted from go-wind-admin: **ListTable** (ProTable wrapper with column-resize / skeleton / scroll-fill, ships its own css), generic hooks (**useClipboard**, **useKeyStroke**, **usePageFullscreen**, **useEcharts**, **useWatermark**), and the **TABLE** defaults constant. Also adds a Vitest suite (jsdom) covering PaginationQuery query rules, auth store flows via mock AuthGateway, i18n init with merged resources, utils, and a ListTable render smoke test — wired into CI.
+
 ## 0.1.0
 
 ### Minor Changes

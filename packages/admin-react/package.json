@@ -1,6 +1,6 @@
 {
   "name": "@go-wind/admin-react",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "React 19 admin shell mechanisms extracted from go-wind-admin: axios transport (token rotation/captcha headers), SSE client, auth store with injectable AuthGateway, route factory (frontend/backend access modes), access control, i18n engine, theme/preferences, query client, generic hooks & utils.",
   "type": "module",
   "license": "MIT",
@@ -27,7 +27,8 @@
   },
   "scripts": {
     "build": "vite build && tsc -p tsconfig.build.json && node ../../scripts/flatten-dts.mjs",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
   },
   "peerDependencies": {
     "@ant-design/icons": ">=5.6.0",
@@ -45,18 +46,23 @@
     "@microsoft/fetch-event-source": "^2.0.1",
     "axios": "^1.16.1",
     "dayjs": "^1.11.20",
+    "echarts": "^6.1.0",
+    "lodash": "^4.17.21",
     "nprogress": "^0.2.0"
   },
   "devDependencies": {
     "@ant-design/icons": "^5.6.1",
     "@ant-design/pro-components": "^2.8.10",
     "@tanstack/react-query": "^5.100.11",
+    "@testing-library/react": "^16.3.2",
+    "@types/lodash": "^4.17.21",
     "@types/nprogress": "^0.2.3",
     "@types/react": "^19.2.15",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.2",
     "antd": "^6.4.3",
     "i18next": "^26.2.0",
+    "jsdom": "^29.1.1",
     "less": "^4.6.4",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
@@ -64,6 +70,7 @@
     "react-router-dom": "^6.26.0",
     "typescript": "^5.9.3",
     "vite": "^8.0.0",
+    "vitest": "^4.1.6",
     "zustand": "^5.0.13"
   },
   "publishConfig": {
