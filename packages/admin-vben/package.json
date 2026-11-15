@@ -67,5 +67,8 @@
     "@vueuse/core": "11.3.0",
     "@tanstack/vue-query": "5.105.0",
     "vitest": "^3.2.4"
+  },
+  "scripts": {
+    "test": "vitest run"
   }
 }
