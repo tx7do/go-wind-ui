@@ -19,7 +19,28 @@ const i18n = createI18n({
   messages: {},
 });
 
-const modules = import.meta.glob('./langs/**/*.json');
+// 语言包静态枚举：源码形态包位于 node_modules 内，vite 的 import.meta.glob 插件
+// 不展开 node_modules 路径下的文件（localesMap 会得到空集、框架文案全 raw），
+// 故以静态 import 等价替换 glob（loadLocalesMapFromDir 只要求「路径键 → 懒加载」形状）。
+import authenticationEn from './langs/en-US/authentication.json';
+import authenticationZh from './langs/zh-CN/authentication.json';
+import commonEn from './langs/en-US/common.json';
+import commonZh from './langs/zh-CN/common.json';
+import preferencesEn from './langs/en-US/preferences.json';
+import preferencesZh from './langs/zh-CN/preferences.json';
+import uiEn from './langs/en-US/ui.json';
+import uiZh from './langs/zh-CN/ui.json';
+
+const modules: Record<string, () => Promise<{ default: unknown }>> = {
+  './langs/en-US/authentication.json': async () => ({ default: authenticationEn }),
+  './langs/zh-CN/authentication.json': async () => ({ default: authenticationZh }),
+  './langs/en-US/common.json': async () => ({ default: commonEn }),
+  './langs/zh-CN/common.json': async () => ({ default: commonZh }),
+  './langs/en-US/preferences.json': async () => ({ default: preferencesEn }),
+  './langs/zh-CN/preferences.json': async () => ({ default: preferencesZh }),
+  './langs/en-US/ui.json': async () => ({ default: uiEn }),
+  './langs/zh-CN/ui.json': async () => ({ default: uiZh }),
+};
 
 const { setSimpleLocale } = useSimpleLocale();
 

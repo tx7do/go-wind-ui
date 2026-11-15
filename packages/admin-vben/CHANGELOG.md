@@ -1,5 +1,11 @@
 # @go-wind/admin-vben
 
+## 0.1.3
+
+### Patch Changes
+
+- Locales: replace `import.meta.glob('./langs/**/*.json')` with statically enumerated imports. The source-form package lives inside node_modules where vite's glob transform does not expand — `localesMap` resolved to an empty set and **every framework string rendered as its raw key** on consuming hosts (ui.widgets.search.title etc.). Static imports keep the same path-key → lazy-loader shape `loadLocalesMapFromDir` expects, independent of host pipeline quirks.
+
 ## 0.1.2
 
 ### Patch Changes
