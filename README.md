@@ -17,6 +17,9 @@ Framework-generic admin UI building blocks from the [GoWind](https://github.com/
 | [`@go-wind/chat-vue`](./packages/chat-vue) | AI streaming chat UI for Vue 3 (markdown, typing, stop; transport injected) | v0.1 |
 | [`@go-wind/chat-react`](./packages/chat-react) | React 19 mirror of chat-vue | v0.1 |
 | [`@go-wind/admin-react`](./packages/admin-react) | React 19 admin shell mechanisms: transport (token rotation/captcha), SSE, auth store (injectable AuthGateway), route factory (frontend/backend modes), access control, i18n engine, theme/preferences | v0.1 |
+| [`@go-wind/admin-core`](./packages/admin-core) | Framework-agnostic admin mechanism layer: axios transport (401 refresh queue), SSE, storage, pagination rules, parameterized crypto, generic utils — shared truth for admin-react/admin-element/any host | v0.1 |
+| [`@go-wind/admin-element`](./packages/admin-element) | Element Plus binding layer: auth orchestration (injectable gateway + app router), Pinia access/user stores, route factory (frontend/backend modes), preferences/theme engine, i18n engine (host-injected locales) | v0.1 |
+| [`@go-wind/admin-vben`](./packages/admin-vben) | Vben 5 derived shell framework (source-form package): preferences/theme engine, Pinia stores, i18n engine, access control, form/popup/layout UI kits — layered extraction, business hot zones stay host-side | v0.1 |
 
 ## Why
 
