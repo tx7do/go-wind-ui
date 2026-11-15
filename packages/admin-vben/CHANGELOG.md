@@ -1,5 +1,11 @@
 # @go-wind/admin-vben
 
+## 0.1.1
+
+### Patch Changes
+
+- Pin @tanstack/vue-store to exactly 0.6.0. The published 0.1.0 tarball carried ^0.11.2, but 0.11.x removed the `Store.onUpdate`/`store.batch` APIs that the form-ui/popup-ui/vxe-table adapters are written against (the vben host tree resolves 0.6.0 transitively via @tanstack/vue-query 5.105). Package-internal resolution now matches the API surface the code was written for.
+
 ## 0.1.0
 
 ### Minor Changes

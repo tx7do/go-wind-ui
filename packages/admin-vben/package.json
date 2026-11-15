@@ -1,6 +1,6 @@
 {
   "name": "@go-wind/admin-vben",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Vben 5 derived admin shell framework (Vue 3 + Ant Design Vue + tailwind), deep-customized and version-pinned by go-wind-admin. Consumed as a SOURCE package: hosts resolve subpaths into src/ via their own tsconfig paths / bundler, keeping full component types without a build step.",
   "type": "module",
   "license": "MIT",
@@ -26,7 +26,7 @@
     "vue-router": ">=4.4.0"
   },
   "dependencies": {
-    "@tanstack/vue-store": "0.11.2",
+    "@tanstack/vue-store": "0.6.0",
     "@intlify/core-base": "^10.0.0",
     "@vueuse/core": "^11.3.0",
     "axios": "^1.16.1",
