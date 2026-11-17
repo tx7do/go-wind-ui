@@ -1,6 +1,6 @@
 {
   "name": "@go-wind/admin-react",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "React 19 admin shell mechanisms extracted from go-wind-admin: axios transport (token rotation/captcha headers), SSE client, auth store with injectable AuthGateway, route factory (frontend/backend access modes), access control, i18n engine, theme/preferences, query client, generic hooks & utils.",
   "type": "module",
   "license": "MIT",
