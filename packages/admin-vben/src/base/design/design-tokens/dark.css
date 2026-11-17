@@ -26,7 +26,7 @@
 
   /* --muted-foreground: 215 20.2% 65.1%; */
 
-  --muted: 240 3.7% 15.9%;
+  --muted: 220 18% 16%;
   /* 次要文字 = §2.3 定稿 #8B949E（换算成 HSL 三元组，与 react SECONDARY_TEXT_DARK、
      ele --el-text-color-secondary 暗态同值）。原值 240 5% 64.9% 换算为 #A1A1AA，比规范亮一档，
      两档在 L0/L1/浮层 上实测都达标（7.47/6.92/6.31 与 6.23/5.77/5.26），换过来是为了三端同值。
@@ -58,32 +58,38 @@
   --warning: 42 84% 61%;
   --warning-foreground: 0 0% 98%;
 
-  /* 颜色次要 */
-  --secondary: 240 5% 17%;
+  /* 中性灰家族（muted、secondary、accent 系、heavy、border）2026-11-17 接回 §2.3 近黑蓝系。
+     原值是 shadcn 出厂 zinc（hue 240、彩度 0~5%），明度本来就落在规范的白 α 衍生档
+     （α .05~.13 叠 L1 #111827 合成 L 15~24%），缺的只是蓝调——故只补彩度、不动明度，
+     版面权重与描边强弱都不变。对照：--border #2D3543 介于输入 α10%(#292F3D) 与
+     通用 slate α.28(#363F50) 之间；--accent #252B36 ≈ 悬停档白 α8%(#242A38)。
+     其余 12 个内置配色预设各带一套中性色，不在本口径内（同 --muted-foreground 那条边界）。 */
+  --secondary: 220 18% 17%;
   --secondary-foreground: 0 0% 98%;
 
   /* Used for accents such as hover effects on <DropdownMenuItem>, <SelectItem>...etc */
-  --accent: 216 5% 19%;
-  --accent-dark: 240 0% 22%;
-  --accent-darker: 240 0% 26%;
-  --accent-lighter: 216 5% 12%;
-  --accent-hover: 216 5% 24%;
+  --accent: 220 18% 19%;
+  --accent-dark: 220 18% 22%;
+  --accent-darker: 220 18% 26%;
+  --accent-lighter: 220 18% 12%;
+  --accent-hover: 220 18% 24%;
   --accent-foreground: 0 0% 98%;
 
   /* Darker color */
-  --heavy: 216 5% 24%;
+  --heavy: 220 18% 24%;
   --heavy-foreground: var(--accent-foreground);
 
   /* Default border color */
-  --border: 240 3.7% 22%;
+  --border: 220 19% 22%;
 
   /* Border color for inputs such as <Input />, <Select />, <Textarea /> */
   --input: 0deg 0% 100% / 10%;
   --input-placeholder: 218deg 11% 65%;
   --input-background: 0deg 0% 100% / 5%;
 
-  /* Used for focus ring */
-  --ring: 222.2 84% 4.9%;
+  /* Used for focus ring —— 原 222.2 84% 4.9% = #020817，与 L0/L1 同档明度，暗色下焦点环画不出来。
+     tailwind 的 ring 映射是 hsl(var(--ring))、不带 alpha-value 模板，故 α 烘进三元组（同 --input 写法）。 */
+  --ring: 212deg 100% 45% / 25%;
 
   /* 基本圆角大小 */
   --radius: 0.5rem;
