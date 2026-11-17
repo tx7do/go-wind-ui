@@ -1,5 +1,11 @@
 # @go-wind/admin-element
 
+## 0.1.1
+
+### Patch Changes
+
+- [`6d3db7c`](https://github.com/tx7do/go-wind-ui/commit/6d3db7cdeec2eadc0d8f607d2376f64487a47af5) Thanks [@tx7do](https://github.com/tx7do)! - core 命名空间文案数据搬除：登录/品牌/通知等 core._ 文案跟着视图走，全部由宿主自带（vue-element 宿主的 src/locales/{lang}/core.json 深合并覆盖），包内置数据清空——dist 实证包自身对 core._ 零字面引用，纯死数据。`coreLocaleModules` 导出与键结构保持兼容（每语言空对象），宿主导入不 break；新宿主需自带 core.json。
+
 ## 0.1.0
 
 ### Minor Changes
