@@ -7,3 +7,4 @@ export * from './color';
 export * from './url';
 export * from './diff';
 export * from './tree';
+export * from './storage-namespace';

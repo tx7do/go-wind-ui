@@ -2,6 +2,7 @@ import {create} from 'zustand';
 import {persist} from 'zustand/middleware';
 
 import type {AdminUserBasic} from '../types';
+import {persistKey} from '../utils/storage-namespace';
 
 // ========== 状态定义 ==========
 export interface UserState {
@@ -83,7 +84,7 @@ export const useUserStore = create<UserState>()(
             },
         }),
         {
-            name: 'user-storage', // localStorage key
+            name: persistKey('user-storage'), // localStorage key
             // ✅ 可选：只持久化用户信息（角色可从用户信息派生）
             partialize: (state) => ({
                 userInfo: state.userInfo,

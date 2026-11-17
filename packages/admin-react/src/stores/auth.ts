@@ -7,6 +7,7 @@ import type { AdminUserInfo } from '../types';
 import { startRefreshTimer, stopRefreshTimer, disconnectSSEServer } from '../hooks/useTokenRefresh';
 import { queryClient } from '../query-client';
 import { setCaptchaHeaders } from '../transport/rest';
+import { persistKey } from '../utils/storage-namespace';
 
 /**
  * 令牌载荷
@@ -229,9 +230,9 @@ export const useAuthStore = create<AuthState>()(
           // （如 getMe 因 401 返回 null 被 fetchQuery 缓存）导致重新登录时命中脏数据
           queryClient.clear();
 
-          // 清除 localStorage 中的持久化数据
-          localStorage.removeItem('auth-storage');
-          localStorage.removeItem('user-storage');
+          // 清除 localStorage 中的持久化数据（键走 persistKey 与 persist 配置一致）
+          localStorage.removeItem(persistKey('auth-storage'));
+          localStorage.removeItem(persistKey('user-storage'));
 
           // 清除内存中的状态
           set({
@@ -280,8 +281,8 @@ export const useAuthStore = create<AuthState>()(
         console.warn('Force logout: clearing auth state');
         // 清除 queryClient 缓存，防止缓存污染导致重新登录失败
         queryClient.clear();
-        localStorage.removeItem('auth-storage');
-        localStorage.removeItem('user-storage');
+        localStorage.removeItem(persistKey('auth-storage'));
+        localStorage.removeItem(persistKey('user-storage'));
         set({
           accessToken: null,
           accessTokenExpireAt: null,
@@ -310,7 +311,7 @@ export const useAuthStore = create<AuthState>()(
         }),
     }),
     {
-      name: 'auth-storage', // localStorage key
+      name: persistKey('auth-storage'), // localStorage key
       // Token（access/refresh 及其过期时间）全部仅存内存，不落 localStorage。
       // 刷新页面后 token 丢失 → AuthGuard 看到 accessToken 为 null → 跳登录页。
       // 登出时仍 localStorage.removeItem('auth-storage') 清理历史残留数据。
