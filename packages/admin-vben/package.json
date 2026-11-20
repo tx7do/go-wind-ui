@@ -1,6 +1,6 @@
 {
   "name": "@go-wind/admin-vben",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Vben 5 derived admin shell framework (Vue 3 + Ant Design Vue + tailwind), deep-customized and version-pinned by go-wind-admin. Consumed as a SOURCE package: hosts resolve subpaths into src/ via their own tsconfig paths / bundler, keeping full component types without a build step.",
   "type": "module",
   "license": "MIT",
