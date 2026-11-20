@@ -1,6 +1,6 @@
 {
   "name": "@go-wind/admin-core",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Framework-agnostic admin mechanism layer extracted from go-wind-admin: axios transport (token rotation with 401 refresh queue, captcha headers, pagination query), SSE client, storage manager, and generic utils with parameterized crypto. Shared truth for admin-react / admin-element / vue hosts.",
   "type": "module",
   "license": "MIT",

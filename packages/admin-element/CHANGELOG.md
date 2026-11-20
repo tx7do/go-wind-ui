@@ -1,5 +1,12 @@
 # @go-wind/admin-element
 
+## 0.1.2
+
+### Patch Changes
+
+- Updated dependencies [[`bafe231`](https://github.com/tx7do/go-wind-ui/commit/bafe23119af2bd36f4518af3cc5cbcfd6bcbeb0c)]:
+  - @go-wind/admin-core@0.1.1
+
 ## 0.1.1
 
 ### Patch Changes

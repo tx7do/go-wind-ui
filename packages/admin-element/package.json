@@ -1,6 +1,6 @@
 {
   "name": "@go-wind/admin-element",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "React-free admin shell mechanisms for Vue 3 + Element Plus extracted from go-wind-admin: auth orchestration (injectable AuthGateway + app router), Pinia access/user stores, route factory (frontend/backend modes), i18n engine with host-injected locales, theme/preferences, access control. Transport/storage/utils come from @go-wind/admin-core.",
   "type": "module",
   "license": "MIT",
